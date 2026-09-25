@@ -22,8 +22,8 @@ ligne) fonctionne ; toutes les spécifications suivantes s'y appuient.
 
 **Scénarios d'acceptation** :
 
-1. **Étant donné** un visiteur sans préférence, **quand** il ouvre `/`, **alors** la page s'affiche en
-   français, rendue par le serveur, avec l'en-tête `KYA-EnergyMarket · Logiciels ▾ · Aide · FR ▾ ·
+1. **Étant donné** un visiteur sans préférence, **quand** il ouvre `/`, **alors** il arrive sur `/fr/`,
+   en français, rendue par le serveur, avec l'en-tête `KYA-EnergyMarket · Logiciels ▾ · Aide · FR ▾ ·
    Se connecter`, fidèle à la maquette v5.
 2. **Étant donné** un téléphone de 390 px, **quand** la page s'affiche, **alors** aucun défilement
    horizontal, le menu passe dans un bouton, les actions restent atteignables.
@@ -129,10 +129,12 @@ structuré et d'une table d'audit.
 - **FR-005** : Les polices de la charte (Poppins pour les titres, Inter pour le texte, JetBrains Mono
   pour les nombres) DOIVENT être servies par l'application elle-même, sous-ensemble latin, avec
   repli système.
-- **FR-006** : Les composants de base (boutons, en-têtes marketplace et logiciel, pied de page, menus
+- **FR-006** : Les composants de base (boutons, en-tête de la marketplace, pied de page, menus
   déroulants, étiquette « exemple », icônes dessinées) DOIVENT reproduire la maquette `design/v5`.
+  L'en-tête d'un logiciel arrive avec les pages des logiciels (spécification 004).
 - **FR-007** : Tous les textes d'interface DOIVENT venir de catalogues de messages français et
-  anglais ; le français est la langue de base. Adresses : français sans préfixe, anglais sous `/en`.
+  anglais ; le français est la langue de base. Adresses préfixées `/fr/…` et `/en/…` ; la racine `/`
+  redirige vers la langue retenue (sinon un choix mémorisé ne pourrait jamais s'appliquer à `/`).
 - **FR-008** : La langue DOIT se déterminer par l'adresse, puis le choix mémorisé, puis la langue du
   navigateur, puis le français.
 - **FR-009** : Les pages DOIVENT déclarer `lang`, `hreflang` et l'adresse canonique.

@@ -32,6 +32,24 @@ Ce fichier s'applique à toute personne et à tout agent (Claude Code, Codex) qu
 `/speckit-analyze` → `/speckit-implement` → `/speckit-converge`. Chaque plan déclare sa conformité à
 la constitution. Une décision structurante donne un ADR dans `docs/adr/`.
 
+## Organisation du code : par fonctionnalité
+
+Le code est rangé **par fonctionnalité**, pas par couche technique. Une fonctionnalité (catalogue,
+licences, paiements, i18n, santé…) = un dossier qui contient ses composants, sa logique, ses schémas et
+ses tests.
+
+```text
+apps/web/src/
+  routes/                 routes TanStack : points d'entrée minces, aucune logique
+  features/<nom>/         pages, composants, adaptateurs serveur et tests de la fonctionnalité
+  shared/                 le peu qui sert à plusieurs fonctionnalités (runtime serveur…)
+packages/domain/src/<nom>/  services métier, règles, schémas et tests de la fonctionnalité
+packages/db/src/          schéma Drizzle ; plus tard un fichier de schéma par fonctionnalité
+```
+
+- Une fonctionnalité n'importe pas les fichiers internes d'une autre : elle passe par ce que l'autre
+  exporte (son index.ts dans packages/domain).
+- Une route importe une page de eatures/ et déclare sa tête (titre, liens de langue) ; rien d'autre.
 ## Architecture en une phrase
 
 Une application TanStack Start ; toute règle métier vit dans la couche `domain`, que réutilisent les
