@@ -20,7 +20,7 @@ export default defineConfig({
     command: 'node .output/server/index.mjs',
     port: PORT,
     reuseExistingServer: !process.env.CI,
-    env: { PORT: String(PORT), APP_ENV: 'test', LOG_LEVEL: 'warn' },
+    env: { PORT: String(PORT), APP_ENV: 'test', APP_BASE_URL: `http://localhost:${PORT}`, LOG_LEVEL: 'warn' },
     timeout: 60_000,
   },
 });

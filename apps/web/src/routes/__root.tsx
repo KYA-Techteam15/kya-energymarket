@@ -1,11 +1,15 @@
 /// <reference types="vite/client" />
 import { createRootRoute } from '@tanstack/react-router';
+import { getPublicConfig } from '@/features/i18n/seo';
 import { AppShell } from '@/features/shell/AppShell';
 import { NotFoundPage } from '@/features/shell/NotFoundPage';
 import { m } from '@/paraglide/messages.js';
 import appCss from '@/styles/app.css?url';
 
 export const Route = createRootRoute({
+  // Configuration publique (adresse du site), lue une fois côté serveur puis transmise au navigateur.
+  loader: () => getPublicConfig(),
+  staleTime: Infinity,
   head: () => ({
     meta: [
       { charSet: 'utf-8' },

@@ -87,6 +87,12 @@ test.describe('anglais (spec 001, histoire 2)', () => {
 
   test('déclare les versions linguistiques et l’adresse canonique', async ({ page }) => {
     await page.goto('/fr/');
+    // Une seule balise de chaque : le serveur et le navigateur produisent les mêmes adresses.
+    await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
+    await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute(
+      'href',
+      'http://localhost:4173/en/',
+    );
     await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', /\/en\/?$/u);
     await expect(page.locator('link[rel="alternate"][hreflang="fr"]')).toHaveAttribute('href', /\/fr\/?$/u);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/fr\/?$/u);
