@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mes demandes · Espace client · KYA-EnergyMarket</title>
+  <link rel="icon" href="../assets/img/kya-mark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-root="../" data-chrome="market" data-auth="in" data-acct="support">
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div data-chrome-top></div>
+
+<div class="acct">
+  <nav class="acct-side" data-acct-nav aria-label="Espace client"></nav>
+  <main class="acct-main" id="contenu">
+    <header class="acct-head">
+      <div><h1>Mes demandes.</h1><p>Vos questions et signalements, avec les réponses de l'équipe. Ceux envoyés depuis le logiciel apparaissent aussi ici.</p></div>
+      <a class="btn btn-deep" href="../contact.html?sujet=support"><i data-i="plus"></i>Nouvelle demande</a>
+    </header>
+
+    <div class="acct-grid">
+      <section class="box">
+        <div class="box-head"><h2>Import d'une année mesurée</h2><span class="state ok">Répondu</span></div>
+        <div class="box-body thread">
+          <div><p class="meta">Vous · 23/09/2026 · envoyé depuis KYA-SolDesign 1.2.0</p><div class="msg me">Mon fichier de 8 760 lignes est refusé à l'import. Il vient d'un compteur, avec une colonne date et une colonne kWh.</div></div>
+          <div><p class="meta">Équipe KYA · 24/09/2026</p><div class="msg bot">Merci pour le fichier joint au diagnostic. La colonne date contient des heures d'été : KYA-SolDesign attend 8 760 heures sans décalage. Retirez la ligne en double du dernier dimanche de mars et l'import passe. Le guide détaille le format attendu.<a class="src" href="../kya-soldesign/guide.html">Guide · Bilan des consommations</a></div></div>
+          <form class="form" onsubmit="event.preventDefault()">
+            <label class="field"><span>Répondre</span><textarea class="textarea" placeholder="Votre message"></textarea></label>
+            <div class="cta-row"><button class="btn btn-deep" type="submit" data-toast="Message envoyé (maquette)">Envoyer</button><button class="btn btn-line" type="button" data-toast="Demande close (maquette)">Clore la demande</button></div>
+          </form>
+        </div>
+      </section>
+      <section class="box">
+        <div class="box-head"><h2>Toutes les demandes</h2></div>
+        <ul class="box-list">
+          <li><span class="avatar" style="grid-row:span 2">Q</span><b>Import d'une année mesurée</b><small>Question · 23/09/2026</small><span class="end"><span class="state ok">Répondu</span></span></li>
+          <li><span class="avatar" style="grid-row:span 2;background:var(--orange);color:var(--on-orange)">P</span><b>Schéma : étiquette tronquée en A4</b><small>Problème · 02/09/2026</small><span class="end"><span class="state warn">En cours</span></span></li>
+          <li><span class="avatar" style="grid-row:span 2;background:var(--soft-2);color:var(--ink-2)">I</span><b>Ajouter les onduleurs 48 V au catalogue</b><small>Idée · 14/07/2026</small><span class="end"><span class="state off">Close</span></span></li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script src="../assets/js/site.js" defer></script>
+</body>
+</html>

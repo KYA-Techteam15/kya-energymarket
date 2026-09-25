@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KYA-SolDesign — dimensionnement photovoltaïque · KYA Energy Market</title>
+  <meta name="description" content="KYA-SolDesign : dimensionnez, protégez, chiffrez et documentez une installation photovoltaïque, heure par heure sur la météo du site. Licences Commerciale, Académique et Étudiant.">
+  <link rel="icon" href="../../assets/img/kya-energy-group-logo.png">
+  <link rel="stylesheet" href="../assets/v2.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-dash" viewBox="0 0 24 24"><path d="M7 12h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11m-5-5l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-cursor" viewBox="0 0 24 24"><path d="M4 3l16 7.5-7 1.8-2.3 7.2z" fill="currentColor" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M4 21V5l8-2v18M12 8l8 2.5V21M3 21h18M7.5 8h1m-1 4h1m-1 4h1M15.5 13h1m-1 4h1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M2.5 9L12 4.5 21.5 9 12 13.5zM6.5 11v5c1.6 1.6 3.4 2.4 5.5 2.4s3.9-.8 5.5-2.4v-5M21.5 9v6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2m0 15v2m9.5-9.5h-2m-15 0h-2m15.2-6.7l-1.4 1.4M6.7 17.3l-1.4 1.4m13.4 0l-1.4-1.4M6.7 6.7L5.3 5.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2.5L5 13.5h6l-1 8 8-11h-6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4M9 12h6m-6 4h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><path d="M4 4h7v7H4zm9 0h7v7h-7zM4 13h7v7H4zm9 0h7v7h-7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.3-7.5 9.5-4.3-1.2-7.5-4.9-7.5-9.5V6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 12l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3c2.5 2.6 3.7 5.6 3.7 9s-1.2 6.4-3.7 9c-2.5-2.6-3.7-5.6-3.7-9S9.5 5.6 12 3z" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M11 18.5h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+</svg>
+
+
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<nav class="nav" aria-label="Navigation principale">
+  <a class="nav-brand" href="../index.html" aria-label="KYA Energy Market, accueil">
+    <img src="../../assets/img/kya-energy-group-logo.png" alt="" width="34" height="34">
+    <b>KYA Energy Market</b>
+  </a>
+  <div class="nav-links" id="nav-links">
+    <a href="#fonctionnement" aria-current="page">KYA-SolDesign</a>
+    <a href="#livrables">Livrables</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="#versions">Versions</a>
+    <a href="#questions">Questions</a>
+  </div>
+  <div class="nav-end">
+    <a class="btn btn-sm btn-ghost" href="../index.html#espace">Mon espace</a>
+    <a class="btn btn-sm btn-buy" href="#tarifs">Acheter</a>
+    <button class="btn btn-sm nav-burger" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Ouvrir le menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+  </div>
+</nav>
+
+<main id="contenu">
+  <!-- ======================================================== Présentation -->
+  <header class="p-hero">
+    <div class="wrap">
+      <span class="p-badge"><img src="../../assets/img/kya-soldesign-logo.png" alt="" width="30" height="30"><b>KYA-SolDesign 1.2.0</b><i aria-hidden="true"></i>Disponible pour Windows</span>
+      <h1>Le dossier solaire complet, <span class="scribble">en une étude<svg viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path d="M4 20 C 80 8, 170 8, 296 16"/></svg></span></h1>
+      <p class="hero-lead">Consommations, météo horaire du site, système minimal fiable, matériel choisi parmi vos références, protections selon l'IEC 60364-5-52, devis et rapport. Chaque étape nourrit la suivante.</p>
+      <div class="hero-cta">
+        <a class="btn btn-buy" href="#tarifs">Voir les licences <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="btn" href="#"><svg aria-hidden="true"><use href="#i-download"/></svg> Télécharger 1.2.0</a>
+      </div>
+      <div class="p-facts">
+        <span><svg aria-hidden="true"><use href="#i-check"/></svg>Windows 10 et 11</span>
+        <span><svg aria-hidden="true"><use href="#i-check"/></svg>Fonctionne hors ligne</span>
+        <span><svg aria-hidden="true"><use href="#i-check"/></svg>Français et anglais</span>
+        <span><svg aria-hidden="true"><use href="#i-check"/></svg>Mises à jour signées</span>
+      </div>
+    </div>
+    <div class="window-stage p-window">
+      <div class="app-window" id="app-window">
+        <div class="app-bar" aria-hidden="true"><i></i><i></i><i></i><span>KYA-SolDesign 1.2.0 — Bilan des consommations</span></div>
+        <img src="../../assets/img/besoins.webp" alt="Bilan des consommations dans KYA-SolDesign : tableau des appareils, profil annuel et panneau de viabilité" width="1600" height="1000">
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================== Récit : le texte avance, l'écran suit -->
+  <section class="section" id="fonctionnement" aria-labelledby="fonctionnement-titre">
+    <div class="wrap">
+      <div class="head reveal">
+        <h2 id="fonctionnement-titre">Comment se déroule une étude</h2>
+        <p>Le projet exemple du logiciel : un centre de santé à Bombouaka, au Togo.</p>
+      </div>
+      <div class="story">
+        <div class="story-steps">
+          <article class="story-step" data-shot="../../assets/img/site.webp">
+            <small>Étapes 1 et 2 · projet et site</small>
+            <h3>La météo du site, heure par heure</h3>
+            <p>Coordonnées, orientation du champ, températures de conception. La série horaire PVGIS est vérifiée puis liée au projet ; le mois critique est recommandé.</p>
+          </article>
+          <article class="story-step" data-shot="../../assets/img/besoins.webp">
+            <small>Étape 3 · besoins</small>
+            <h3>Des consommations qui ressemblent à la réalité</h3>
+            <p>Appareils, horaires peints à la souris, pointes au démarrage. Un jour type, une année composée de saisons et de week-ends, ou une année entière importée.</p>
+          </article>
+          <article class="story-step" data-shot="../../assets/img/predim.webp">
+            <small>Étape 4 · prédimensionnement</small>
+            <h3>Faisable, et à quel prix, avant le catalogue</h3>
+            <p>Le système minimal qui tient la fiabilité demandée (SRI), puis sa viabilité face au tarif réseau (SVI) et le coût du kWh sur sa durée de vie.</p>
+          </article>
+          <article class="story-step" data-shot="../../assets/img/materiel.webp">
+            <small>Étape 5 · dimensionnement</small>
+            <h3>Votre matériel, la combinaison qui tient</h3>
+            <p>834 références livrées, les vôtres en plus. La combinaison la moins chère est simulée sur les 8 760 heures de l'année.</p>
+          </article>
+          <article class="story-step" data-shot="../../assets/img/protections.webp">
+            <small>Étape 6 · protections et câbles</small>
+            <h3>Chaque section et chaque calibre justifiés</h3>
+            <p>Chutes de tension, disjoncteurs, parafoudres et terre selon l'IEC 60364-5-52, repris dans la note de calcul.</p>
+          </article>
+          <article class="story-step" data-shot="../../assets/img/dossier.webp">
+            <small>Étapes 7 et 8 · chiffrage et dossier</small>
+            <h3>Un dossier émis, daté, révisé</h3>
+            <p>Devis, facture proforma, schéma unifilaire et rapport en pages A4, en Word et en PDF.</p>
+          </article>
+        </div>
+        <div class="story-screen">
+          <div class="chain-shot"><img id="story-img" src="../../assets/img/site.webp" alt="Écran « La météo du site, heure par heure » de KYA-SolDesign" width="1600" height="1000"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== Livrables en éventail -->
+  <section class="section" id="livrables" aria-labelledby="livrables-titre">
+    <div class="wrap">
+      <div class="head reveal">
+        <h2 id="livrables-titre">Ce que vous remettez à votre client</h2>
+        <p>Les vrais documents du projet exemple, tels que le logiciel les produit.</p>
+      </div>
+      <div class="deliver reveal" data-delay="1">
+        <figure><img src="../../assets/img/rapport-couverture.webp" alt="Couverture du rapport d'étude" width="900" height="1272" loading="lazy"></figure>
+        <figure><img src="../../assets/img/rapport-page-2.webp" alt="Page intérieure du rapport : sommaire et synthèse" width="900" height="1272" loading="lazy"></figure>
+        <figure><img src="../../assets/img/unifilaire.webp" alt="Schéma unifilaire A3 avec cartouche" width="1800" height="1246" loading="lazy"></figure>
+      </div>
+      <div class="deliver-legend">
+        <div class="reveal"><b>Rapport d'étude</b><span>Pages A4, sommaire, synthèse, hypothèses et résultats</span></div>
+        <div class="reveal" data-delay="1"><b>Note de calcul et devis</b><span>Protections, câbles, prix d'achat et de vente, facture proforma</span></div>
+        <div class="reveal" data-delay="2"><b>Schéma unifilaire</b><span>Planche avec cartouche, en PNG et SVG</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== Tarifs -->
+  <section class="section" id="tarifs" aria-labelledby="tarifs-titre">
+    <div class="wrap">
+      <div class="head reveal">
+        <h2 id="tarifs-titre">Une licence pour chaque usage</h2>
+        <p>Un poste par licence. À l'échéance, vos projets restent consultables et imprimables : rien n'est effacé.</p>
+      </div>
+      <div class="plans reveal" id="plans" data-delay="1"></div>
+      <p class="pay-note"><svg aria-hidden="true"><use href="#i-phone"/></svg>Mobile Money ou carte bancaire, par Semoa. La clé et la facture arrivent dans votre espace client.</p>
+    </div>
+  </section>
+
+  <!-- ======================================================== Grille des fonctions -->
+  <section class="section" style="padding-top:20px" aria-labelledby="grille-titre">
+    <div class="wrap">
+      <div class="head reveal"><h2 id="grille-titre">Ce que comprend chaque édition</h2></div>
+      <div class="matrix-wrap reveal">
+        <table class="matrix">
+          <thead><tr><th scope="col">Fonction</th><th scope="col">Commerciale</th><th scope="col">Académique</th><th scope="col">Étudiant</th></tr></thead>
+          <tbody>
+            <tr><td>Étude complète, du site au rapport PDF</td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td></tr>
+            <tr><td>Optimisation parmi vos références de matériel</td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td class="no">—</td></tr>
+            <tr><td>Export Word des documents</td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td class="no">—</td></tr>
+            <tr><td>Prix de vente et facture proforma</td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td class="no">—</td><td class="no">—</td></tr>
+            <tr><td>Émission et révisions du dossier</td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td class="no">—</td></tr>
+            <tr><td>Matériel ajouté au catalogue</td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td class="no">—</td></tr>
+            <tr><td>Nombre de projets</td><td>Illimité</td><td>Illimité</td><td class="num">5</td></tr>
+            <tr><td>Filigrane sur les documents</td><td class="no">Aucun</td><td>Usage académique</td><td>Usage étudiant</td></tr>
+            <tr><td>Délai de grâce après l'échéance</td><td class="num">7 jours</td><td class="num">3 jours</td><td class="no">Aucun</td></tr>
+            <tr><td>Durées proposées</td><td>1 mois · 1 trimestre · 1 an</td><td>1 an</td><td>1 jour · 1 mois</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== Versions et fiche technique -->
+  <section class="section" id="versions" aria-label="Versions et fiche technique">
+    <div class="wrap split">
+      <div class="reveal">
+        <h2>Versions</h2>
+        <div class="release"><div><b class="v">1.2.0</b><small>25 sept. 2026</small></div><div><span class="chip">Stable · actuelle</span><h3>Mise en production</h3><p>Éditions de licence et temps restant, rapport en vraies pages A4 avec sommaire, schéma unifilaire refait et exportable en PNG, mises à jour par canal, menu Fichier et Aide.</p></div></div>
+        <div class="release"><div><b class="v">1.1.0</b><small>24 sept. 2026</small></div><div><h3>Refonte de bout en bout</h3><p>Tableau d'appareils unique et horaires peints, sources de consommation, optimisation sur vos références simulée sur l'année, émission et révisions du dossier, projet exemple.</p></div></div>
+        <div class="release"><div><b class="v">1.0.0</b><small>24 sept. 2026</small></div><div><h3>Première version distribuée</h3><p>Application de bureau, simulation horaire, protections et câbles selon l'<span class="nowrap">IEC 60364-5-52</span>, documents complets, interface bilingue.</p></div></div>
+      </div>
+      <div class="reveal" data-delay="1">
+        <h2>Fiche technique</h2>
+        <table class="spec">
+          <tbody>
+            <tr><th scope="row">Système</th><td>Windows 10 ou 11, 64 bits</td></tr>
+            <tr><th scope="row">Installation</th><td>Installateur unique, aucune connexion nécessaire</td></tr>
+            <tr><th scope="row">Connexion</th><td>Facultative : météo PVGIS, activation, mises à jour</td></tr>
+            <tr><th scope="row">Langues</th><td>Français, anglais (interface et documents)</td></tr>
+            <tr><th scope="row">Données météo</th><td>Séries horaires PVGIS (TMY), vérifiées et liées au projet</td></tr>
+            <tr><th scope="row">Normes</th><td>Câbles et protections : IEC 60364-5-52</td></tr>
+            <tr><th scope="row">Exports</th><td>PDF, Word, schéma en PNG et SVG, profils en Excel</td></tr>
+            <tr><th scope="row">Projets</th><td>Enregistrement automatique, fichier .ksd</td></tr>
+            <tr><th scope="row">Mises à jour</th><td>Automatiques et signées ; canal stable ou bêta</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== Questions -->
+  <section class="section" id="questions" style="padding-top:20px" aria-labelledby="questions-titre">
+    <div class="wrap">
+      <div class="head reveal"><h2 id="questions-titre">Questions fréquentes</h2></div>
+      <div class="faq reveal">
+        <details><summary>Que se passe-t-il à l'échéance de ma licence ?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><p>Des rappels arrivent 30, 7 et 1 jour avant. Passé l'échéance et le délai de grâce de votre édition, le logiciel passe en lecture seule : vos projets restent consultables et imprimables, rien n'est effacé. Un renouvellement rend la main aussitôt.</p></details>
+        <details><summary>Puis-je changer d'ordinateur ?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><p>Oui. Dans le logiciel, « Libérer ce poste » rend la licence disponible ; activez-la ensuite sur le nouvel ordinateur avec la même clé.</p></details>
+        <details><summary>Faut-il une connexion Internet ?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><p>Non pour travailler. La connexion sert à télécharger la météo PVGIS, à activer et vérifier la licence, et à recevoir les mises à jour.</p></details>
+        <details><summary>Comment payer ?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><p>En ligne, par Mobile Money ou carte bancaire, via Semoa. La facture et la clé de licence sont disponibles dans votre espace client dès la confirmation du paiement.</p></details>
+        <details><summary>Comment reçoit-on les nouvelles versions ?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><p>Le logiciel les propose tout seul, avec leurs nouveautés ; l'installation se fait sans question et conserve vos projets.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:20px">
+    <div class="wrap">
+      <div class="closing reveal">
+        <h2>Essayez sur le projet exemple</h2>
+        <p>Installez KYA-SolDesign, parcourez les huit étapes sur le centre de santé de Bombouaka, puis activez votre licence.</p>
+        <div class="hero-cta">
+          <a class="btn btn-buy" href="#tarifs">Choisir une licence <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn" href="#"><svg aria-hidden="true"><use href="#i-download"/></svg> Télécharger 1.2.0</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-bottom" style="margin-top:0;border-top:0;padding-top:0"><span>© 2026 KYA-Energy Group · <a href="../index.html">KYA Energy Market</a></span><span>Prix et témoignages marqués « exemple » à remplacer</span></div>
+  </div>
+</footer>
+
+<script src="../assets/v2.js"></script>
+</body>
+</html>

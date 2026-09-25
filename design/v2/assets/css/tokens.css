@@ -1,0 +1,64 @@
+/*
+ * KYA Energy Market — proposition 2. Monde : l'atelier d'ingénierie de nuit.
+ * Sombre et précis comme l'interface Copilot KYA (fond #1b1b1b, surfaces en échelle, filets gris),
+ * palette officielle KYA réduite à des signaux : teal = calculé, validé, actif ; orange = acheter
+ * (la seule couleur d'action, effet d'isolement de Von Restorff) ; jaune = attention ; café = exemple.
+ */
+:root {
+  color-scheme: dark;
+
+  /* Échelle de surfaces : la profondeur vient de l'élévation, pas des ombres */
+  --canvas: #1b1b1b;
+  --surface-1: #232323;
+  --surface-2: #2a2a2a;
+  --surface-3: #323232;
+  --hairline: #363636;
+  --hairline-strong: #4a4a4a;
+
+  /* Encre */
+  --ink: #ededed;
+  --ink-muted: #b8b8b8;
+  --ink-subtle: #8f8f8f;
+
+  /* Charte KYA */
+  --teal: #1ca18c;
+  --teal-bright: #3fc6ae;
+  --teal-soft: rgba(28, 161, 140, 0.14);
+  --teal-line: rgba(63, 198, 174, 0.55);
+  --orange: #f99d32;
+  --orange-hover: #ffb35c;
+  --on-orange: #1d1204;
+  --yellow: #e8e748;
+  --coffee: #875028;
+  --coffee-light: #d7a276;
+
+  /* Typographie : la pile Segoe de la charte, aucune police téléchargée */
+  --font: "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", Aptos, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Segoe UI Variable Display", "Segoe UI Variable", "Segoe UI", Aptos, system-ui, -apple-system, sans-serif;
+  --fs-hero: clamp(2.3rem, 1.2rem + 3.6vw, 3.9rem);
+  --fs-h2: clamp(1.75rem, 1.2rem + 1.9vw, 2.75rem);
+  --fs-h3: 1.1875rem;
+  --fs-lead: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+  --fs-body: 1rem;
+  --fs-sm: 0.875rem;
+  --fs-xs: 0.78rem;
+
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 20px; --sp-6: 24px;
+  --sp-8: 32px; --sp-10: 40px; --sp-12: 48px; --sp-16: 64px; --sp-24: 96px; --sp-32: 128px;
+
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+
+  --lift: 0 24px 60px rgba(0, 0, 0, 0.45);
+  --focus: 0 0 0 2px var(--canvas), 0 0 0 4px var(--orange);
+
+  --page: min(1200px, 100% - 2 * var(--sp-6));
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+@media (max-width: 760px) {
+  :root { --page: calc(100% - 2 * var(--sp-4)); }
+}

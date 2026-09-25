@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KYA-SolDesign · KYA-EnergyMarket</title>
+  <meta name="description" content="KYA-SolDesign dimensionne les installations solaires autonomes et dit, avant de construire, si elles tiendront et combien coûte leur kWh.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="assets/img/ksd-mark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/img/hero.jpg">
+  <link rel="stylesheet" href="assets/css/v4.css">
+</head>
+<body>
+<!--
+THESIS: une page produit qui parle comme un bon outil — une phrase, une preuve qu'on manipule, trois gestes —
+  et refuse la page « solaire » habituelle (champ de panneaux au coucher du soleil, grilles de pictos).
+OWN-WORLD: blanc, encre #0d1614, teal KYA #1ca18c et son lavis menthe, photo à mur teal profond ;
+  Geist en très grand corps serré, Geist Mono pour les mesures ; boutons encre à coins de 6 px, flèche ↗ dessinée.
+STORY: le visiteur comprend ce que calcule KYA-SolDesign, touche la fiabilité et l'accessibilité sur un exemple,
+  voit les trois étapes, puis essaie.
+FIRST VIEWPORT: deux en-têtes blancs (marketplace fin, logiciel à nav centrée + « Essayer gratuitement ↗ »),
+  photo pleine largeur, « Chaque watt. / Chaque franc. » en blanc, très grand, à gauche.
+FORM: direction imposée par le brief (captures dailykash) ; tirage non lancé. Seed : brief-pinned.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+-->
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<!-- En-tête de la marketplace : identique sur toutes les pages -->
+<div class="mk">
+  <div class="wrap mk-row">
+    <a class="mk-brand" href="#"><img src="assets/img/kya-mark.png" alt="" width="24" height="20">KYA-EnergyMarket</a>
+    <nav class="mk-nav" aria-label="Marketplace">
+      <a href="#">Logiciels <svg class="i i-sm" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></a>
+      <a href="#">Aide</a>
+    </nav>
+    <div class="mk-end">
+      <button class="mk-lang" type="button">FR <svg class="i i-sm" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></button>
+      <a href="#">Se connecter</a>
+    </div>
+  </div>
+</div>
+
+<!-- En-tête du logiciel -->
+<header class="sw" data-sw>
+  <div class="wrap sw-row">
+    <a class="sw-id" href="#"><img src="assets/img/ksd-mark.png" alt="" width="34" height="28">KYA-SolDesign</a>
+    <nav class="sw-nav" id="sw-nav" aria-label="KYA-SolDesign">
+      <a href="#outil" aria-current="page">Présentation</a>
+      <a href="#">Tarifs</a>
+      <a href="#">Ressources</a>
+      <a href="#">Support</a>
+    </nav>
+    <div class="sw-end">
+      <a class="sw-buy" href="#">Acheter</a>
+      <a class="btn btn-ink" href="#"><span>Essayer<span class="long"> gratuitement</span></span> <svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11l6-6M6 5h5v5"/></svg></a>
+      <button class="sw-menu" type="button" aria-expanded="false" aria-controls="sw-nav" aria-label="Menu" data-menu>
+        <svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 5h11M2.5 11h11"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="contenu">
+  <!-- Héros -->
+  <section class="hero" aria-labelledby="hero-t">
+    <img class="hero-img" src="assets/img/hero.jpg" alt="" width="2200" height="1238">
+    <div class="wrap hero-in">
+      <h1 id="hero-t"><span>Chaque watt.</span><span>Chaque franc.</span></h1>
+      <div class="hero-foot">
+        <p>KYA-SolDesign dimensionne votre installation solaire autonome et vous dit, avant de construire, si elle tiendra et combien coûtera son kWh.</p>
+        <div class="hero-cta">
+          <a class="btn btn-light" href="#">Essayer gratuitement <svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11l6-6M6 5h5v5"/></svg></a>
+          <a class="link-light" href="#outil">Voir l'outil</a>
+        </div>
+      </div>
+    </div>
+    <span class="credit">Photo d'illustration</span>
+  </section>
+
+  <!-- L'outil : exemple interactif -->
+  <section class="tool" id="outil" aria-labelledby="tool-t">
+    <div class="wrap">
+      <h2 id="tool-t" class="lede">Voyez ce que votre installation produit, ce qu'elle coûte et combien de temps elle tient. Au même endroit.</h2>
+
+      <div class="app" data-app>
+        <aside class="app-side">
+          <div class="app-brand"><img src="assets/img/ksd-mark.png" alt="" width="30" height="25">KYA-SolDesign</div>
+          <div class="app-tabs" role="tablist" aria-label="Indicateurs">
+            <button role="tab" id="tab-rel" aria-selected="true" aria-controls="panel" data-tab="rel">
+              <svg class="i" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.5l6 2.2v4.6c0 4-2.6 6.9-6 8.2-3.4-1.3-6-4.2-6-8.2V4.7z"/><path d="M7.2 10l2 2 3.8-4"/></svg>
+              Fiabilité <svg class="i i-go" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11l6-6M6 5h5v5"/></svg>
+            </button>
+            <button role="tab" id="tab-eco" aria-selected="false" aria-controls="panel" data-tab="eco" tabindex="-1">
+              <svg class="i" viewBox="0 0 20 20" aria-hidden="true"><ellipse cx="10" cy="5.5" rx="6" ry="2.5"/><path d="M4 5.5v4.5c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5V5.5M4 10v4.5C4 15.9 6.7 17 10 17s6-1.1 6-2.5V10"/></svg>
+              Coût <svg class="i i-go" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11l6-6M6 5h5v5"/></svg>
+            </button>
+            <button role="tab" id="tab-prod" aria-selected="false" aria-controls="panel" data-tab="prod" tabindex="-1">
+              <svg class="i" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.2"/><path d="M10 2v2.2M10 15.8V18M2 10h2.2M15.8 10H18M4.3 4.3l1.6 1.6M14.1 14.1l1.6 1.6M4.3 15.7l1.6-1.6M14.1 5.9l1.6-1.6"/></svg>
+              Production <svg class="i i-go" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11l6-6M6 5h5v5"/></svg>
+            </button>
+          </div>
+          <p class="app-note">Valeurs d'exemple</p>
+        </aside>
+
+        <div class="app-main" id="panel" role="tabpanel" aria-labelledby="tab-rel" data-panel>
+          <div class="app-top">
+            <div>
+              <p class="mono">Exemple interactif</p>
+              <p class="app-hello">Dispensaire de Kpalimé.</p>
+            </div>
+            <span class="chip">Sur l'année</span>
+          </div>
+
+          <div class="app-figs">
+            <div>
+              <p class="app-label" data-f="label">Fiabilité technique</p>
+              <p class="app-big"><span data-f="big">0,90</span><small data-f="unit">sur 1</small></p>
+            </div>
+            <div class="app-side-fig">
+              <p class="app-label" data-f="label2">Énergie non servie</p>
+              <p class="app-mid"><span data-f="mid">4,1</span> <small data-f="unit2">%</small></p>
+            </div>
+          </div>
+          <p class="app-say" data-f="say">Proche de 1 : l'installation couvre les besoins presque toute l'année.</p>
+
+          <div class="chart" data-chart aria-hidden="true"></div>
+          <p class="chart-legend"><span data-f="legend">Part des besoins couverte, mois par mois</span></p>
+
+          <ul class="rows" data-rows></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trois gestes -->
+  <section class="steps" aria-labelledby="steps-t">
+    <div class="wrap steps-grid">
+      <div>
+        <h2 id="steps-t" class="h2">Trois étapes.<br>Un dossier.</h2>
+        <div class="acc">
+          <details name="etapes" open>
+            <summary>
+              <svg class="i i-lg" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M6.5 13v-2.5M10 13V7M13.5 13V9"/></svg>
+              <span>Décrivez les besoins.</span>
+              <svg class="i plus" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg>
+            </summary>
+            <div class="acc-body">
+              <p>Les appareils, leurs heures d'usage, les saisons. Ou importez une année mesurée, heure par heure.</p>
+              <p class="tag">Besoins · Journée type · Année composée</p>
+            </div>
+          </details>
+          <details name="etapes">
+            <summary>
+              <svg class="i i-lg" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 6v4l2.8 1.8"/></svg>
+              <span>Laissez le calcul choisir.</span>
+              <svg class="i plus" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg>
+            </summary>
+            <div class="acc-body">
+              <p>Panneaux, batteries et onduleur sont comparés heure par heure sur l'année, avec la météo réelle du site. Chaque choix reste modifiable.</p>
+              <p class="tag">Dimensionnement · Simulation horaire</p>
+            </div>
+          </details>
+          <details name="etapes">
+            <summary>
+              <svg class="i i-lg" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2.5h6.5L15 6v11.5H5z"/><path d="M11.5 2.5V6H15M7.5 10h5M7.5 13h5"/></svg>
+              <span>Remettez des documents clairs.</span>
+              <svg class="i plus" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg>
+            </summary>
+            <div class="acc-body">
+              <p>La proforma pour votre client. Le rapport technique et le schéma unifilaire pour l'équipe qui installe. En PDF et Word.</p>
+              <p class="tag">Proforma · Rapport · Schéma unifilaire</p>
+            </div>
+          </details>
+        </div>
+      </div>
+      <figure class="steps-fig">
+        <img src="assets/img/terrain.jpg" alt="Un technicien sous une rangée de panneaux solaires, casque blanc et gilet jaune" width="1400" height="933" loading="lazy">
+        <figcaption>Chaque panneau trouve sa place. <span>Photo d'illustration</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Clôture -->
+  <section class="close" aria-labelledby="close-t">
+    <div class="wrap">
+      <h2 id="close-t" class="giant">Calculez avant<br>de construire.</h2>
+      <div class="close-foot">
+        <p>Conçu pour les systèmes autonomes du terrain africain. Méthode appliquée à plus de 500 installations en Afrique de l'Ouest.</p>
+        <div class="close-cta">
+          <a class="btn btn-ink btn-lg" href="#">Essayer gratuitement <svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11l6-6M6 5h5v5"/></svg></a>
+          <a class="btn btn-line btn-lg" href="#">Voir les tarifs</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-row">
+    <span class="foot-brand"><img src="assets/img/kya-mark.png" alt="" width="22" height="19">KYA-Energy Group · 2026</span>
+    <nav aria-label="Pied de page"><a href="#">Support</a><a href="#">Conditions</a><a href="#">Confidentialité</a></nav>
+  </div>
+</footer>
+
+<script src="assets/js/v4.js" defer></script>
+</body>
+</html>

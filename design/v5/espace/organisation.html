@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Organisation · Espace client · KYA-EnergyMarket</title>
+  <link rel="icon" href="../assets/img/kya-mark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-root="../" data-chrome="market" data-auth="in" data-acct="org">
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div data-chrome-top></div>
+
+<div class="acct">
+  <nav class="acct-side" data-acct-nav aria-label="Espace client"></nav>
+  <main class="acct-main" id="contenu">
+    <header class="acct-head"><div><h1>Organisation.</h1><p>Les membres qui utilisent vos licences, et les coordonnées portées sur vos factures d'achat.</p></div></header>
+
+    <section class="box">
+      <div class="box-head"><h2>Membres</h2><button class="btn btn-line btn-sm" type="button" data-assign="invite-row"><i data-i="plus"></i>Inviter un membre</button></div>
+      <form class="assign" id="invite-row" data-assign-send>
+        <input class="input" type="email" placeholder="Courriel du membre" aria-label="Courriel du membre">
+        <button class="btn btn-deep btn-sm" type="submit">Envoyer l'invitation</button>
+      </form>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Membre</th><th>Rôle</th><th>Poste KYA-SolDesign</th><th>État</th></tr></thead>
+          <tbody>
+            <tr><td class="who"><b>Afi Kodjo (vous)</b><small>afi.k@exemple.tg</small></td><td>Propriétaire</td><td class="num">Poste 1</td><td><span class="state ok">Actif</span></td></tr>
+            <tr><td class="who"><b>Koffi Mensah</b><small>k.mensah@exemple.tg</small></td><td>Membre</td><td class="num">Poste 2</td><td><span class="state ok">Actif</span></td></tr>
+            <tr><td class="who"><b>a.diallo@exemple.tg</b><small>Invitée le 20/09/2026</small></td><td>Membre</td><td>—</td><td><span class="state warn">Invitation envoyée</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="box">
+      <div class="box-head"><h2>Coordonnées de facturation</h2></div>
+      <div class="box-body">
+        <form class="form" style="max-width:680px" onsubmit="event.preventDefault()">
+          <label class="field"><span>Raison sociale</span><input class="input" type="text" value="Bureau d'études Soleil Plus"></label>
+          <div class="form-row">
+            <label class="field"><span>Numéro d'identification fiscale</span><input class="input" type="text" value="1000123456"></label>
+            <label class="field"><span>Pays</span><select class="select"><option>Togo</option><option>Bénin</option><option>Côte d'Ivoire</option><option>Burkina Faso</option><option>Sénégal</option><option>Mali</option><option>Niger</option></select></label>
+          </div>
+          <label class="field"><span>Adresse</span><input class="input" type="text" value="Lomé"></label>
+          <label class="field"><span>Courriel de facturation</span><input class="input" type="email" value="compta@exemple.tg"><small>Les factures d'achat y sont envoyées, en plus de votre espace.</small></label>
+          <div class="cta-row"><button class="btn btn-deep" type="submit" data-toast="Coordonnées enregistrées (maquette)">Enregistrer</button></div>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="../assets/js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Se connecter · KYA-EnergyMarket</title>
+  <link rel="icon" href="assets/img/kya-mark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-root="" data-chrome="market">
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div data-chrome-top></div>
+
+<main id="contenu" class="auth">
+  <aside class="auth-side">
+    <img src="assets/img/hero.jpg" alt="">
+    <div class="in">
+      <h2>Un compte pour tous les logiciels de KYA-Energy Group.</h2>
+      <ul>
+        <li><i data-i="check"></i>Essais, licences et postes</li>
+        <li><i data-i="check"></i>Téléchargements et mises à jour</li>
+        <li><i data-i="check"></i>Factures d'achat</li>
+        <li><i data-i="check"></i>Vos demandes au support</li>
+      </ul>
+    </div>
+  </aside>
+
+  <div class="auth-main">
+    <div class="auth-box">
+      <h1>Bienvenue.</h1>
+      <p>Connectez-vous ou créez votre compte en une minute.</p>
+      <div class="seg" role="tablist" data-seg="auth">
+        <button type="button" role="tab" aria-selected="true" data-value="in">Se connecter</button>
+        <button type="button" role="tab" aria-selected="false" data-value="up">Créer un compte</button>
+      </div>
+
+      <form class="form" data-seg-panel="auth" data-value="in" action="espace/index.html">
+        <label class="field"><span>Courriel</span><input class="input" type="email" autocomplete="email" required placeholder="nom@organisation.com"></label>
+        <label class="field"><span>Mot de passe</span><input class="input" type="password" autocomplete="current-password" required></label>
+        <a class="link" href="#" style="justify-self:start;font-size:14px" data-toast="Un lien de réinitialisation vous est envoyé par courriel (maquette)">Mot de passe oublié ?</a>
+        <button class="btn btn-deep btn-lg btn-block" type="submit">Se connecter</button>
+        <div class="or">ou</div>
+        <button class="btn btn-line btn-lg btn-block" type="button" data-toast="Un lien de connexion vous est envoyé par courriel (maquette)"><i data-i="mail"></i>Recevoir un lien par courriel</button>
+      </form>
+
+      <form class="form" data-seg-panel="auth" data-value="up" action="espace/index.html" hidden>
+        <label class="field"><span>Nom et prénom</span><input class="input" type="text" autocomplete="name" required></label>
+        <label class="field"><span>Courriel</span><input class="input" type="email" autocomplete="email" required></label>
+        <label class="field"><span>Mot de passe</span><input class="input" type="password" autocomplete="new-password" required minlength="8"><small>8 caractères au moins.</small></label>
+        <div class="field"><span>Vous achetez pour</span>
+          <div class="choice cols-2">
+            <label class="opt"><input type="radio" name="kind" value="me" checked><b>Vous-même</b><small>Étudiant, indépendant</small></label>
+            <label class="opt"><input type="radio" name="kind" value="org"><b>Une organisation</b><small>Entreprise, école, institution</small></label>
+          </div>
+        </div>
+        <label class="field"><span>Pays</span><select class="select" autocomplete="country"><option>Togo</option><option>Bénin</option><option>Côte d'Ivoire</option><option>Burkina Faso</option><option>Sénégal</option><option>Mali</option><option>Niger</option><option>Autre pays</option></select></label>
+        <label class="check-line"><input type="checkbox" required><span>J'accepte les <a class="link" href="legal/cgv.html">conditions générales de vente</a> et la <a class="link" href="legal/confidentialite.html">politique de confidentialité</a>.</span></label>
+        <button class="btn btn-deep btn-lg btn-block" type="submit">Créer mon compte</button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<script src="assets/js/site.js" defer></script>
+</body>
+</html>

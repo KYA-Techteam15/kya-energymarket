@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guide KYA-SolDesign · KYA-EnergyMarket</title>
+  <link rel="icon" href="../assets/img/ksd-mark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-root="../" data-chrome="product" data-tab="ressources">
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div data-chrome-top></div>
+
+<main id="contenu">
+  <header class="wrap page-head">
+    <nav class="crumbs" aria-label="Fil d'Ariane"><a href="ressources.html">Ressources</a><span>/</span><span>Guide d'utilisation</span></nav>
+    <h1>Guide d'utilisation.</h1>
+    <p>KYA-SolDesign 1.2 · de l'installation au dossier remis.</p>
+    <span class="md-note"><i data-i="file"></i>Rendu d'un texte Markdown écrit dans l'administration</span>
+  </header>
+
+  <div class="wrap doc-layout">
+    <nav class="doc-toc" aria-label="Sommaire">
+      <b>Sommaire</b>
+      <a href="#installer" aria-current="true">Installer et activer</a>
+      <a href="#etapes">Les huit étapes</a>
+      <a href="#methode">La méthode</a>
+      <a href="#documents">Les documents</a>
+    </nav>
+    <article class="prose" data-block="Texte Markdown">
+      <h2 id="installer" style="margin-top:0">Installer et activer</h2>
+      <p>Téléchargez l'installateur depuis votre espace, rubrique <a href="../espace/telechargements.html">Téléchargements</a>, puis lancez-le. Il fonctionne sur Windows 10 et 11 (64 bits) et n'a pas besoin d'Internet pour s'installer.</p>
+      <p>Au premier lancement, connectez-vous avec votre compte KYA-EnergyMarket, ou collez votre clé de licence ou d'essai :</p>
+      <ul><li><b>Compte</b> : la licence attribuée à votre compte s'active seule ;</li><li><b>Clé</b> : utile sur un poste sans navigateur, ou pour une clé reçue par courriel.</li></ul>
+      <blockquote>Une connexion est utile pour activer la licence et télécharger la météo d'un nouveau site. Tout le reste fonctionne hors ligne.</blockquote>
+
+      <h2 id="etapes">Les huit étapes</h2>
+      <p>Un dossier suit toujours le même ordre. Chaque étape nourrit la suivante, et le panneau de droite montre en permanence la fiabilité et l'accessibilité du projet.</p>
+      <ul><li>Identification du projet</li><li>Choix du site et météo</li><li>Bilan des consommations</li><li>Prédimensionnement</li><li>Dimensionnement</li><li>Protections et câblerie</li><li>Évaluation financière</li><li>Vue synoptique et rapports</li></ul>
+
+      <h2 id="methode">La méthode</h2>
+      <p>Deux indicateurs résument une étude. Le premier dit si le système tiendra, le second s'il sera moins cher que le réseau.</p>
+      <h3>Fiabilité technique : SRI</h3>
+      <p><code>SRI = (1 − LPSP) × (1 − LOLP)</code>. LPSP est la part d'énergie non servie sur l'année, LOLP la part des heures où il en manque. Sur le projet exemple : (1 − 0,041) × (1 − 0,058) = 0,90.</p>
+      <h3>Accessibilité économique : SVI</h3>
+      <p><code>SVI = coût du kWh produit ÷ prix du kWh du réseau</code>. Sur le projet exemple : 100,6 ÷ 120 = 0,84. En dessous de 1, l'énergie produite coûte moins cher que celle du réseau.</p>
+
+      <h2 id="documents">Les documents</h2>
+      <p>À l'étape 8, KYA-SolDesign prépare deux familles de documents :</p>
+      <ul><li>pour votre <b>client final</b> : le devis ;</li><li>pour vos <b>techniciens</b> : le schéma unifilaire, le rapport de dimensionnement et la liste des protections.</li></ul>
+      <p>Tous s'impriment en PDF et, selon l'édition, s'exportent en Word.</p>
+    </article>
+  </div>
+</main>
+
+<div data-chrome-foot></div>
+<script src="../assets/js/site.js" defer></script>
+</body>
+</html>

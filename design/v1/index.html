@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KYA Energy Market — Logiciels KYA-Energy Group</title>
+  <meta name="description" content="KYA-SolDesign : le dimensionnement des installations solaires autonomes, fondé sur une méthode appliquée à plus de 500 installations en Afrique de l'Ouest.">
+  <link rel="icon" href="assets/img/kya-energy-group-logo.png">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<!--
+THESIS: Un site qui accueille ses deux vrais publics dès la porte — le bureau d'études qui remet des dossiers, l'école qui enseigne le dimensionnement — et prouve chaque promesse par la production réelle de KYA-SolDesign. Refuse le héros SaaS générique à capture unique et trois cartes de fonctionnalités.
+OWN-WORLD: Charte KYA : teal profond #063d3a en champs structurants, sol chaud #f7f6f1, surfaces blanches, filets 1 px #d9e2df ; teal KYA pour le validé, orange KYA réservé à l'achat. Captures présentées comme des planches de dossier avec cartouche. Pile Segoe UI, chiffres tabulaires, rayons 7–14 px.
+STORY: Le visiteur se reconnaît dans une porte, voit ce qu'il obtiendra, comprend que la méthode vient du terrain, puis choisit son édition.
+FIRST VIEWPORT: Titre court en haut à gauche ; dessous, deux portes pleine largeur (teal profond / blanc) avec planches réelles et action par porte.
+FORM: « Deux portes », candidat 3 de la liste ; clé 4fddc729.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4.8 19.5c1.3-3.3 4-5 7.2-5s5.9 1.7 7.2 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="i-photo" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="9" cy="10" r="1.8" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4 17l5-4.5 3.5 3 3-2.5L20 17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+  <symbol id="i-blocks" viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="5" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="3.5" y="11" width="8" height="9" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="13.5" y="11" width="7" height="9" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+</svg>
+
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div class="demo-banner" role="note"><div class="wrap">Maquette de conception : les éléments marqués <span class="tag-example">exemple</span> sont provisoires et seront remplacés par les contenus de KYA.</div></div>
+
+<header class="site-head" data-block="en-tête">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="KYA Energy Market, accueil">
+      <img src="assets/img/kya-energy-group-logo.png" alt="" width="42" height="42">
+      <span class="brand-name"><b>KYA Energy Market</b><span>KYA-Energy Group</span></span>
+    </a>
+    <nav class="site-nav" id="site-nav" aria-label="Navigation principale">
+      <a href="index.html" aria-current="page">Logiciels</a>
+      <a href="#methode">La méthode</a>
+      <a href="logiciels/kya-soldesign.html#tarifs">Tarifs</a>
+      <a href="#terrain">Réalisations</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="head-actions">
+      <div class="lang" role="group" aria-label="Langue"><button type="button" aria-pressed="true">FR</button><button type="button" aria-pressed="false">EN</button></div>
+      <a class="btn btn-sm" href="#espace-client"><svg aria-hidden="true"><use href="#i-user"/></svg><span class="btn-cta-label">Espace client</span></a>
+      <button class="btn btn-sm menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="contenu">
+  <section class="wrap home-intro" data-block="présentation">
+    <h1>Le dimensionnement solaire autonome, né sur le terrain ouest-africain.</h1>
+    <p>KYA-SolDesign conduit une étude complète, du site et de sa météo jusqu'au dossier remis au client. Deux façons de s'en servir : choisissez la vôtre.</p>
+  </section>
+
+  <div class="wrap doors" data-block="deux portes">
+    <a class="door door-pro" href="logiciels/kya-soldesign.html#tarifs">
+      <div>
+        <span class="door-who">Bureaux d'études et installateurs</span>
+        <h2>Remettez à vos clients un dossier complet, prêt à signer.</h2>
+        <ul class="door-list">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Prédimensionnement puis dimensionnement avec le matériel du catalogue</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Protections et câbles selon l'<span class="nowrap">IEC 60364-5-52</span></span></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Chiffrage, facture proforma, rapport en PDF et Word</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Schéma unifilaire imprimable en A4 ou A3</li>
+        </ul>
+      </div>
+      <div class="door-visual" aria-hidden="true">
+        <figure class="plate"><img src="assets/img/rapport-couverture.webp" alt="" width="900" height="1272" loading="eager"></figure>
+        <figure class="plate"><img src="assets/img/unifilaire.webp" alt="" width="1800" height="1246"></figure>
+      </div>
+      <div class="door-foot">
+        <span class="door-offer"><small>Licence Commerciale</small><b>Au mois, au trimestre ou à l'année</b></span>
+        <span class="btn btn-buy">Voir l'offre pro <svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </div>
+    </a>
+
+    <a class="door door-edu" href="logiciels/kya-soldesign.html?edition=academic#tarifs">
+      <div>
+        <span class="door-who">Écoles, universités et étudiants</span>
+        <h2>Enseignez et apprenez avec les données réelles d'un site.</h2>
+        <ul class="door-list">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Météo horaire PVGIS et charge heure par heure sur l'année</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Fiabilité (SRI), viabilité (SVI) et coût du kWh, expliqués à chaque étape</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Un projet exemple complet : le centre de santé de Bombouaka</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Toutes les étapes de l'étude, du site au rapport</li>
+        </ul>
+      </div>
+      <div class="door-visual" aria-hidden="true">
+        <figure class="plate plate-crop"><img src="assets/img/predim.webp" alt="" width="1600" height="1000"></figure>
+      </div>
+      <div class="door-foot">
+        <span class="door-offer"><small>Éditions Académique et Étudiant</small><b>À l'année, au mois ou à la journée</b></span>
+        <span class="btn btn-primary">Voir les offres enseignement <svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </div>
+    </a>
+  </div>
+
+  <section class="section section-deep" id="methode" data-block="méthode">
+    <div class="wrap">
+      <div class="proof">
+        <p class="proof-statement">La méthode derrière <span class="nowrap">KYA-SolDesign</span> a été appliquée à <strong>plus de 500 installations</strong> en Afrique de l'Ouest avant de devenir un logiciel. Elle est aujourd'hui entre les mains de ceux qui conçoivent et de ceux qui apprennent.</p>
+        <div class="proof-notes">
+          <dl>
+            <div><dt>Une fiabilité mesurée, pas supposée</dt><dd>Chaque système est simulé heure par heure sur toute l'année, avec la météo réelle du site : part de la demande servie (SRI), heures de défaillance (LPSP, LOLP).</dd></div>
+            <div><dt>Le moins coûteux parmi les systèmes fiables</dt><dd>Le logiciel explore les combinaisons de champ et de stockage, et retient celle qui tient la fiabilité visée au meilleur coût du kWh (SVI).</dd></div>
+            <div><dt>Des documents que l'on peut remettre</dt><dd>Rapport, facture proforma et schéma unifilaire portent la référence du dossier, sa version et sa date.</dd></div>
+          </dl>
+        </div>
+      </div>
+      <div class="users-strip" data-block="références">
+        <span>Utilisé par des écoles et des universités</span>
+        <span class="logo-slot">Université <span class="tag-example">exemple</span></span>
+        <span class="logo-slot">École d'ingénieurs <span class="tag-example">exemple</span></span>
+        <span class="logo-slot">Bureau d'études <span class="tag-example">exemple</span></span>
+        <span class="logo-slot">Lycée technique <span class="tag-example">exemple</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-block="parcours">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Du site au dossier client, en huit étapes.</h2>
+        <p>Chaque étape part des résultats de la précédente. Les écrans ci-dessous viennent du projet exemple livré avec le logiciel.</p>
+      </div>
+      <div class="flow">
+        <ol class="flow-list" role="tablist" aria-label="Étapes de l'étude">
+          <li><button role="tab" aria-selected="true" data-shot="assets/img/projet.webp" data-cap="Identification du projet"><span class="n">1</span><b>Identification du projet</b><span class="d">Client, site, référence et chargé de projet : ils figurent sur tous les documents.</span></button></li>
+          <li><button role="tab" aria-selected="false" data-shot="assets/img/site.webp" data-cap="Choix du site"><span class="n">2</span><b>Choix du site</b><span class="d">Localité, orientation du champ, série météo PVGIS vérifiée, températures de conception.</span></button></li>
+          <li><button role="tab" aria-selected="false" data-shot="assets/img/besoins.webp" data-cap="Bilan des consommations"><span class="n">3</span><b>Bilan des consommations</b><span class="d">Appareils, journée type, année composée ou relevé horaire importé ; carte de chaleur de l'année.</span></button></li>
+          <li><button role="tab" aria-selected="false" data-shot="assets/img/predim.webp" data-cap="Prédimensionnement"><span class="n">4</span><b>Prédimensionnement</b><span class="d">Système minimal fiable : champ PV, stockage, onduleur, SRI, LPSP et coût du kWh.</span></button></li>
+          <li><button role="tab" aria-selected="false" data-shot="assets/img/materiel.webp" data-cap="Dimensionnement"><span class="n">5</span><b>Dimensionnement</b><span class="d">Modules, batteries et onduleurs du catalogue ; compatibilités vérifiées, simulation sur l'année.</span></button></li>
+          <li><button role="tab" aria-selected="false" data-shot="assets/img/protections.webp" data-cap="Protections et câblerie"><span class="n">6</span><b>Protections et câblerie</b><span class="d">Calibres, sections et chutes de tension selon l'IEC 60364-5-52.</span></button></li>
+          <li><button role="tab" aria-selected="false" data-shot="assets/img/chiffrage.webp" data-cap="Évaluation financière"><span class="n">7</span><b>Évaluation financière</b><span class="d">Prix de vente, marges, TVA, cycle de vie actualisé et CO₂ évité.</span></button></li>
+          <li><button role="tab" aria-selected="false" data-shot="assets/img/dossier.webp" data-cap="Vue synoptique et rapports"><span class="n">8</span><b>Vue synoptique et rapports</b><span class="d">Schéma unifilaire, rapport, facture proforma ; émission d'une version figée du dossier.</span></button></li>
+        </ol>
+        <div class="flow-stage">
+          <figure class="plate" id="flow-plate">
+            <img src="assets/img/projet.webp" alt="Écran « Identification du projet » de KYA-SolDesign sur le projet exemple" width="1600" height="1000">
+            <figcaption>
+              <span><small>Écran</small><b id="flow-cap">Identification du projet</b></span>
+              <span><small>Projet</small><b>Centre de santé de Bombouaka</b></span>
+              <span><small>Version</small><b class="num">KYA-SolDesign 1.2.0</b></span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-white" id="logiciels" data-block="catalogue">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Les logiciels <span class="nowrap">KYA-Energy Group</span></h2>
+        <p>Chaque logiciel s'achète sous licence, se met à jour tout seul et se retrouve dans votre espace client.</p>
+      </div>
+      <div class="catalog">
+        <article class="catalog-row">
+          <img src="assets/img/kya-soldesign-logo.png" alt="" width="76" height="60">
+          <div>
+            <h3>KYA-SolDesign <span class="status status-ok">Disponible</span></h3>
+            <p>Dimensionnement des installations photovoltaïques autonomes, du site au dossier client.</p>
+          </div>
+          <div class="catalog-meta">
+            <span>Version <b class="num">1.2.0</b> · canal stable</span>
+            <span>Windows 10 et 11 · français, anglais</span>
+          </div>
+          <a class="link-arrow" href="logiciels/kya-soldesign.html">Découvrir <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </article>
+        <article class="catalog-row">
+          <span class="soon-mark" aria-hidden="true">EL</span>
+          <div>
+            <h3>KYA-EcoLabel <span class="status status-soon">Bientôt</span></h3>
+            <p>Étiquetage énergétique et économique des systèmes de production renouvelable.</p>
+          </div>
+          <div class="catalog-meta"><span>Présentation à venir</span></div>
+          <a class="link-arrow" href="#contact">Être prévenu <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-block="témoignages">
+    <div class="wrap">
+      <div class="section-head"><h2>Témoignages</h2></div>
+      <div class="quotes">
+        <figure class="quote">
+          <blockquote>Nous remettons maintenant le rapport, la proforma et le schéma dans la même journée que la visite du site. Nos clients voient la fiabilité chiffrée avant de signer.</blockquote>
+          <figcaption><span class="avatar" aria-hidden="true">KA</span><span><b>Kossi A., ingénieur d'études</b><span>Bureau d'études, Lomé</span></span><span class="tag-example">exemple</span></figcaption>
+        </figure>
+        <figure class="quote">
+          <blockquote>Les étudiants dimensionnent un vrai centre de santé, avec la météo du site, et comprennent enfin pourquoi un système moins cher peut tomber en panne en août.</blockquote>
+          <figcaption><span class="avatar" aria-hidden="true">AD</span><span><b>Afi D., enseignante-chercheuse</b><span>Université, département Énergie</span></span><span class="tag-example">exemple</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-white" id="terrain" data-block="réalisations">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Sur le terrain</h2>
+        <p>Des installations dimensionnées avec la méthode KYA, en Afrique de l'Ouest.</p>
+      </div>
+      <div class="field">
+        <figure class="photo-slot"><div><svg aria-hidden="true"><use href="#i-photo"/></svg><figcaption><b>Photo d'installation à fournir</b>Grand format : un site équipé, le champ PV et le bâtiment desservi.</figcaption></div></figure>
+        <figure class="photo-slot"><div><svg aria-hidden="true"><use href="#i-photo"/></svg><figcaption><b>Photo à fournir</b>Équipe KYA au montage.</figcaption></div></figure>
+        <figure class="photo-slot"><div><svg aria-hidden="true"><use href="#i-photo"/></svg><figcaption><b>Photo à fournir</b>Local technique : onduleur et batteries.</figcaption></div></figure>
+        <figure class="photo-slot"><div><svg aria-hidden="true"><use href="#i-photo"/></svg><figcaption><b>Photo à fournir</b>Formation ou séance en école.</figcaption></div></figure>
+        <figure class="photo-slot"><div><svg aria-hidden="true"><use href="#i-photo"/></svg><figcaption><b>Photo à fournir</b>Site en service, usagers.</figcaption></div></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-block="appel à l'action">
+    <div class="wrap">
+      <div class="close">
+        <div>
+          <h2>Ouvrez le projet exemple, puis faites le vôtre.</h2>
+          <p>Le paiement se fait en ligne par Mobile Money ou carte bancaire ; la licence apparaît aussitôt dans votre espace client et s'active dans le logiciel avec sa clé.</p>
+        </div>
+        <div class="close-actions">
+          <a class="btn btn-buy" href="logiciels/kya-soldesign.html#tarifs">Choisir une licence</a>
+          <a class="btn btn-on-deep" href="logiciels/kya-soldesign.html">Découvrir KYA-SolDesign</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot" id="contact" data-block="pied de page">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="index.html"><img src="assets/img/kya-energy-group-logo.png" alt="" width="42" height="42"><span class="brand-name"><b>KYA Energy Market</b><span>KYA-Energy Group · Lomé, Togo</span></span></a>
+        <p style="margin-top:12px;max-width:40ch">Énergies renouvelables et efficacité énergétique pour l'électrification durable de l'Afrique. Entreprise certifiée ISO 9001:2015.</p>
+        <div class="pay-line" aria-label="Moyens de paiement"><span class="pay-chip">Mobile Money</span><span class="pay-chip">Carte bancaire</span><span class="pay-chip">Paiement Semoa</span></div>
+      </div>
+      <div><h3>Logiciels</h3><ul><li><a href="logiciels/kya-soldesign.html">KYA-SolDesign</a></li><li><a href="#logiciels">KYA-EcoLabel</a></li><li><a href="logiciels/kya-soldesign.html#tarifs">Tarifs et licences</a></li><li><a href="logiciels/kya-soldesign.html#versions">Versions</a></li></ul></div>
+      <div><h3>Votre compte</h3><ul><li><a href="#espace-client">Espace client</a></li><li><a href="#espace-client">Mes licences</a></li><li><a href="#espace-client">Factures</a></li><li><a href="#espace-client">Donner un avis</a></li></ul></div>
+      <div><h3>KYA-Energy Group</h3><ul><li><a href="#methode">La méthode</a></li><li><a href="#terrain">Réalisations</a></li><li><a href="#contact">Contact</a></li><li><a href="#contact">Mentions légales</a></li></ul></div>
+    </div>
+    <div class="foot-legal"><span>© 2026 KYA-Energy Group</span><span>Maquette de conception : non publiée</span></div>
+  </div>
+</footer>
+
+<button class="canvas-toggle" type="button" aria-pressed="false"><svg aria-hidden="true"><use href="#i-blocks"/></svg><span>Afficher le canevas</span></button>
+<script src="assets/js/site.js" defer></script>
+</body>
+</html>

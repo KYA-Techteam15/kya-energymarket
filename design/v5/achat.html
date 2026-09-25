@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Acheter KYA-SolDesign · KYA-EnergyMarket</title>
+  <link rel="icon" href="assets/img/ksd-mark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-root="" data-chrome="min" data-back="kya-soldesign/tarifs.html">
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div data-chrome-top></div>
+
+<main id="contenu" class="wrap">
+  <header class="page-head" style="padding-bottom:8px">
+    <h1 style="font-size:clamp(2rem,1.4rem + 2vw,3rem)">Acheter KYA-SolDesign.</h1>
+    <p>Une seule page : votre licence, la facturation, le paiement.</p>
+  </header>
+
+  <form class="checkout" data-checkout novalidate>
+    <div>
+      <div class="co-block">
+        <p class="step-title"><span>1</span>Votre licence</p>
+        <div class="choice cols-3">
+          <label class="opt"><input type="radio" name="edition" value="commercial" checked><b>Commerciale</b><small>Professionnels, institutions</small></label>
+          <label class="opt"><input type="radio" name="edition" value="academic"><b>Académique</b><small>Écoles et universités</small></label>
+          <label class="opt"><input type="radio" name="edition" value="student"><b>Étudiant</b><small>Un seul poste</small></label>
+        </div>
+        <div style="margin-top:14px" data-plans></div>
+        <div class="seats-row" style="margin-top:14px">
+          <div class="stepper"><button type="button" data-minus aria-label="Un poste de moins"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"/></svg></button><input type="number" min="1" value="1" data-seats aria-label="Nombre de postes"><button type="button" data-plus aria-label="Un poste de plus"><i data-i="plus"></i></button></div>
+          <p data-seats-note></p>
+        </div>
+      </div>
+
+      <div class="co-block">
+        <p class="step-title"><span>2</span>Votre compte</p>
+        <div class="co-me"><span class="avatar">AK</span><div><b>Afi Kodjo</b><small>afi.k@exemple.tg</small></div><a class="link" href="connexion.html">Changer de compte</a></div>
+      </div>
+
+      <div class="co-block">
+        <p class="step-title"><span>3</span>Facturation</p>
+        <div class="form">
+          <label class="field"><span>Nom ou raison sociale</span><input class="input" type="text" value="Bureau d'études Soleil Plus" autocomplete="organization"><small>Il figurera sur la facture d'achat.</small></label>
+          <div class="form-row">
+            <label class="field"><span>Pays</span><select class="select" data-country autocomplete="country">
+              <option value="TG">Togo</option><option value="BJ">Bénin</option><option value="CI">Côte d'Ivoire</option><option value="BF">Burkina Faso</option><option value="SN">Sénégal</option><option value="ML">Mali</option><option value="NE">Niger</option><option value="XX">Autre pays</option></select></label>
+            <label class="field"><span>Numéro d'identification fiscale <small class="muted">(facultatif)</small></span><input class="input" type="text"></label>
+          </div>
+          <label class="field"><span>Adresse</span><input class="input" type="text" value="Lomé" autocomplete="street-address"></label>
+          <label class="field"><span>Courriel de facturation</span><input class="input" type="email" name="billing-email" value="afi.k@exemple.tg" autocomplete="email"><small>La facture d'achat et la clé y sont envoyées.</small></label>
+        </div>
+      </div>
+
+      <div class="co-block">
+        <p class="step-title"><span>4</span>Paiement</p>
+        <div class="choice cols-2">
+          <label class="opt"><input type="radio" name="pay" value="momo" checked><span class="pay-opt"><i data-i="mobile"></i><b>Mobile Money</b><small>Confirmation sur votre téléphone</small></span></label>
+          <label class="opt"><input type="radio" name="pay" value="card"><span class="pay-opt"><i data-i="card"></i><b>Carte bancaire</b><small>Visa, Mastercard</small></span></label>
+        </div>
+        <label class="field" style="margin-top:16px;max-width:360px"><span>Numéro Mobile Money</span><input class="input" type="tel" value="+228 90 00 00 00" autocomplete="tel"></label>
+        <p class="secure"><i data-i="lock"></i>Paiement traité par Semoa. KYA-EnergyMarket ne voit jamais vos données de paiement.</p>
+      </div>
+    </div>
+
+    <aside class="summary" aria-label="Récapitulatif">
+      <h3>Récapitulatif</h3>
+      <dl>
+        <dt>Logiciel</dt><dd data-s="edition"></dd>
+        <dt>Durée</dt><dd data-s="plan"></dd>
+        <dt>Postes</dt><dd data-s="seats"></dd>
+        <dt>Prix par poste</dt><dd data-s="unit"></dd>
+        <dt>Sous-total</dt><dd data-s="subtotal"></dd>
+        <dt data-s="tax-label">TVA</dt><dd data-s="tax"></dd>
+      </dl>
+      <div class="total"><span>Total <small>TTC</small></span><b><span data-s="total"></span> <small>FCFA</small></b></div>
+      <p class="muted" style="font-size:13px;margin-top:6px"><span class="ex">prix et TVA exemple</span></p>
+      <label class="check-line" style="margin-top:18px"><input type="checkbox" required checked><span>J'accepte les <a class="link" href="legal/cgv.html">conditions générales de vente</a>.</span></label>
+      <button class="btn btn-buy btn-lg btn-block" type="submit" data-pay-label>Payer</button>
+      <ul class="inc" data-inc></ul>
+    </aside>
+  </form>
+</main>
+
+<script src="assets/js/site.js" defer></script>
+</body>
+</html>
