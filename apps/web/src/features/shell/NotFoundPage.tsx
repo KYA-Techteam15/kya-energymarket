@@ -7,7 +7,7 @@ export function NotFoundPage() {
       <h1>{m.not_found_title()}</h1>
       <p>{m.not_found_text()}</p>
       <p>
-        <Link className="btn btn-deep" to="/">
+        <Link className="btn btn-primary" to="/">
           {m.back_home()}
         </Link>
       </p>

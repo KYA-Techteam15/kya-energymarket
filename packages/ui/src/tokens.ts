@@ -57,7 +57,12 @@ export const colors = {
   muted: mix(ink, WHITE, 0.64),
   faint: mix(ink, WHITE, 0.5),
 
-  // Vert : structure, actions principales, liens
+  // Vert KYA visible : boutons principaux et grandes surfaces, avec du texte foncé (le blanc sur
+  // #1ca18c n'atteint que 3,1:1, sous le seuil AA de 4,5:1 pour du texte courant).
+  greenHover: tint(brand.green, 0.85),
+  onGreen: ink,
+
+  // Vert assombri : liens et texte vert sur fond blanc, structure sombre (lien d'évitement, voile photo)
   greenDeep: shade(brand.green, 0.36),
   greenDeep2: shade(brand.green, 0.46),
   greenInk: shade(brand.green, 0.7),

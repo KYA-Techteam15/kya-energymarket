@@ -78,9 +78,12 @@ terrain africain. Il est utilisé par des écoles et des universités.
   **facture d'achat** (ce que KYA-EnergyMarket envoie à son client), **documents techniques** (pour
   les techniciens). Voir `docs/glossaire.md`.
 - Logo officiel KYA-Energy Group (fichier fourni, non modifié) ; logo produit KYA-SolDesign.
-- Charte KYA : teal #1ca18c, teal profond #063d3a, orange #f99d32 (réservé à l'achat), jaune #e8e748,
-  café #875028 ; polices Poppins (titres), Inter (texte), JetBrains Mono (nombres). Direction
-  artistique retenue : `design/v5`. Voix institutionnelle, directe, en français d'abord.
+- Charte KYA : les **cinq couleurs du logo** — vert `#1ca18c`, orange `#f99d32`, blanc `#ffffff`, jaune
+  `#e8e748`, café `#875028`. Le vert KYA est la couleur visible des actions principales et des grandes
+  surfaces (avec du texte foncé, AA) ; l'orange est réservé à l'achat. Toute autre teinte est dérivée
+  de ces cinq couleurs (`packages/ui/src/tokens.ts`). Polices Poppins (titres), Inter (texte),
+  JetBrains Mono (nombres). Direction artistique retenue : `design/v5`. Voix institutionnelle,
+  directe, en français d'abord.
 
 ## Evidence on Hand
 

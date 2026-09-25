@@ -6,8 +6,8 @@ import { createLogger, type Logger } from '@kya-em/domain';
 
 /**
  * Ressources du serveur, créées une fois par processus : variables validées, journal, pool de base.
- * Hors production, `.env.local` (racine du dépôt) est lu s'il existe ; il ne remplace jamais une
- * variable déjà définie.
+ * En développement seulement, `.env.local` (racine du dépôt) est lu s'il existe ; il ne remplace jamais
+ * une variable déjà définie. Les tests (`APP_ENV=test`) et la production ne lisent jamais les secrets du poste.
  */
 export interface Runtime {
   readonly env: ServerEnv;
@@ -18,7 +18,8 @@ export interface Runtime {
 let current: Runtime | undefined;
 
 function loadLocalEnvFile() {
-  if (process.env.APP_ENV === 'production') return;
+  const environment = process.env.APP_ENV ?? 'development';
+  if (environment !== 'development') return;
   for (const candidate of [resolve(process.cwd(), '.env.local'), resolve(process.cwd(), '../../.env.local')]) {
     if (existsSync(candidate)) {
       process.loadEnvFile(candidate);

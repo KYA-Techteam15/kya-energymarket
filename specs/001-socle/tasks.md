@@ -46,7 +46,7 @@ Légende : `[P]` parallélisable. Les numéros d'exigences renvoient à [spec.md
 ## Phase 7 — Finition
 
 - [x] T060 Mettre à jour README, `docs/operations`, CHANGELOG ; passer `pnpm verify` au vert
-- [ ] T061 Création du projet Neon (`pnpm neon:setup`) dès que la clé est dans le fichier de secrets, puis `pnpm db:migrate` sur `dev`
+- [x] T061 Création du projet Neon (`pnpm neon:setup`) dès que la clé est dans le fichier de secrets, puis `pnpm db:migrate` sur `dev`
 - [ ] T062 Déploiement Coolify : après T061 (la production exige `DATABASE_URL`) et l'accès de Coolify au dépôt
 
 ## Écarts constatés pendant l'implémentation
@@ -54,3 +54,5 @@ Légende : `[P]` parallélisable. Les numéros d'exigences renvoient à [spec.md
 - Adresses préfixées `/fr` et `/en` (au lieu du français sans préfixe) : sinon un choix mémorisé ne peut jamais s'appliquer à `/`.
 - Sortie serveur Node par Nitro (`nitro/vite`), comme le recommande la documentation d'hébergement de TanStack Start.
 - Organisation du code par fonctionnalité (`features/`, `packages/domain/src/<nom>/`), demandée pendant la tranche.
+- Vert KYA `#1ca18c` rendu visible (boutons principaux, grande section) avec une encre foncée (5,6:1) ; les teintes assombries restent pour les liens et le voile des photos.
+- Projet Neon `kya-energy-market` créé (Francfort, PostgreSQL 17, branches main, dev, test), migration `0000_socle` appliquée sur `dev` ; connexions en `sslmode=verify-full`.

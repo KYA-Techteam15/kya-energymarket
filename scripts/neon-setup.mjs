@@ -106,8 +106,10 @@ const uri = async (pooled) =>
   ).uri;
 
 writeSecret('NEON_PROJECT_ID', project.id);
-writeSecret('DATABASE_URL', await uri(true));
-writeSecret('DATABASE_MIGRATION_URL', await uri(false));
+// Certificat vérifié (verify-full) : le sens de « require » change dans les prochaines versions de pg.
+const strict = (value) => value.replace(/sslmode=require/u, 'sslmode=verify-full');
+writeSecret('DATABASE_URL', strict(await uri(true)));
+writeSecret('DATABASE_MIGRATION_URL', strict(await uri(false)));
 console.log(
   `NEON_PROJECT_ID, DATABASE_URL (poolée) et DATABASE_MIGRATION_URL (directe) de la branche « dev » écrites dans ${SECRETS}.`,
 );

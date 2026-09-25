@@ -26,8 +26,10 @@ describe('charte KYA (spec 001, FR-003, FR-004)', () => {
     ['texte secondaire', colors.muted, colors.white],
     ['texte secondaire sur fond doux', colors.muted, colors.soft],
     ['lien vert', colors.greenInk, colors.white],
-    ['bouton principal', colors.white, colors.greenDeep],
-    ['bouton principal survolé', colors.white, colors.greenDeep2],
+    ['bouton principal : encre sur le vert KYA', colors.onGreen, colors.green],
+    ['bouton principal survolé', colors.onGreen, colors.greenHover],
+    ['texte courant sur une section vert KYA', colors.ink2, colors.green],
+    ['lien d’évitement', colors.white, colors.greenDeep],
     ['bouton d’achat', colors.onOrange, colors.orange],
     ['bouton d’achat survolé', colors.onOrange, colors.orangeHover],
     ['étiquette exemple', colors.coffee, colors.white],
@@ -36,6 +38,10 @@ describe('charte KYA (spec 001, FR-003, FR-004)', () => {
     ['état actif', colors.greenDeep, colors.greenWash],
   ])('%s : contraste AA', (_label, foreground, background) => {
     expect(contrast(foreground, background)).toBeGreaterThanOrEqual(AA);
+  });
+
+  it('le blanc ne porte jamais de texte courant sur le vert KYA (3,1:1)', () => {
+    expect(contrast(colors.white, colors.green)).toBeLessThan(AA);
   });
 
   it('le jaune ne sert qu’en accent sur fond sombre', () => {

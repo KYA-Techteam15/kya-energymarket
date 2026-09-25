@@ -35,7 +35,7 @@ export function HomePage() {
               <h2 id="t-soft">{m.ksd_title()}</h2>
               <p>{m.ksd_text()}</p>
               <div className="cta-row">
-                <Link className="btn btn-deep" to="/connexion">
+                <Link className="btn btn-primary" to="/connexion">
                   {m.ksd_try()} <Icon name="go" />
                 </Link>
               </div>
@@ -97,7 +97,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="section deep" aria-labelledby="t-kya">
+      <section className="section brand" aria-labelledby="t-kya">
         <div className="wrap split">
           <div>
             <h2 id="t-kya" className="h2">
@@ -107,7 +107,7 @@ export function HomePage() {
           </div>
           <div className="big-nums">
             <div>
-              <b className="num accent">500+</b>
+              <b className="num">500+</b>
               <span>{m.kya_installations()}</span>
             </div>
             <div>

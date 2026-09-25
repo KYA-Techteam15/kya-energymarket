@@ -8,7 +8,7 @@ export function SignInPage() {
       <h1>{m.sign_in_title()}</h1>
       <p>{m.sign_in_text()}</p>
       <p>
-        <Link className="btn btn-deep" to="/">
+        <Link className="btn btn-primary" to="/">
           {m.back_home()}
         </Link>
       </p>
