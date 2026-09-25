@@ -1,0 +1,34 @@
+# Dépendances et sorties
+node_modules/
+.pnpm-store/
+dist/
+build/
+.output/
+.vinxi/
+.nitro/
+.tanstack/
+.turbo/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+
+# Secrets : jamais dans Git (voir docs/operations/secrets-et-environnements.md)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+
+# Outils et systèmes
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.log
+tmp/
+.tmp/
