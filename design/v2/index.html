@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KYA Energy Market — Concevez des systèmes solaires fiables et accessibles</title>
+  <meta name="description" content="KYA-SolDesign dimensionne les installations photovoltaïques autonomes en optimisant la fiabilité et le coût en même temps. La méthode de KYA-Energy Group, éprouvée sur plus de 500 installations en Afrique de l'Ouest.">
+  <meta name="theme-color" content="#1b1b1b">
+  <link rel="icon" href="assets/img/kya-energy-group-logo.png">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+<!--
+THESIS: Montrer la méthode décider, pas la décrire : l'étude se déploie en arbre (entrées → KYA-SolDesign → résultats chiffrés), puis le visiteur règle lui-même la fiabilité visée et voit la configuration retenue. Refuse le héros SaaS à capture unique et la grille de cartes identiques.
+OWN-WORLD: Atelier d'ingénierie de nuit, grammaire de l'interface Copilot KYA : fond #1b1b1b, surfaces en échelle #232323/#2a2a2a/#323232, filets #363636, Segoe UI, rayons 8–16 px ; teal = calculé et validé, orange = acheter et rien d'autre, jaune = seuil visé.
+STORY: Désir (des systèmes fiables ET accessibles) → risque (surdimensionner ou sous-dimensionner) → mécanisme (les deux optimisés à la fois) → preuve (500+ installations, 5 pays) → livrables → action.
+FIRST VIEWPORT: Titre à gauche, promesse et deux actions à droite ; dessous, pleine largeur, l'arbre d'étude animé du projet exemple.
+FORM: Direction imposée par la demande (références copilot-demo, Xmind, getdesign.md) ; pas de tirage.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4.8 19.5c1.3-3.3 4-5 7.2-5s5.9 1.7 7.2 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 17.5h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3L5 13.5h6L10 21l8-10.5h-6z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+  <symbol id="i-offline" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="11.5" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9 20h6M12 16.5V20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-over" viewBox="0 0 24 24"><rect x="5" y="9" width="14" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9 9V6h6v3M9 13h6M9 16.5h6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M18 4.5l2 2M20 4.5l-2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-under" viewBox="0 0 24 24"><path d="M12 3.5l9 15.5H3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 9.5v4.5M12 16.8v.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/></symbol>
+  <symbol id="i-outcome" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-proof" viewBox="0 0 24 24"><path d="M4 19V5M4 19h16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M7 15l4-4 3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 7.5V12l3 2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-hand" viewBox="0 0 24 24"><path d="M8 13V6.5a1.5 1.5 0 0 1 3 0V12M11 11V5a1.5 1.5 0 0 1 3 0v6M14 11V6.5a1.5 1.5 0 0 1 3 0V14c0 3.6-2.4 6.5-6 6.5-2.3 0-3.7-1-4.9-2.7L4 14.8a1.5 1.5 0 0 1 2.4-1.8L8 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M14 3v4h4M9 12h6M9 15.5h6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-plan" viewBox="0 0 24 24"><path d="M3 12h4l2-3h6l2 3h4M9 9V5M15 9V5M12 12v7M8 19h8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-coin" viewBox="0 0 24 24"><ellipse cx="12" cy="7" rx="7" ry="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 7v5c0 1.7 3.1 3 7 3s7-1.3 7-3V7M5 12v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+  <symbol id="i-blocks" viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="5" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="3.5" y="11" width="8" height="9" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="13.5" y="11" width="7" height="9" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+  <symbol id="i-replay" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v4h4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div class="demo-bar" role="note"><div class="wrap">Proposition de conception n° 2. Les éléments marqués <span class="tag-example">exemple</span> sont provisoires.</div></div>
+
+<header class="nav" data-block="navigation">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="KYA Energy Market, accueil"><img src="assets/img/kya-energy-group-logo.png" alt="" width="34" height="34"><b>KYA Energy Market</b></a>
+    <nav class="nav-links" id="nav-links" aria-label="Navigation principale">
+      <a href="#methode">La méthode</a>
+      <a href="logiciels/kya-soldesign.html">KYA-SolDesign</a>
+      <a href="logiciels/kya-soldesign.html#tarifs">Tarifs</a>
+      <a href="#pour-qui">Pour qui</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-end">
+      <a class="btn btn-ghost btn-sm" href="#espace-client"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg><span class="btn-label">Espace client</span></a>
+      <a class="btn btn-buy btn-sm" href="logiciels/kya-soldesign.html#tarifs">Choisir ma licence</a>
+      <button class="btn btn-sm nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu"><svg class="i" aria-hidden="true"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="contenu">
+  <section class="hero wrap" data-block="présentation">
+    <div class="hero-copy">
+      <h1>Des systèmes solaires fiables <em>et</em> accessibles. Calculés, pas estimés.</h1>
+      <div class="hero-side">
+        <p>KYA-SolDesign dimensionne vos installations photovoltaïques autonomes en optimisant la fiabilité et le coût <b>en même temps</b>. C'est la méthode de KYA-Energy Group, appliquée à plus de 500 installations en Afrique de l'Ouest.</p>
+        <div class="hero-actions">
+          <a class="btn btn-buy btn-lg" href="logiciels/kya-soldesign.html#tarifs">Choisir ma licence <svg class="i i-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-lg" href="#methode">Voir comment il décide</a>
+        </div>
+        <div class="friction">
+          <span><svg aria-hidden="true"><use href="#i-phone"/></svg>Mobile Money ou carte</span>
+          <span><svg aria-hidden="true"><use href="#i-bolt"/></svg>Activation immédiate</span>
+          <span><svg aria-hidden="true"><use href="#i-offline"/></svg>Fonctionne hors ligne</span>
+        </div>
+      </div>
+    </div>
+
+    <figure class="window tree-panel" data-block="arbre d'étude">
+      <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><b>Projet exemple · Centre de santé de Bombouaka, Togo</b><span class="end"><span class="pill"><span class="dot"></span>Étude complète</span></span></div>
+      <div class="tree-stage" id="tree-stage">
+        <div class="tree-legend" aria-hidden="true"><span>Ce que vous saisissez</span><span>Ce que KYA-SolDesign calcule</span></div>
+        <ol class="tree-list" id="tree-data" aria-label="Étude du projet exemple">
+          <li data-side="in" data-k="Site" data-v="Bombouaka, Togo" data-u="15° plein sud">Site : Bombouaka, Togo, champ incliné à 15° plein sud</li>
+          <li data-side="in" data-k="Météo horaire PVGIS" data-v="6,17" data-u="kWh/m²/j" data-num="6.17" data-dec="2">Météo horaire PVGIS : 6,17 kWh/m²/j</li>
+          <li data-side="in" data-k="Besoins" data-v="10,08" data-u="kWh/j · 6 appareils" data-num="10.08" data-dec="2">Besoins : 10,08 kWh par jour, 6 appareils</li>
+          <li data-side="core" data-k="Fiabilité × coût" data-v="KYA-SolDesign">KYA-SolDesign optimise la fiabilité et le coût</li>
+          <li data-side="out" data-k="Champ PV" data-v="2,85" data-u="kWc" data-num="2.85" data-dec="2">Champ PV : 2,85 kWc</li>
+          <li data-side="out" data-k="Stockage" data-v="6,26" data-u="kWh" data-num="6.26" data-dec="2">Stockage : 6,26 kWh</li>
+          <li data-side="out" data-k="Onduleur" data-v="2,71" data-u="kW" data-num="2.71" data-dec="2">Onduleur : 2,71 kW</li>
+          <li data-side="out" data-k="Fiabilité SRI" data-v="0,903" data-u="demande servie" data-num="0.903" data-dec="3">Fiabilité SRI : 0,903</li>
+          <li data-side="out" data-k="Viabilité SVI" data-v="0,84" data-u="viable (< 1)" data-num="0.84" data-dec="2">Viabilité SVI : 0,84, viable</li>
+          <li data-side="out" data-k="Dossier client" data-v="Rapport · Proforma · Schéma">Dossier client : rapport, facture proforma, schéma unifilaire</li>
+        </ol>
+      </div>
+      <figcaption class="tree-foot"><span>Valeurs réelles du projet exemple livré avec KYA-SolDesign 1.2.0.</span><button class="btn btn-ghost btn-sm" type="button" id="tree-replay"><svg class="i" aria-hidden="true"><use href="#i-replay"/></svg>Rejouer</button></figcaption>
+    </figure>
+  </section>
+
+  <div class="wrap" data-block="preuve">
+    <div class="proof">
+      <span>Disponible depuis <b>octobre 2020</b></span>
+      <span><b>500+ installations</b> réalisées avec la méthode</span>
+      <span class="countries" aria-label="Pays"><span class="pill">Togo</span><span class="pill">Bénin</span><span class="pill">Burkina Faso</span><span class="pill">Côte d'Ivoire</span><span class="pill">Niger</span></span>
+    </div>
+  </div>
+
+  <section class="section wrap" id="methode" data-block="le risque">
+    <div class="count">
+      <div>
+        <h2>Avant de bâtir, on s'assied et on compte.</h2>
+        <blockquote class="epigraph">« Qui de vous, s'il veut bâtir une tour, ne s'assied d'abord pour calculer la dépense et voir s'il a de quoi la terminer ? »<cite>Luc 14, 28</cite></blockquote>
+      </div>
+      <div class="failures">
+        <div class="failure"><svg aria-hidden="true"><use href="#i-over"/></svg><div><h3>Surdimensionner, c'est payer pour rien.</h3><p>Des panneaux et des batteries qui ne serviront jamais. Le devis grimpe, le client hésite, le projet part chez un autre.</p></div></div>
+        <div class="failure"><svg aria-hidden="true"><use href="#i-under"/></svg><div><h3>Sous-dimensionner, c'est promettre des coupures.</h3><p>Le système tient en saison sèche et lâche en saison des pluies. Les batteries s'usent, la confiance aussi.</p></div></div>
+        <div class="failure win"><svg aria-hidden="true"><use href="#i-target"/></svg><div><h3>KYA-SolDesign cherche le point juste.</h3><p>Parmi toutes les configurations qui tiennent la fiabilité que vous visez, il retient la moins coûteuse. Les deux à la fois, jamais l'une contre l'autre.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" data-block="mécanisme">
+    <div class="wrap">
+      <div class="head">
+        <h2>Réglez la fiabilité. Regardez-le choisir.</h2>
+        <p>Chaque point est une configuration champ + stockage, simulée heure par heure sur l'année. Déplacez le seuil : la configuration retenue est toujours la moins chère de celles qui le tiennent.</p>
+      </div>
+      <div class="mech">
+        <div class="chart-card">
+          <svg class="chart" id="chart" viewBox="0 0 640 400" role="img" aria-labelledby="chart-title chart-desc">
+            <title id="chart-title">Configurations selon leur coût et leur fiabilité</title>
+            <desc id="chart-desc">Nuage de points : en abscisse le coût du système, en ordonnée la fiabilité SRI. Une ligne marque la fiabilité visée ; la configuration retenue est la moins coûteuse au-dessus de la ligne.</desc>
+          </svg>
+          <div class="chart-controls">
+            <label for="target">Fiabilité visée <output id="target-out" for="target">SRI ≥ 0,90</output></label>
+            <input type="range" id="target" min="0.75" max="0.96" step="0.01" value="0.90">
+            <p class="chart-note">Illustration sur un projet type : les valeurs réelles dépendent de votre site et de vos besoins.</p>
+          </div>
+        </div>
+        <div class="verdict" aria-live="polite">
+          <div class="verdict-row"><small>Maximiser la fiabilité</small><b>La plus fiable</b><p>Sûre, mais le client paie des batteries qui dorment la plupart de l'année.</p></div>
+          <div class="verdict-row"><small>Minimiser le coût</small><b>La moins chère</b><p>Séduisante sur le devis, elle ne sert qu'une partie de la demande.</p></div>
+          <div class="verdict-row kya"><small>KYA-SolDesign</small><b class="big" id="verdict-save">−15 %</b><p id="verdict-text">que la plus fiable, avec la fiabilité visée tenue.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" data-block="ce que vous gagnez">
+    <div class="head"><h2>Ce qui change dans chacune de vos études.</h2></div>
+    <div class="gain" role="table" aria-label="Avant et avec KYA-SolDesign">
+      <div class="gain-row gain-head" role="row"><span role="columnheader"></span><span class="before" role="columnheader">Sans méthode</span><span class="after" role="columnheader">Avec KYA-SolDesign</span></div>
+      <div class="gain-row" role="row"><h3 role="rowheader"><svg aria-hidden="true"><use href="#i-outcome"/></svg>Le résultat</h3><p class="before" role="cell">Un système « à peu près », dimensionné sur une journée moyenne.</p><p class="after" role="cell">Un système qui sert la demande toute l'année, au coût le plus bas pour cette fiabilité.</p></div>
+      <div class="gain-row" role="row"><h3 role="rowheader"><svg aria-hidden="true"><use href="#i-proof"/></svg>La preuve</h3><p class="before" role="cell">« Faites-nous confiance. »</p><p class="after" role="cell">SRI et SVI chiffrés avec la météo réelle du site : vous montrez la fiabilité au lieu de la promettre.</p></div>
+      <div class="gain-row" role="row"><h3 role="rowheader"><svg aria-hidden="true"><use href="#i-clock"/></svg>Le temps</h3><p class="before" role="cell">Des tableurs, des ressaisies, des allers-retours.</p><p class="after" role="cell">Dimensionnement, protections, câbles, chiffrage et documents s'enchaînent sans ressaisie.</p></div>
+      <div class="gain-row" role="row"><h3 role="rowheader"><svg aria-hidden="true"><use href="#i-hand"/></svg>L'effort</h3><p class="before" role="cell">Chercher la météo, mettre en page, redessiner le schéma.</p><p class="after" role="cell">Météo téléchargée selon la localisation ; rapport, schéma et proforma générés, modifiables.</p></div>
+    </div>
+  </section>
+
+  <section class="section band" data-block="parcours">
+    <div class="wrap">
+      <div class="head"><h2>Du site au dossier signé, en huit étapes.</h2><p>Chaque étape part des résultats de la précédente. Les écrans viennent du projet exemple.</p></div>
+      <div class="steps" id="steps">
+        <div class="step-list" role="tablist" aria-label="Étapes de l'étude">
+          <button role="tab" aria-selected="true" data-shot="assets/img/projet.webp" data-cap="Identification du projet"><span class="n">1</span><b>Identification du projet</b><span class="d">Client, site, référence : ils figurent sur tous les documents.</span><span class="bar"></span></button>
+          <button role="tab" aria-selected="false" data-shot="assets/img/site.webp" data-cap="Choix du site"><span class="n">2</span><b>Site et météo</b><span class="d">La météo horaire se télécharge seule selon la localisation.</span><span class="bar"></span></button>
+          <button role="tab" aria-selected="false" data-shot="assets/img/besoins.webp" data-cap="Bilan des consommations"><span class="n">3</span><b>Bilan des consommations</b><span class="d">Charges classiques et inductives, heure par heure sur l'année.</span><span class="bar"></span></button>
+          <button role="tab" aria-selected="false" data-shot="assets/img/predim.webp" data-cap="Prédimensionnement"><span class="n">4</span><b>Prédimensionnement</b><span class="d">Le système minimal fiable, son SRI et son SVI.</span><span class="bar"></span></button>
+          <button role="tab" aria-selected="false" data-shot="assets/img/materiel.webp" data-cap="Dimensionnement"><span class="n">5</span><b>Dimensionnement</b><span class="d">Modules, batteries et onduleurs de la bibliothèque, « all-in-one » compris.</span><span class="bar"></span></button>
+          <button role="tab" aria-selected="false" data-shot="assets/img/protections.webp" data-cap="Protections et câblerie"><span class="n">6</span><b>Protections et câbles</b><span class="d">Calibres et sections calculés automatiquement.</span><span class="bar"></span></button>
+          <button role="tab" aria-selected="false" data-shot="assets/img/chiffrage.webp" data-cap="Évaluation financière"><span class="n">7</span><b>Évaluation financière</b><span class="d">Prix de vente, marges, cycle de vie, face au tarif du réseau.</span><span class="bar"></span></button>
+          <button role="tab" aria-selected="false" data-shot="assets/img/dossier.webp" data-cap="Rapports et schéma"><span class="n">8</span><b>Rapports et schéma</b><span class="d">Rapport technico-commercial, schéma synoptique, proforma modifiable.</span><span class="bar"></span></button>
+        </div>
+        <div class="step-stage">
+          <figure class="window">
+            <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><b id="step-cap">Identification du projet</b><span class="end">KYA-SolDesign 1.2.0</span></div>
+            <img id="step-img" src="assets/img/projet.webp" alt="Écran « Identification du projet » de KYA-SolDesign" width="1600" height="1000">
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" data-block="livrables">
+    <div class="deliver">
+      <div class="fan" tabindex="0" aria-label="Documents du projet exemple : rapport, synthèse et schéma unifilaire">
+        <figure class="f1"><img src="assets/img/rapport-couverture.webp" alt="" width="900" height="1272" loading="lazy"></figure>
+        <figure class="f2"><img src="assets/img/rapport-page-2.webp" alt="" width="900" height="1272" loading="lazy"></figure>
+        <figure class="f3"><img src="assets/img/unifilaire.webp" alt="" width="1800" height="1246" loading="lazy"></figure>
+      </div>
+      <div>
+        <h2>Ce que vous remettez à votre client.</h2>
+        <ul class="deliver-list">
+          <li><svg aria-hidden="true"><use href="#i-doc"/></svg><div><b>Rapport technico-commercial</b><p>PDF ou Word, pages A4 et sommaire : le site, les besoins, la méthode, le système, sa fiabilité.</p></div></li>
+          <li><svg aria-hidden="true"><use href="#i-plan"/></svg><div><b>Schéma synoptique</b><p>Généré automatiquement, avec protections, sections de câbles et mise à la terre.</p></div></li>
+          <li><svg aria-hidden="true"><use href="#i-coin"/></svg><div><b>Facture proforma modifiable</b><p>Prix, TVA, conditions : prête à envoyer, à la référence et à la version du dossier.</p></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="pour-qui" data-block="pour qui">
+    <div class="wrap">
+      <div class="head"><h2>Pour ceux qui conçoivent, et pour ceux qui apprennent.</h2></div>
+      <div class="audience">
+        <a class="aud" href="logiciels/kya-soldesign.html?edition=commercial#tarifs"><h3>Bureaux d'études et installateurs</h3><p>Des études plus rapides, des devis justes, des dossiers professionnels qui font signer.</p><span class="go">Édition Commerciale <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span></a>
+        <a class="aud" href="logiciels/kya-soldesign.html?edition=commercial#tarifs"><h3>Développeurs de projets et institutions</h3><p>Des études standardisées, comparables d'un site à l'autre, avec la fiabilité chiffrée.</p><span class="go">Édition Commerciale <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span></a>
+        <a class="aud" href="logiciels/kya-soldesign.html?edition=academic#tarifs"><h3>Enseignement, recherche et formation</h3><p>Des données réelles de site pour apprendre à dimensionner juste, et former les compétences africaines de demain.</p><span class="go">Éditions Académique et Étudiant <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" data-block="témoignages">
+    <div class="split-head"><div class="head"><h2>Ils l'utilisent au Togo et dans la sous-région.</h2></div></div>
+    <div class="quotes">
+      <figure class="quote"><blockquote>« Nous montrons au client ce que son système servira en août, pas une moyenne. Il signe plus vite. »</blockquote><figcaption><span class="avatar" aria-hidden="true">KA</span><span><b>Kossi A.</b>Ingénieur d'études, Lomé</span><span class="tag-example">exemple</span></figcaption></figure>
+      <figure class="quote"><blockquote>« Le rapport, la proforma et le schéma sortent de la même étude. Plus de ressaisie, plus d'erreur de recopie. »</blockquote><figcaption><span class="avatar" aria-hidden="true">YM</span><span><b>Yao M.</b>Installateur, Cotonou</span><span class="tag-example">exemple</span></figcaption></figure>
+      <figure class="quote"><blockquote>« Mes étudiants comprennent enfin pourquoi le système le moins cher n'est pas le plus économique. »</blockquote><figcaption><span class="avatar" aria-hidden="true">AD</span><span><b>Afi D.</b>Enseignante, département Énergie</span><span class="tag-example">exemple</span></figcaption></figure>
+    </div>
+  </section>
+
+  <section class="section-tight wrap" data-block="catalogue">
+    <div class="head"><h2>Les logiciels <span class="nowrap">KYA-Energy Group</span></h2></div>
+    <div class="catalog">
+      <article class="cat-row"><img src="assets/img/kya-soldesign-logo.png" alt="" width="64" height="50"><div><h3>KYA-SolDesign <span class="pill"><span class="dot"></span>Disponible</span></h3><p>Conception et dimensionnement optimisés des systèmes photovoltaïques autonomes.</p></div><span class="cat-meta">Version 1.2.0 · Windows 10 et 11</span><a class="btn btn-sm" href="logiciels/kya-soldesign.html">Découvrir <svg class="i i-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a></article>
+      <article class="cat-row"><span class="soon" aria-hidden="true">EL</span><div><h3>KYA-EcoLabel <span class="pill">Bientôt</span></h3><p>Présentation à venir.</p></div><span class="cat-meta">En préparation</span><a class="btn btn-sm btn-ghost" href="#contact">Être prévenu</a></article>
+    </div>
+  </section>
+
+  <section class="section wrap" data-block="appel à l'action">
+    <div class="closing">
+      <h2>Votre prochaine étude peut être la plus juste que vous ayez faite.</h2>
+      <p>Choisissez votre édition, payez par Mobile Money ou carte, et activez KYA-SolDesign avec votre clé. Vos projets vous appartiennent : même à l'échéance, ils restent consultables et imprimables.</p>
+      <div class="hero-actions">
+        <a class="btn btn-buy btn-lg" href="logiciels/kya-soldesign.html#tarifs">Choisir ma licence <svg class="i i-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-lg" href="logiciels/kya-soldesign.html">Tout sur KYA-SolDesign</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot" id="contact" data-block="pied de page">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="index.html"><img src="assets/img/kya-energy-group-logo.png" alt="" width="34" height="34"><b>KYA Energy Market</b></a>
+        <p style="margin-top:12px;max-width:40ch">KYA-Energy Group, Lomé, Togo. Énergies renouvelables et efficacité énergétique. Entreprise certifiée ISO 9001:2015.</p>
+        <div class="pay"><span class="pill">Mobile Money</span><span class="pill">Carte bancaire</span><span class="pill">Paiement Semoa</span></div>
+      </div>
+      <div><h3>Logiciels</h3><ul><li><a href="logiciels/kya-soldesign.html">KYA-SolDesign</a></li><li><a href="logiciels/kya-soldesign.html#tarifs">Tarifs</a></li><li><a href="logiciels/kya-soldesign.html#versions">Versions</a></li></ul></div>
+      <div><h3>Votre compte</h3><ul><li><a href="#espace-client">Espace client</a></li><li><a href="#espace-client">Mes licences</a></li><li><a href="#espace-client">Factures</a></li></ul></div>
+      <div><h3>KYA-Energy Group</h3><ul><li><a href="#methode">La méthode</a></li><li><a href="#contact">Contact</a></li><li><a href="#contact">Mentions légales</a></li></ul></div>
+    </div>
+    <div class="foot-legal"><span>© 2026 KYA-Energy Group</span><span>Proposition de conception n° 2, non publiée</span></div>
+  </div>
+</footer>
+
+<button class="canvas-toggle" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-blocks"/></svg><span>Afficher le canevas</span></button>
+<script src="assets/js/site.js" defer></script>
+</body>
+</html>

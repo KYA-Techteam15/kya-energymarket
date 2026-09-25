@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact · KYA-EnergyMarket</title>
+  <link rel="icon" href="assets/img/kya-mark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-root="" data-chrome="market">
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div data-chrome-top></div>
+
+<main id="contenu">
+  <header class="wrap page-head" data-block="En-tête de page">
+    <h1>Nous écrire.</h1>
+    <p>Une question, un devis, une formation ou un problème : choisissez le sujet, nous orientons votre message vers la bonne personne.</p>
+  </header>
+
+  <div class="wrap grid-2" style="padding-bottom:110px;align-items:start">
+    <form class="form panel" onsubmit="event.preventDefault()" data-block="Formulaire">
+      <label class="field"><span>Sujet</span><select class="select" data-param="sujet">
+        <option value="question">Question</option><option value="devis">Devis pour une organisation</option><option value="formation">Formation</option><option value="support">Support d'un logiciel</option><option value="probleme">Signaler un problème</option><option value="autre">Autre</option></select></label>
+      <div class="form-row">
+        <label class="field"><span>Nom et prénom</span><input class="input" type="text" autocomplete="name" required></label>
+        <label class="field"><span>Courriel</span><input class="input" type="email" autocomplete="email" required></label>
+      </div>
+      <label class="field"><span>Organisation <small class="muted">(facultatif)</small></span><input class="input" type="text" autocomplete="organization"></label>
+      <label class="field"><span>Message</span><textarea class="textarea" required placeholder="Pour un devis : édition, durée et nombre de postes."></textarea></label>
+      <div class="cta-row"><button class="btn btn-deep btn-lg" type="submit" data-toast="Message envoyé. Vous le retrouverez dans votre espace, rubrique Support (maquette)">Envoyer</button></div>
+    </form>
+    <div class="contact-ways" data-block="Coordonnées">
+      <div class="way"><span class="ic"><i data-i="whatsapp"></i></span><b>WhatsApp</b><small>+228 00 00 00 00 <span class="ex">numéro à fournir</span></small></div>
+      <div class="way"><span class="ic"><i data-i="mail"></i></span><b>Courriel</b><small>contact@exemple.tg <span class="ex">adresse à fournir</span></small></div>
+      <div class="way"><span class="ic"><i data-i="home"></i></span><b>KYA-Energy Group</b><small>Lomé, Togo · du lundi au vendredi, 8 h – 17 h <span class="ex">exemple</span></small></div>
+    </div>
+  </div>
+</main>
+
+<div data-chrome-foot></div>
+<script src="assets/js/site.js" defer></script>
+</body>
+</html>

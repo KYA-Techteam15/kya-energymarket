@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tarifs KYA-SolDesign · KYA-EnergyMarket</title>
+  <link rel="icon" href="../assets/img/ksd-mark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-root="../" data-chrome="product" data-tab="tarifs">
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div data-chrome-top></div>
+
+<main id="contenu">
+  <header class="wrap page-head" data-block="En-tête de page">
+    <h1>Choisissez votre licence.</h1>
+    <p>Une licence par poste, payée en une fois par Mobile Money ou carte. Vous recevez aussitôt votre clé et votre facture d'achat.</p>
+  </header>
+
+  <section class="wrap" id="acheter" data-block="Choix de la licence" style="padding-bottom:96px">
+    <div class="buy" data-pricing>
+      <div>
+        <div class="cfg">
+          <p class="step-title"><span>1</span>Édition</p>
+          <div class="choice cols-3">
+            <label class="opt"><input type="radio" name="edition" value="commercial" checked><b>Commerciale</b><small>Bureaux d'études, installateurs, institutions</small></label>
+            <label class="opt"><input type="radio" name="edition" value="academic"><b>Académique</b><small>Écoles et universités</small></label>
+            <label class="opt"><input type="radio" name="edition" value="student"><b>Étudiant</b><small>Pour apprendre et préparer ses projets</small></label>
+          </div>
+        </div>
+        <div class="cfg">
+          <p class="step-title"><span>2</span>Durée</p>
+          <div data-plans></div>
+        </div>
+        <div class="cfg">
+          <p class="step-title"><span>3</span>Nombre de postes</p>
+          <div class="seats-row">
+            <div class="stepper"><button type="button" data-minus aria-label="Un poste de moins"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"/></svg></button><input type="number" min="1" value="1" data-seats aria-label="Nombre de postes"><button type="button" data-plus aria-label="Un poste de plus"><i data-i="plus"></i></button></div>
+            <p data-seats-note></p>
+          </div>
+        </div>
+        <div class="callout"><i data-i="lock"></i><span><b>Vos projets restent à vous.</b> À l'échéance, KYA-SolDesign passe en lecture seule après un délai de grâce : vous ouvrez et imprimez vos projets, rien n'est effacé.</span></div>
+      </div>
+
+      <aside class="summary" aria-label="Récapitulatif">
+        <h3>Votre licence</h3>
+        <dl>
+          <dt>Logiciel</dt><dd data-s="edition">KYA-SolDesign · Commerciale</dd>
+          <dt>Durée</dt><dd data-s="plan">1 an</dd>
+          <dt>Postes</dt><dd data-s="seats">1 poste</dd>
+          <dt>Prix par poste</dt><dd data-s="unit">220 000 FCFA</dd>
+        </dl>
+        <div class="total"><span>Total <small>hors taxes</small></span><b><span data-s="total">220 000</span> <small>FCFA</small></b></div>
+        <p class="muted" style="font-size:13px;margin-top:6px">TVA selon votre pays, calculée à l'étape suivante. <span class="ex">prix exemple</span></p>
+        <a class="btn btn-buy btn-lg btn-block" href="../achat.html" data-buy-link>Acheter</a>
+        <p class="alt">Pas encore sûr ? <a class="link" href="../essai.html">Essayez gratuitement</a></p>
+        <ul class="inc" data-inc></ul>
+        <div class="pay-logos"><span>Mobile Money</span><span>Carte bancaire</span><span>via Semoa</span></div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section soft" data-block="Comparatif" aria-labelledby="t-cmp">
+    <div class="wrap">
+      <div class="sec-head"><h2 id="t-cmp" class="h2">Comparer les éditions.</h2><p>Les trois éditions calculent de la même façon. Elles diffèrent par ce que vous pouvez remettre et par le nombre de projets.</p></div>
+      <div class="tbl-wrap">
+        <table class="cmp-table">
+          <thead><tr><th scope="col"></th><th scope="col" data-hl="commercial">Commerciale<small>1 mois · 1 trimestre · 1 an</small></th><th scope="col" data-hl="academic">Académique<small>1 an</small></th><th scope="col" data-hl="student">Étudiant<small>1 jour · 1 mois</small></th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Parcours complet et calculs</th><td data-hl="commercial" class="yes"><i data-i="check"></i><span class="sr">Oui</span></td><td data-hl="academic" class="yes"><i data-i="check"></i><span class="sr">Oui</span></td><td data-hl="student" class="yes"><i data-i="check"></i><span class="sr">Oui</span></td></tr>
+            <tr><th scope="row">Optimisation sur vos références de matériel</th><td data-hl="commercial" class="yes"><i data-i="check"></i><span class="sr">Oui</span></td><td data-hl="academic" class="yes"><i data-i="check"></i><span class="sr">Oui</span></td><td data-hl="student" class="no">—<span class="sr">Non</span></td></tr>
+            <tr><th scope="row">Devis et prix de vente</th><td data-hl="commercial" class="yes"><i data-i="check"></i><span class="sr">Oui</span></td><td data-hl="academic" class="no">—<span class="sr">Non</span></td><td data-hl="student" class="no">—<span class="sr">Non</span></td></tr>
+            <tr><th scope="row">Export Word des documents</th><td data-hl="commercial" class="yes"><i data-i="check"></i><span class="sr">Oui</span></td><td data-hl="academic" class="yes"><i data-i="check"></i><span class="sr">Oui</span></td><td data-hl="student" class="no">—<span class="sr">Non</span></td></tr>
+            <tr><th scope="row">Émission et révisions du dossier</th><td data-hl="commercial" class="yes"><i data-i="check"></i><span class="sr">Oui</span></td><td data-hl="academic" class="yes"><i data-i="check"></i><span class="sr">Oui</span></td><td data-hl="student" class="no">—<span class="sr">Non</span></td></tr>
+            <tr><th scope="row">Votre matériel ajouté au catalogue</th><td data-hl="commercial" class="yes"><i data-i="check"></i><span class="sr">Oui</span></td><td data-hl="academic" class="yes"><i data-i="check"></i><span class="sr">Oui</span></td><td data-hl="student" class="no">—<span class="sr">Non</span></td></tr>
+            <tr><th scope="row">Nombre de projets</th><td data-hl="commercial">Illimité</td><td data-hl="academic">Illimité</td><td data-hl="student" class="num">5</td></tr>
+            <tr><th scope="row">Filigrane sur les documents</th><td data-hl="commercial">Aucun</td><td data-hl="academic">« Académique »</td><td data-hl="student">« Étudiant »</td></tr>
+            <tr><th scope="row">Postes</th><td data-hl="commercial">1 ou plus</td><td data-hl="academic">1 ou plus</td><td data-hl="student" class="num">1</td></tr>
+            <tr><th scope="row">Délai de grâce à l'échéance</th><td data-hl="commercial" class="num">7 jours</td><td data-hl="academic" class="num">3 jours</td><td data-hl="student">Aucun</td></tr>
+            <tr><th scope="row">Mises à jour</th><td data-hl="commercial">Incluses</td><td data-hl="academic">Incluses</td><td data-hl="student">Incluses</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted" style="margin-top:14px;font-size:13.5px">Le contenu des éditions est réglé dans l'administration et arrive dans la licence : le changer ne demande pas de nouvelle version du logiciel.</p>
+    </div>
+  </section>
+
+  <section class="section" data-block="Trois encarts" aria-label="Autres besoins">
+    <div class="wrap note-band">
+      <div><h3>Besoin d'un devis avant de payer ?</h3><p>Institutions et établissements : nous établissons un devis au nom de votre organisation. Vous payez ensuite en ligne ou par virement.</p><a class="link-arrow" href="../contact.html?sujet=devis">Demander un devis <i data-i="right" class="i-sm"></i></a></div>
+      <div><h3>Essayez d'abord.</h3><p>Un essai gratuit par compte, activé depuis votre espace. Toutes les fonctions, sur le projet exemple et les vôtres.</p><a class="link-arrow" href="../essai.html">Activer mon essai <i data-i="right" class="i-sm"></i></a></div>
+      <div><h3>Plusieurs postes ?</h3><p>Achetez le nombre de postes voulu, puis attribuez-les à vos collègues depuis votre espace. Un poste libéré se réattribue.</p><a class="link-arrow" href="../espace/licences.html">Voir la gestion des postes <i data-i="right" class="i-sm"></i></a></div>
+    </div>
+  </section>
+
+  <section class="section soft" data-block="Questions" aria-labelledby="t-faq">
+    <div class="wrap">
+      <h2 id="t-faq" class="h2" style="margin-bottom:28px">Questions sur les licences.</h2>
+      <div class="faq">
+        <details><summary>Que se passe-t-il à l'échéance ?<i data-i="plus" class="plus"></i></summary><div class="ans"><p>Vous êtes prévenu avant. À l'échéance commence un délai de grâce (7 jours en Commerciale, 3 en Académique), puis KYA-SolDesign passe en lecture seule : vos projets s'ouvrent et s'impriment, mais ne se modifient plus. Renouvelez depuis votre espace pour tout retrouver.</p></div></details>
+        <details><summary>Puis-je changer d'ordinateur ?<i data-i="plus" class="plus"></i></summary><div class="ans"><p>Oui. Libérez le poste depuis votre espace, puis activez KYA-SolDesign sur le nouvel ordinateur avec votre compte ou votre clé.</p></div></details>
+        <details><summary>Faut-il une connexion Internet ?<i data-i="plus" class="plus"></i></summary><div class="ans"><p>Pour l'activation et pour télécharger la météo d'un nouveau site. Le reste fonctionne hors ligne ; la licence se vérifie à la prochaine connexion.</p></div></details>
+        <details><summary>Quelle facture vais-je recevoir ?<i data-i="plus" class="plus"></i></summary><div class="ans"><p>Une facture d'achat au nom indiqué lors du paiement, envoyée par courriel et disponible dans votre espace, rubrique Factures d'achat.</p></div></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-chrome-foot></div>
+<script src="../assets/js/site.js" defer></script>
+</body>
+</html>

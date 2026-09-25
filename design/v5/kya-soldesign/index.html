@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KYA-SolDesign · KYA-EnergyMarket</title>
+  <meta name="description" content="KYA-SolDesign conçoit des systèmes solaires autonomes fiables et économiquement accessibles.">
+  <link rel="icon" href="../assets/img/ksd-mark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="../assets/img/hero.jpg">
+  <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-root="../" data-chrome="product" data-tab="presentation">
+<!--
+THESIS: la page produit d'un outil d'ingénieur qui parle comme un bon conseiller — une promesse, une preuve qu'on
+  manipule, un chemin — et refuse la page « solaire » d'usage (champ de panneaux, grilles de pictogrammes).
+OWN-WORLD: direction v4 (blanc, photo pleine largeur, très grands titres serrés) sous charte KYA : Poppins, Inter,
+  JetBrains Mono pour tout nombre ; teal = calculé, teal profond = structure, orange = acheter et rien d'autre.
+STORY: le visiteur comprend ce que calcule KYA-SolDesign, lit SRI et SVI sur le projet exemple, règle le point juste,
+  voit ce qu'il remettra à son client et à ses techniciens, puis essaie ou achète.
+FIRST VIEWPORT: deux en-têtes blancs, photo pleine largeur teintée teal profond, promesse validée en blanc à gauche,
+  « Essayer gratuitement » et « Voir les tarifs » en pied de photo.
+FORM: extension de la direction v4 validée ; tirage non lancé (direction imposée). Seed : brief-pinned.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+-->
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div data-chrome-top></div>
+
+<main id="contenu">
+  <!-- 1. Promesse -->
+  <section class="hero" data-block="Héros" aria-labelledby="t-hero">
+    <img class="hero-img" src="../assets/img/hero.jpg" alt="" width="2200" height="1238">
+    <div class="wrap hero-in">
+      <h1 id="t-hero">Concevez des systèmes solaires fiables et économiquement accessibles.</h1>
+      <div class="hero-foot">
+        <p>KYA-SolDesign dimensionne votre installation solaire autonome et vous dit, avant de construire, si elle tiendra et combien coûtera son kWh.</p>
+        <div class="hero-cta">
+          <a class="btn btn-light btn-lg" href="../essai.html">Essayer gratuitement <i data-i="go" class="i-go"></i></a>
+          <a class="btn btn-ghost-light btn-lg" href="tarifs.html">Voir les tarifs</a>
+        </div>
+      </div>
+    </div>
+    <span class="credit">Photo d'illustration</span>
+  </section>
+
+  <div class="facts" data-block="Repères">
+    <div class="wrap facts-row">
+      <div class="fact"><b class="num">2020</b><span>utilisé sur le terrain depuis</span></div>
+      <div class="fact"><b class="num">500+</b><span>installations à la base de la méthode</span></div>
+      <div class="fact"><b class="num">5 <span class="ex">exemple</span></b><span>pays d'Afrique de l'Ouest</span></div>
+      <div class="fact"><b>ISO 9001</b><span>KYA-Energy Group, certifié 2015</span></div>
+    </div>
+  </div>
+
+  <section class="section" data-block="Capture" aria-labelledby="t-shot">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="t-shot" class="h2">Du site au schéma. Dans un seul logiciel.</h2>
+        <p>Météo réelle du site, besoins heure par heure, matériel de votre catalogue, protections, chiffrage et documents. Sur Windows, même sans connexion.</p>
+      </div>
+      <figure class="shot">
+        <div class="shot-bar"><i></i><i></i><i></i><span>KYA-SolDesign 1.2.1 — Prédimensionnement · Centre de santé de Bombouaka (exemple)</span></div>
+        <img src="../assets/img/predim.webp" alt="Écran de prédimensionnement de KYA-SolDesign sur le projet exemple : système minimal fiable, SRI 0,903, SVI 0,84" width="1600" height="1000" loading="lazy">
+        <figcaption><span>Capture réelle du logiciel, projet exemple livré avec l'installation</span><span>Windows 10 et 11 · hors ligne</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 2. Le prix de l'erreur -->
+  <section class="section soft" data-block="Texte en deux colonnes" aria-labelledby="t-err">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="t-err" class="h2">Le prix de l'erreur.</h2>
+        <p>Un système solaire mal dimensionné se paie deux fois : à l'achat, ou pendant des années. Il n'y a pas de petite erreur.</p>
+      </div>
+      <div class="err">
+        <div>
+          <h3>Trop grand.</h3>
+          <p>Vous payez des panneaux et des batteries qui ne serviront jamais.</p>
+          <ul><li><i data-i="x"></i>Budget gonflé, projet refusé par le client</li><li><i data-i="x"></i>Argent immobilisé dans du matériel inutile</li></ul>
+        </div>
+        <div>
+          <h3>Trop petit.</h3>
+          <p>Le système coupe au moment où l'on en a le plus besoin.</p>
+          <ul><li><i data-i="x"></i>Coupures le soir et en saison des pluies</li><li><i data-i="x"></i>Batteries usées avant l'heure, réputation en jeu</li></ul>
+        </div>
+      </div>
+      <div class="err-meter" aria-hidden="true"><span>Trop petit</span><span>Le point juste</span><span>Trop grand</span></div>
+    </div>
+  </section>
+
+  <!-- 3. Deux indicateurs pour décider -->
+  <section class="section" id="indicateurs" data-block="Exemple interactif" aria-labelledby="t-ind">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="t-ind" class="h2">Deux indicateurs pour décider.</h2>
+        <p>Chaque étude se résume en deux nombres entre 0 et 1. Ils se lisent sans être ingénieur.</p>
+      </div>
+      <div class="qs">
+        <div class="q"><svg class="gauge gauge-mini" data-gauge="0.903" role="img" aria-label="0,90 sur 1"></svg>
+          <b>Fiabilité technique · SRI</b><p>Le système couvrira-t-il les besoins, sans coupure ? Plus il est proche de 1, plus la réponse est oui.</p></div>
+        <div class="q"><svg class="gauge gauge-mini" data-gauge="0.84" data-kind="eco" role="img" aria-label="0,84"></svg>
+          <b>Accessibilité économique · SVI</b><p>L'énergie sera-t-elle moins chère que le réseau ? En dessous de 1, oui.</p></div>
+      </div>
+
+      <div class="app" data-app>
+        <aside class="app-side">
+          <div class="app-brand"><img src="../assets/img/ksd-mark.png" alt="">KYA-SolDesign</div>
+          <div class="app-tabs" role="tablist" aria-label="Indicateurs du projet exemple">
+            <button role="tab" id="tab-rel" aria-selected="true" aria-controls="panel" data-tab="rel"><i data-i="shield"></i>Fiabilité<i data-i="go" class="i-go"></i></button>
+            <button role="tab" id="tab-eco" aria-selected="false" aria-controls="panel" data-tab="eco" tabindex="-1"><i data-i="coins"></i>Accessibilité<i data-i="go" class="i-go"></i></button>
+            <button role="tab" id="tab-prod" aria-selected="false" aria-controls="panel" data-tab="prod" tabindex="-1"><i data-i="sun"></i>Production<i data-i="go" class="i-go"></i></button>
+          </div>
+          <p class="app-note">Projet exemple livré avec le logiciel. Répartition par mois indicative.</p>
+        </aside>
+        <div class="app-main" id="panel" role="tabpanel" aria-labelledby="tab-rel" data-panel>
+          <div class="app-top">
+            <div><p class="mono-label">Exemple interactif</p><p class="app-hello">Centre de santé de Bombouaka.</p></div>
+            <span class="chip">Sur l'année</span>
+          </div>
+          <div class="app-figs">
+            <div>
+              <p class="app-label" data-f="label">Fiabilité technique (SRI)</p>
+              <div class="app-bigrow">
+                <p class="app-big"><span data-f="big">0,90</span><small data-f="unit">sur 1</small></p>
+                <svg class="gauge" data-app-gauge viewBox="0 0 132 76" aria-hidden="true"><path class="track" d="M16 66a50 50 0 0 1 100 0"/><path class="val" d="M16 66a50 50 0 0 1 100 0" stroke-dasharray="157.08" stroke-dashoffset="157.08"/></svg>
+              </div>
+            </div>
+            <div class="app-side-fig"><p class="app-label" data-f="label2">Énergie non servie</p><p class="app-mid"><span data-f="mid">4,1</span> <small data-f="unit2">%</small></p></div>
+          </div>
+          <p class="app-say" data-f="say"></p>
+          <div class="chart" data-chart aria-hidden="true"></div>
+          <p class="chart-legend" data-legend></p>
+          <ul class="rows" data-rows></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Le point juste -->
+  <section class="section soft" data-block="Graphique réglable" aria-labelledby="t-fit">
+    <div class="wrap fit" data-fit>
+      <div class="fit-controls">
+        <h2 id="t-fit" class="h2">Le point juste.</h2>
+        <p class="muted" style="font-size:17px">Plus de fiabilité coûte plus cher. KYA-SolDesign cherche la fiabilité que vous visez, au coût le plus bas. Faites glisser pour voir.</p>
+        <div class="range">
+          <label for="sri">Fiabilité visée (SRI) <output data-o="sri" for="sri">0,90</output></label>
+          <input id="sri" type="range" min="800" max="990" step="1" value="903">
+        </div>
+        <div class="fit-read">
+          <div><b><span data-o="cost">100,6</span> <small>FCFA</small></b><small>coût d'un kWh produit</small></div>
+          <div><b data-o="svi">0,84</b><small>accessibilité (SVI)</small></div>
+        </div>
+        <p class="fit-verdict" role="status"></p>
+      </div>
+      <div>
+        <svg class="fit-plot" role="img" aria-label="Coût du kWh selon la fiabilité visée, comparé au prix du réseau"></svg>
+        <p class="fit-note">Courbe illustrative, calée sur le projet exemple (0,90 → 100,6 FCFA/kWh). Zone verte : fiable et moins cher que le réseau.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Une étude en trois temps -->
+  <section class="section" data-block="Étapes" aria-labelledby="t-steps">
+    <div class="wrap steps-grid">
+      <div>
+        <h2 id="t-steps" class="h2" style="margin-bottom:36px">Une étude en trois temps.</h2>
+        <div class="acc" data-steps>
+          <details name="etapes" open data-img="../assets/img/besoins.webp" data-alt="Bilan des consommations du projet exemple">
+            <summary><span class="n">01</span><span>Comprendre le besoin</span><i data-i="plus" class="plus"></i></summary>
+            <div class="acc-body"><p>Ce qu'il faut alimenter, quand, et où.</p>
+              <ul><li>Identification du projet et du client</li><li>Site et météo réelle, heure par heure</li><li>Bilan des consommations : journée type, année composée ou importée</li></ul>
+              <p class="tag">Identification · Site · Besoins</p></div>
+          </details>
+          <details name="etapes" data-img="../assets/img/materiel.webp" data-alt="Dimensionnement avec le catalogue de matériel">
+            <summary><span class="n">02</span><span>Dimensionner</span><i data-i="plus" class="plus"></i></summary>
+            <div class="acc-body"><p>Le système minimal fiable, puis votre vrai matériel.</p>
+              <ul><li>Prédimensionnement : puissance crête, stockage, onduleur</li><li>Dimensionnement avec votre catalogue de matériel</li><li>Protections et câbles selon l'IEC 60364-5-52</li></ul>
+              <p class="tag">Prédimensionnement · Matériel · Protections</p></div>
+          </details>
+          <details name="etapes" data-img="../assets/img/chiffrage.webp" data-alt="Évaluation financière et prix de vente">
+            <summary><span class="n">03</span><span>Évaluer et chiffrer</span><i data-i="plus" class="plus"></i></summary>
+            <div class="acc-body"><p>Ce que coûte le système, et à quel prix le vendre.</p>
+              <ul><li>Coût du kWh sur la durée de vie, comparé au réseau</li><li>Prix de vente et marges par poste</li><li>Devis, schéma unifilaire, rapport</li></ul>
+              <p class="tag">Évaluation financière · Documents</p></div>
+          </details>
+        </div>
+      </div>
+      <figure class="steps-fig">
+        <div class="shot">
+          <div class="shot-bar"><i></i><i></i><i></i><span data-steps-cap>Bilan des consommations du projet exemple</span></div>
+          <img data-steps-img src="../assets/img/besoins.webp" alt="Bilan des consommations du projet exemple" width="1600" height="1000" loading="lazy">
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 6. Ce que vous obtenez -->
+  <section class="section soft" data-block="Livrables" aria-labelledby="t-get">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="t-get" class="h2">Ce que vous obtenez.</h2>
+        <p>Chaque document va à la bonne personne : le prix pour votre client, la technique pour ceux qui installent.</p>
+      </div>
+      <div class="deliver">
+        <article>
+          <span class="who"><i data-i="users"></i>Pour votre client final</span>
+          <h3>Le devis.</h3>
+          <p>Le prix de l'installation, à votre nom et avec vos marges. Votre client sait ce qu'il paie.</p>
+          <ul><li><i data-i="check"></i>Prix par poste, marges comprises</li><li><i data-i="check"></i>TVA selon le pays</li><li><i data-i="check"></i>PDF et Word</li></ul>
+          <div class="pic devis">
+            <div class="devis-doc">
+              <header><div><b>Devis</b><br><small class="muted">Centre de santé de Bombouaka · EXEMPLE-001</small></div><small class="num muted">25/09/2026</small></header>
+              <table>
+                <tr><td>Modules · 7</td><td>764 750</td></tr>
+                <tr><td>Batteries · 1</td><td>1 322 500</td></tr>
+                <tr><td>Onduleur · 1</td><td>1 610 000</td></tr>
+                <tfoot><tr><td>Total hors taxes</td><td>3 697 250 FCFA</td></tr></tfoot>
+              </table>
+            </div>
+          </div>
+        </article>
+        <article>
+          <span class="who"><i data-i="file"></i>Pour vos techniciens</span>
+          <h3>Le schéma et les documents techniques.</h3>
+          <p>Ce qu'il faut pour installer juste, sans refaire les calculs sur le chantier.</p>
+          <ul><li><i data-i="check"></i>Schéma unifilaire, A4 ou A3 paysage</li><li><i data-i="check"></i>Rapport de dimensionnement paginé</li><li><i data-i="check"></i>Protections et sections de câbles</li></ul>
+          <div class="pic"><img src="../assets/img/unifilaire.webp" alt="Schéma unifilaire du projet exemple produit par KYA-SolDesign" loading="lazy"></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Pour qui -->
+  <section class="section" data-block="Liste" aria-labelledby="t-who">
+    <div class="wrap">
+      <h2 id="t-who" class="h2" style="margin-bottom:40px">Pour qui ?</h2>
+      <ul class="who-list">
+        <li><h3>Bureaux d'études et installateurs</h3><p>Dimensionnez, chiffrez et remettez un dossier complet à chaque client.</p><div class="ed"><b>Édition Commerciale</b><a class="link-arrow" href="tarifs.html?edition=commercial#acheter">Voir l'offre <i data-i="right" class="i-sm"></i></a></div></li>
+        <li><h3>Institutions</h3><p>Vérifiez les projets que vous financez ou exploitez, sur des critères communs. Devis possible avant paiement.</p><div class="ed"><b>Édition Commerciale</b><a class="link-arrow" href="../contact.html?sujet=devis">Demander un devis <i data-i="right" class="i-sm"></i></a></div></li>
+        <li><h3>Enseignement</h3><p>Écoles et universités : enseignez le dimensionnement sur un logiciel de terrain.</p><div class="ed"><b>Édition Académique</b><a class="link-arrow" href="tarifs.html?edition=academic#acheter">Voir l'offre <i data-i="right" class="i-sm"></i></a></div></li>
+        <li><h3>Étudiants</h3><p>Apprenez et préparez vos projets, pour un jour ou pour un mois.</p><div class="ed"><b>Édition Étudiant</b><a class="link-arrow" href="tarifs.html?edition=student#acheter">Voir l'offre <i data-i="right" class="i-sm"></i></a></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 8. La preuve -->
+  <section class="section soft" data-block="Preuve" aria-labelledby="t-proof">
+    <div class="wrap proof">
+      <figure class="proof-fig"><img src="../assets/img/terrain.jpg" alt="Un technicien sous une rangée de panneaux solaires" loading="lazy"><figcaption>Photo d'illustration</figcaption></figure>
+      <div>
+        <h2 id="t-proof" class="h2" style="margin-bottom:32px">La preuve.</h2>
+        <div class="big-nums">
+          <div><b class="num">500+</b><span>installations à la base de la méthode</span></div>
+          <div><b class="num">5</b><span>pays <span class="ex">exemple</span></span></div>
+          <div><b class="num">12</b><span>établissements d'enseignement <span class="ex">exemple</span></span></div>
+          <div><b>ISO</b><span>9001:2015, KYA-Energy Group</span></div>
+        </div>
+        <div class="quote" data-quotes>
+          <figure><blockquote>« Nous remettons maintenant le dossier le jour de la visite. Le client voit tout de suite si le système tiendra, et ce qu'il va payer. »</blockquote><figcaption><span class="avatar">BE</span>Responsable technique, bureau d'études, Lomé <span class="ex">exemple</span></figcaption></figure>
+          <figure hidden><blockquote>« Mes étudiants comprennent enfin pourquoi on ne dimensionne pas sur le jour moyen. Le SRI parle tout seul. »</blockquote><figcaption><span class="avatar">EN</span>Enseignant, école d'ingénieurs <span class="ex">exemple</span></figcaption></figure>
+          <figure hidden><blockquote>« Nous comparons les offres de nos prestataires sur les mêmes deux indicateurs. Les discussions sont plus courtes. »</blockquote><figcaption><span class="avatar">IN</span>Chargé de projets énergie, institution <span class="ex">exemple</span></figcaption></figure>
+          <div class="quote-nav"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Fin -->
+  <section class="close" data-block="Clôture" aria-labelledby="t-close">
+    <div class="wrap">
+      <h2 id="t-close" class="giant">Calculez avant<br>de construire.</h2>
+      <div class="close-foot">
+        <p>« Lequel de vous, s'il veut bâtir une tour, ne s'assied d'abord pour calculer la dépense ? » <span class="muted">— Luc 14:28</span></p>
+        <div class="cta-row">
+          <a class="btn btn-deep btn-lg" href="../essai.html">Essayer gratuitement <i data-i="go" class="i-go"></i></a>
+          <a class="btn btn-buy btn-lg" href="tarifs.html#acheter">Acheter</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-chrome-foot></div>
+<script src="../assets/js/site.js" defer></script>
+</body>
+</html>

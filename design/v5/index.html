@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KYA-EnergyMarket</title>
+  <meta name="description" content="Les logiciels de KYA-Energy Group, réunis au même endroit.">
+  <link rel="icon" href="assets/img/kya-mark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/img/terrain.jpg">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-root="" data-chrome="market">
+<!--
+THESIS: l'accueil d'une marketplace de logiciels d'ingénierie énergétique, qui présente un produit prêt avant d'en
+  promettre quatre, et refuse la grille de tuiles identiques d'une boutique d'applications.
+OWN-WORLD: direction v4 sous charte KYA (Poppins, Inter, JetBrains Mono ; teal, teal profond, orange pour acheter).
+STORY: le visiteur comprend que KYA-Energy Group vend ses logiciels ici, découvre KYA-SolDesign, voit les suivants,
+  comprend le parcours essayer → acheter → gérer, et trouve les réponses sur compte, paiement et facture.
+FIRST VIEWPORT: en-tête marketplace validé, photo terrain pleine largeur, promesse à gauche, deux actions.
+FORM: extension de la direction v4 validée. Seed : brief-pinned.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+-->
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div data-chrome-top></div>
+
+<main id="contenu">
+  <section class="hero no-flip" data-block="Héros" aria-labelledby="t-hero">
+    <img class="hero-img" src="assets/img/terrain.jpg" alt="" width="1400" height="933">
+    <div class="wrap hero-in">
+      <h1 id="t-hero">Les logiciels de KYA-Energy Group, réunis au même endroit.</h1>
+      <div class="hero-foot">
+        <p>Des outils nés sur le terrain de l'Afrique de l'Ouest, pour concevoir, évaluer et suivre des systèmes énergétiques. Essayez, achetez, et retrouvez tout dans votre espace.</p>
+        <div class="hero-cta">
+          <a class="btn btn-light btn-lg" href="kya-soldesign/index.html">Découvrir KYA-SolDesign <i data-i="go" class="i-go"></i></a>
+          <a class="btn btn-ghost-light btn-lg" href="logiciels.html">Tous les logiciels</a>
+        </div>
+      </div>
+    </div>
+    <span class="credit">Photo d'illustration</span>
+  </section>
+
+  <section class="section" data-block="Logiciels" aria-labelledby="t-soft">
+    <div class="wrap">
+      <div class="soft-feature">
+        <div>
+          <span class="state ok">Disponible</span>
+          <h2 id="t-soft" style="margin-top:18px">KYA-SolDesign.</h2>
+          <p>Concevez des systèmes solaires fiables et économiquement accessibles : du site au schéma unifilaire, avec deux indicateurs pour décider.</p>
+          <div class="cta-row">
+            <a class="btn btn-deep" href="kya-soldesign/index.html">Découvrir <i data-i="go" class="i-go"></i></a>
+            <a class="btn btn-line" href="essai.html">Essayer gratuitement</a>
+          </div>
+        </div>
+        <figure class="shot">
+          <div class="shot-bar"><i></i><i></i><i></i><span>KYA-SolDesign 1.2.1 — Évaluation financière</span></div>
+          <img src="assets/img/chiffrage.webp" alt="Écran d'évaluation financière de KYA-SolDesign" width="1600" height="1000">
+        </figure>
+      </div>
+
+      <h3 class="h3" style="margin:88px 0 8px">Bientôt sur KYA-EnergyMarket</h3>
+      <div class="soft-list">
+        <article class="soft-item is-soon"><span class="logo"><b>EL</b></span><div><h3>KYA-EcoLabel</h3><p class="kind">Description à fournir</p></div><p>Présentation à venir. Laissez votre courriel pour être prévenu de l'ouverture.</p><div class="act"><span class="state soon">Bientôt</span><a class="btn btn-line btn-sm" href="#" data-toast="Nous vous préviendrons à l'ouverture (maquette)">Me prévenir</a></div></article>
+        <article class="soft-item is-soon"><span class="logo"><b>BM</b></span><div><h3>KYA-BusinessModel</h3><p class="kind">Description à fournir</p></div><p>Présentation à venir. Laissez votre courriel pour être prévenu de l'ouverture.</p><div class="act"><span class="state soon">Bientôt</span><a class="btn btn-line btn-sm" href="#" data-toast="Nous vous préviendrons à l'ouverture (maquette)">Me prévenir</a></div></article>
+        <article class="soft-item is-soon"><span class="logo"><b>SM</b></span><div><h3>KYA-SolMonitor</h3><p class="kind">Description à fournir</p></div><p>Présentation à venir. Laissez votre courriel pour être prévenu de l'ouverture.</p><div class="act"><span class="state soon">Bientôt</span><a class="btn btn-line btn-sm" href="#" data-toast="Nous vous préviendrons à l'ouverture (maquette)">Me prévenir</a></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section soft" data-block="Comment ça marche" aria-labelledby="t-how">
+    <div class="wrap">
+      <div class="sec-head"><h2 id="t-how" class="h2">Comment ça marche.</h2><p>Un seul compte pour tous les logiciels de KYA-Energy Group.</p></div>
+      <div class="how">
+        <div><span class="n">01</span><h3>Essayer.</h3><p>Créez votre compte et activez l'essai gratuit du logiciel, une fois, depuis votre espace.</p><a class="link-arrow" style="margin-top:16px" href="essai.html">Commencer l'essai <i data-i="right" class="i-sm"></i></a></div>
+        <div><span class="n">02</span><h3>Acheter.</h3><p>Choisissez l'édition, la durée et le nombre de postes. Payez par Mobile Money ou carte.</p><a class="link-arrow" style="margin-top:16px" href="kya-soldesign/tarifs.html">Voir les tarifs <i data-i="right" class="i-sm"></i></a></div>
+        <div><span class="n">03</span><h3>Tout gérer.</h3><p>Licences, postes, téléchargements, factures d'achat et demandes de support, dans votre espace.</p><a class="link-arrow" style="margin-top:16px" href="espace/index.html">Voir l'espace client <i data-i="right" class="i-sm"></i></a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section deep" data-block="Entreprise" aria-labelledby="t-kya">
+    <div class="wrap proof" style="align-items:center">
+      <div>
+        <h2 id="t-kya" class="h2">KYA-Energy Group.</h2>
+        <p style="margin-top:18px;max-width:48ch;font-size:17px;color:rgba(255,255,255,.82)">Une entreprise d'ingénierie et de recherche en énergie, qui conçoit ses logiciels à partir de ses propres installations. Ce que nous vendons ici, nous l'utilisons d'abord.</p>
+        <a class="btn btn-ghost-light" style="margin-top:28px" href="a-propos.html">À propos de KYA-Energy Group</a>
+      </div>
+      <div class="big-nums" style="border-color:rgba(255,255,255,.2)">
+        <div style="border-color:rgba(255,255,255,.2)"><b class="num">500+</b><span style="color:rgba(255,255,255,.75)">installations à la base de nos méthodes</span></div>
+        <div style="border-color:rgba(255,255,255,.2)"><b>ISO</b><span style="color:rgba(255,255,255,.75)">9001:2015, certification qualité</span></div>
+        <div style="border-color:rgba(255,255,255,.2)"><b class="num">2020</b><span style="color:rgba(255,255,255,.75)">premiers utilisateurs de KYA-SolDesign</span></div>
+        <div style="border-color:rgba(255,255,255,.2)"><b class="num">4</b><span style="color:rgba(255,255,255,.75)">logiciels, dont KYA-SolDesign disponible</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-block="Questions" aria-labelledby="t-faq">
+    <div class="wrap">
+      <div class="sec-head"><h2 id="t-faq" class="h2">Questions.</h2><p>Compte, paiement, facture, licences. Les autres réponses sont dans l'<a class="link" href="aide.html">aide</a>.</p></div>
+      <div class="faq">
+        <details><summary>Un compte sert-il pour tous les logiciels ?<i data-i="plus" class="plus"></i></summary><div class="ans"><p>Oui. Le même compte donne accès aux essais, aux achats et aux téléchargements de chaque logiciel de KYA-EnergyMarket.</p></div></details>
+        <details><summary>Comment puis-je payer ?<i data-i="plus" class="plus"></i></summary><div class="ans"><p>Par Mobile Money ou par carte bancaire, via Semoa. Les institutions peuvent demander un devis et payer par virement.</p></div></details>
+        <details><summary>Quand vais-je recevoir ma facture ?<i data-i="plus" class="plus"></i></summary><div class="ans"><p>Juste après le paiement : la facture d'achat arrive par courriel et reste dans votre espace, rubrique Factures d'achat.</p></div></details>
+        <details><summary>Puis-je utiliser une licence sur plusieurs ordinateurs ?<i data-i="plus" class="plus"></i></summary><div class="ans"><p>Une licence compte un nombre de postes. Achetez-en plusieurs et attribuez-les à vos collègues depuis votre espace.</p></div></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-chrome-foot></div>
+<script src="assets/js/site.js" defer></script>
+</body>
+</html>
