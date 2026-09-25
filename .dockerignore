@@ -1,0 +1,15 @@
+.git
+**/node_modules
+**/.output
+**/.tanstack
+**/test-results
+**/playwright-report
+.env
+.env.*
+design
+specs
+docs
+.specify
+.claude
+.agents
+*.md
