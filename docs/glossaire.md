@@ -22,9 +22,9 @@ Les mots de l'interface, de la documentation et du code. Un terme par idée, le 
 | **Documents techniques** | Schéma unifilaire, rapport, liste des protections : pour les techniciens. | côté logiciel |
 | **Client final** | Le client de l'utilisateur de KYA-SolDesign (le propriétaire de l'installation). | — |
 | **Compte** | Une personne qui se connecte. | `User` |
-| **Organisation** | Entreprise, école ou institution ; possède les licences et les factures. Un compte seul a une organisation personnelle. | `Organization` |
-| **Membre** | Compte rattaché à une organisation, avec un rôle (propriétaire, administrateur, membre). | `Member` |
-| **Administration** | L'espace de l'équipe KYA. | `/admin` |
+| **Organisation** | Titulaire des licences et des factures d'achat : entreprise, école, institution, ou organisation personnelle créée d'office pour un particulier. **Invisible par défaut** : elle n'apparaît que si l'on achète pour une structure ou plusieurs postes. Elle assure la continuité quand l'acheteur quitte la structure. | `Organization` |
+| **Membre** | Compte rattaché à une organisation, avec un rôle : propriétaire ou membre. | `Member` |
+| **Administration** | L'espace de l'équipe KYA, dans l'interface et par MCP (réservé à l'équipe). | `/admin`, `/mcp` |
 | **Bloc** | Élément d'une page composée : héros, texte Markdown, exemple interactif, tarifs, questions… | `Block` |
 | **Page composée** | Page d'un logiciel ou de la marketplace, assemblée de blocs dans l'administration. | `Page` |
 | **Version logicielle** | Une publication d'un logiciel (numéro, date, canal, notes, fichier). | `SoftwareRelease` |
