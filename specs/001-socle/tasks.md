@@ -47,7 +47,7 @@ Légende : `[P]` parallélisable. Les numéros d'exigences renvoient à [spec.md
 
 - [x] T060 Mettre à jour README, `docs/operations`, CHANGELOG ; passer `pnpm verify` au vert
 - [x] T061 Création du projet Neon (`pnpm neon:setup`) dès que la clé est dans le fichier de secrets, puis `pnpm db:migrate` sur `dev`
-- [ ] T062 Déploiement Coolify : après T061 (la production exige `DATABASE_URL`) et l'accès de Coolify au dépôt
+- [x] T062 Déploiement Coolify : après T061 (la production exige `DATABASE_URL`) et l'accès de Coolify au dépôt
 
 ## Écarts constatés pendant l'implémentation
 
@@ -56,3 +56,4 @@ Légende : `[P]` parallélisable. Les numéros d'exigences renvoient à [spec.md
 - Organisation du code par fonctionnalité (`features/`, `packages/domain/src/<nom>/`), demandée pendant la tranche.
 - Vert KYA `#1ca18c` rendu visible (boutons principaux, grande section) avec une encre foncée (5,6:1) ; les teintes assombries restent pour les liens et le voile des photos.
 - Projet Neon `kya-energy-market` créé (Francfort, PostgreSQL 17, branches main, dev, test), migration `0000_socle` appliquée sur `dev` ; connexions en `sslmode=verify-full`.
+- Déploiement `dev` en ligne : https://kya-energy-market-dev.13.140.178.49.sslip.io (image `ghcr.io/kya-techteam15/kya-energymarket:feat-001-socle`, Neon `dev`). Le contrôle de santé de Coolify vise `127.0.0.1` : dans l'image Alpine, `localhost` se résout en IPv6 alors que le serveur écoute en IPv4.

@@ -135,6 +135,8 @@ if (!application) {
       health_check_enabled: true,
       health_check_path: '/api/health',
       health_check_port: '3000',
+      // « localhost » se résout en IPv6 dans l'image Alpine ; le serveur écoute en IPv4.
+      health_check_host: '127.0.0.1',
       instant_deploy: false,
     }),
   });
@@ -142,7 +144,7 @@ if (!application) {
 } else {
   await coolify(`/applications/${application.uuid}`, {
     method: 'PATCH',
-    body: JSON.stringify({ docker_registry_image_tag: tag }),
+    body: JSON.stringify({ docker_registry_image_tag: tag, health_check_host: '127.0.0.1' }),
   });
 }
 
@@ -160,7 +162,7 @@ await coolify(`/applications/${application.uuid}/envs/bulk`, {
 console.log('Coolify : variables APP_ENV, APP_BASE_URL, LOG_LEVEL, DATABASE_URL réglées.');
 
 // ---------------------------------------------------------------- déploiement et santé
-await coolify(`/deploy?uuid=${application.uuid}&force=true`);
+await coolify(`/deploy?uuid=${application.uuid}&force=true`, { method: 'POST' });
 console.log(`Déploiement lancé : image ${IMAGE}:${tag} → ${domain}`);
 
 for (let attempt = 0; attempt < 60; attempt += 1) {

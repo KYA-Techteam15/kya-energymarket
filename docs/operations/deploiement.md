@@ -21,7 +21,11 @@ Coolify **ne lit pas le dépôt** : il déploie l'image que la CI a construite e
    variables d'environnement au démarrage.
 4. Retour arrière : redéployer l'étiquette `sha-<commit>` précédente ; migrations additives.
 
-Adresses : `https://kya-energy-market-<env>.<ip-du-serveur>.sslip.io` en attendant le domaine.
+Adresses : `https://kya-energy-market-<env>.<ip-du-serveur>.sslip.io` en attendant le domaine. Environnement
+`dev` : https://kya-energy-market-dev.13.140.178.49.sslip.io.
+
+Contrôle de santé Coolify : hôte `127.0.0.1` (dans l'image Alpine, `localhost` se résout en IPv6 alors que le
+serveur écoute en IPv4). L'API de Coolify lance un déploiement par `POST /deploy`.
 ## Ce qui reste à décider
 
 Nom de domaine de production, fournisseur de courriel transactionnel, stockage objet des médias et
