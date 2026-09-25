@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tableau de bord · Espace client · KYA-EnergyMarket</title>
+  <link rel="icon" href="../assets/img/kya-mark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-root="../" data-chrome="market" data-auth="in" data-acct="dashboard">
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div data-chrome-top></div>
+
+<div class="acct">
+  <nav class="acct-side" data-acct-nav aria-label="Espace client"></nav>
+  <main class="acct-main" id="contenu">
+    <header class="acct-head">
+      <div><h1>Bonjour Afi.</h1><p>Soleil Plus · 3 postes KYA-SolDesign</p></div>
+      <div class="cta-row"><a class="btn btn-line" href="telechargements.html"><i data-i="download"></i>Télécharger KYA-SolDesign</a><a class="btn btn-buy" href="../kya-soldesign/tarifs.html#acheter">Acheter une licence</a></div>
+    </header>
+
+    <div class="acct-grid">
+      <div>
+        <section class="box">
+          <div class="box-head"><h2>Licences et essais en cours</h2><a class="link-arrow" href="licences.html">Tout voir <i data-i="right" class="i-sm"></i></a></div>
+          <ul class="box-list">
+            <li><img src="../assets/img/ksd-mark.png" alt=""><b>KYA-SolDesign · Commerciale, 1 an</b><small>3 postes, 2 attribués · jusqu'au 1er mars 2027</small><span class="end"><span class="state ok">Active</span><a class="btn btn-line btn-sm" href="licences.html">Gérer</a></span></li>
+            <li><img src="../assets/img/ksd-mark.png" alt=""><b>KYA-SolDesign · Essai</b><small>Terminé le 12 février 2026</small><span class="end"><span class="state off">Terminé</span></span></li>
+          </ul>
+        </section>
+        <section class="box">
+          <div class="box-head"><h2>Dernières factures d'achat</h2><a class="link-arrow" href="factures.html">Tout voir <i data-i="right" class="i-sm"></i></a></div>
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead><tr><th>Facture</th><th>Date</th><th>Objet</th><th class="r">Montant TTC</th><th></th></tr></thead>
+              <tbody>
+                <tr><td class="num">FA-2026-00098</td><td class="num">01/03/2026</td><td>Commerciale 1 an · 3 postes</td><td class="num r">778 800</td><td class="act"><a class="icon-btn" href="#" aria-label="Télécharger la facture FA-2026-00098" data-toast="FA-2026-00098.pdf (maquette)"><i data-i="download"></i></a></td></tr>
+                <tr><td class="num">FA-2025-00311</td><td class="num">01/03/2025</td><td>Commerciale 1 an · 2 postes</td><td class="num r">519 200</td><td class="act"><a class="icon-btn" href="#" aria-label="Télécharger la facture FA-2025-00311" data-toast="FA-2025-00311.pdf (maquette)"><i data-i="download"></i></a></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+      <div>
+        <section class="box">
+          <div class="box-head"><h2>Prochaine échéance</h2></div>
+          <div class="box-body">
+            <div class="due"><b class="num">157 jours</b><small>KYA-SolDesign Commerciale · 1er mars 2027</small></div>
+            <div class="meter" style="margin-top:18px"><i style="--v:57%"></i></div>
+            <p class="muted" style="font-size:13.5px;margin-top:10px">Nous vous prévenons 30, 7 et 1 jour avant.</p>
+            <a class="btn btn-buy btn-block" style="margin-top:18px" href="../achat.html?edition=commercial&plan=12m&seats=3">Renouveler</a>
+          </div>
+        </section>
+        <section class="box">
+          <div class="box-head"><h2>Support</h2><a class="link-arrow" href="support.html">Mes demandes <i data-i="right" class="i-sm"></i></a></div>
+          <ul class="box-list">
+            <li><span class="avatar" style="grid-row:span 2">KY</span><b>Import d'une année mesurée</b><small>Réponse du support, hier</small><span class="end"><span class="state ok">Répondu</span></span></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+    <p class="muted" style="margin-top:28px;font-size:13px">Espace de démonstration : noms, clés, dates et montants sont des <span class="ex">exemple</span>.</p>
+  </main>
+</div>
+
+<script src="../assets/js/site.js" defer></script>
+</body>
+</html>

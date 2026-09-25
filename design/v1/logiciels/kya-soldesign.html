@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KYA-SolDesign — KYA Energy Market</title>
+  <meta name="description" content="KYA-SolDesign dimensionne les installations photovoltaïques autonomes : météo réelle, fiabilité simulée sur l'année, matériel du catalogue, protections, chiffrage et dossier client.">
+  <link rel="icon" href="../assets/img/kya-energy-group-logo.png">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<!--
+THESIS: La page d'un logiciel est un canevas de blocs alimentés par la configuration du produit (offres, éditions, versions, fiche technique) ; elle prouve chaque fonction par la production réelle du logiciel et laisse chaque public trouver son édition.
+OWN-WORLD: Charte KYA (teal profond, sol chaud, filets 1 px, orange réservé à l'achat) ; planches à cartouche pour les captures ; tableaux et listes plutôt que cartes.
+STORY: Comprendre ce que fait KYA-SolDesign, voir ce qu'on remet au client, croire la méthode, choisir édition et durée, acheter.
+FIRST VIEWPORT: Identité produit et promesse à gauche, action d'achat et tarifs ; à droite la planche du prédimensionnement réel.
+FORM: « Deux portes », page logiciel du même monde ; clé 4fddc729.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-dash" viewBox="0 0 24 24"><path d="M7 12h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4.8 19.5c1.3-3.3 4-5 7.2-5s5.9 1.7 7.2 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="12" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 20h6M12 16.5V20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 12h17M12 3.5c2.4 2.4 3.5 5.2 3.5 8.5s-1.1 6.1-3.5 8.5c-2.4-2.4-3.5-5.2-3.5-8.5S9.6 5.9 12 3.5z" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+  <symbol id="i-offline" viewBox="0 0 24 24"><path d="M4 8.5a12 12 0 0 1 16 0M7 12a7.5 7.5 0 0 1 10 0M10 15.3a3 3 0 0 1 4 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="18.5" r="1.1" fill="currentColor"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3M19.5 4.5v4h-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5l7 2.8v5.4c0 4.3-2.9 7.7-7 8.8-4.1-1.1-7-4.5-7-8.8V6.3z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12.2l2.1 2.1L15.3 10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="i-blocks" viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="5" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="3.5" y="11" width="8" height="9" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="13.5" y="11" width="7" height="9" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+</svg>
+
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div class="demo-banner" role="note"><div class="wrap">Maquette de conception : les éléments marqués <span class="tag-example">exemple</span> (prix, témoignages, logos) sont provisoires.</div></div>
+
+<header class="site-head" data-block="en-tête">
+  <div class="wrap">
+    <a class="brand" href="../index.html" aria-label="KYA Energy Market, accueil">
+      <img src="../assets/img/kya-energy-group-logo.png" alt="" width="42" height="42">
+      <span class="brand-name"><b>KYA Energy Market</b><span>KYA-Energy Group</span></span>
+    </a>
+    <nav class="site-nav" id="site-nav" aria-label="Navigation principale">
+      <a href="../index.html#logiciels" aria-current="page">Logiciels</a>
+      <a href="#methode">La méthode</a>
+      <a href="#tarifs">Tarifs</a>
+      <a href="#versions">Versions</a>
+      <a href="#questions">Questions</a>
+    </nav>
+    <div class="head-actions">
+      <div class="lang" role="group" aria-label="Langue"><button type="button" aria-pressed="true">FR</button><button type="button" aria-pressed="false">EN</button></div>
+      <a class="btn btn-sm" href="#espace-client"><svg aria-hidden="true"><use href="#i-user"/></svg><span class="btn-cta-label">Espace client</span></a>
+      <button class="btn btn-sm menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="contenu">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Fil d'Ariane"><a href="../index.html">Logiciels</a> / KYA-SolDesign</nav>
+
+    <section class="p-hero" data-block="présentation">
+      <div>
+        <div class="p-id">
+          <img src="../assets/img/kya-soldesign-logo.png" alt="KYA-SolDesign" width="84" height="65">
+          <div><b style="font-size:1.05rem">KYA-SolDesign</b><br><span class="status status-ok">Version 1.2.0 · stable</span></div>
+        </div>
+        <h1>Dimensionnez un système solaire autonome fiable, du site au dossier client.</h1>
+        <p class="lead">Météo réelle du site, charge heure par heure sur l'année, matériel du catalogue, protections, chiffrage : KYA-SolDesign conduit l'étude et produit les documents que vous remettez.</p>
+        <div class="p-facts">
+          <span><svg aria-hidden="true"><use href="#i-monitor"/></svg>Windows 10 et 11</span>
+          <span><svg aria-hidden="true"><use href="#i-offline"/></svg>Fonctionne hors ligne</span>
+          <span><svg aria-hidden="true"><use href="#i-globe"/></svg>Français, anglais</span>
+          <span><svg aria-hidden="true"><use href="#i-refresh"/></svg>Mises à jour automatiques</span>
+        </div>
+        <div class="p-actions">
+          <a class="btn btn-buy" href="#tarifs">Choisir une licence <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn" href="#livrables">Voir un dossier produit</a>
+        </div>
+      </div>
+      <div class="p-hero-visual">
+        <figure class="plate">
+          <img src="../assets/img/predim.webp" alt="Prédimensionnement du projet exemple : champ PV 2,85 kWc, stockage 6,26 kWh, onduleur 2,71 kW, SRI 0,903" width="1600" height="1000">
+          <figcaption>
+            <span><small>Écran</small><b>Prédimensionnement</b></span>
+            <span><small>Projet</small><b>Centre de santé de Bombouaka</b></span>
+            <span><small>Fiabilité</small><b class="num">SRI 0,903</b></span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+  </div>
+
+  <section class="section section-white" id="livrables" data-block="livrables">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Ce que vous remettez à votre client</h2>
+        <p>Trois pièces générées depuis la même étude, qui portent la référence du dossier, sa version et sa date. Ici, celles du projet exemple.</p>
+      </div>
+      <div class="deliver">
+        <div>
+          <figure class="plate"><img src="../assets/img/rapport-couverture.webp" alt="Couverture du rapport technique et commercial du projet exemple" width="900" height="1272" loading="lazy"></figure>
+          <p class="cap"><b>Rapport technique et commercial</b> : PDF ou Word, sommaire et pages A4.</p>
+        </div>
+        <div>
+          <figure class="plate"><img src="../assets/img/rapport-page-2.webp" alt="Page du rapport : identification, synthèse et sommaire" width="900" height="1272" loading="lazy"></figure>
+          <p class="cap"><b>Synthèse et sommaire</b> : puissances, stockage, fiabilité en un coup d'œil.</p>
+        </div>
+        <div>
+          <figure class="plate">
+            <img src="../assets/img/unifilaire.webp" alt="Schéma unifilaire du projet exemple : champ PV, sectionneur-fusible, onduleur, parc batteries, parafoudres et terre" width="1800" height="1246" loading="lazy">
+            <figcaption>
+              <span><small>Planche</small><b>Schéma unifilaire</b></span>
+              <span><small>Format</small><b>A4 à A2 paysage</b></span>
+              <span><small>Export</small><b>PNG · SVG</b></span>
+            </figcaption>
+          </figure>
+          <p class="cap"><b>Schéma unifilaire</b> : protections, sections de câbles, terre et nomenclature.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-block="fonctions">
+    <div class="wrap">
+      <div class="section-head"><h2>Tout le parcours d'une étude, dans un seul outil</h2></div>
+      <div class="cap-table">
+        <div class="cap-row"><span class="n">1</span><div><h3>Identification du projet</h3><p>Client, site, référence, chargé de projet, logo et page de garde propres au dossier.</p></div></div>
+        <div class="cap-row"><span class="n">2</span><div><h3>Site et météo</h3><p>Localités, orientation du champ, séries horaires PVGIS vérifiées, températures de conception pour les tensions à froid.</p></div></div>
+        <div class="cap-row"><span class="n">3</span><div><h3>Bilan des consommations</h3><p>Appareils et horaires, journée type, année composée (jours ouvrés, saisons) ou relevé de 8 760 heures importé.</p></div></div>
+        <div class="cap-row"><span class="n">4</span><div><h3>Prédimensionnement</h3><p>Le système minimal fiable et son coût : champ PV, stockage, onduleur, SRI, LPSP, coût du kWh et CO₂ évité.</p></div></div>
+        <div class="cap-row"><span class="n">5</span><div><h3>Dimensionnement</h3><p>Modules, batteries et onduleurs du catalogue ; optimisation parmi vos références ; simulation horaire sur l'année.</p></div></div>
+        <div class="cap-row"><span class="n">6</span><div><h3>Protections et câblerie</h3><p>Fusibles, disjoncteurs, parafoudres, sections et chutes de tension selon l'<span class="nowrap">IEC 60364-5-52</span>.</p></div></div>
+        <div class="cap-row"><span class="n">7</span><div><h3>Évaluation financière</h3><p>Prix de vente, marges, TVA, conditions, cycle de vie actualisé ; facture proforma.</p></div></div>
+        <div class="cap-row"><span class="n">8</span><div><h3>Dossier et émission</h3><p>Schéma unifilaire, rapport, proforma ; émission d'une version figée et révisions tracées.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-deep" id="methode" data-block="méthode">
+    <div class="wrap method">
+      <div>
+        <h2>Une méthode appliquée à plus de 500 installations en <span class="nowrap">Afrique de l'Ouest</span></h2>
+        <dl>
+          <div><dt>SRI — la part de la demande réellement servie</dt><dd>Le système est simulé heure par heure sur toute l'année, avec l'irradiance du site et la charge heure par heure : ce qui n'est pas servi se voit, mois par mois.</dd></div>
+          <div><dt>SVI — la viabilité économique</dt><dd>Parmi les systèmes qui atteignent la fiabilité visée, le logiciel retient le moins coûteux au kWh produit.</dd></div>
+          <div><dt>y<sub>En</sub> — l'énergie consommée au soleil</dt><dd>Calculée sur l'année avec la météo horaire : elle décide de la part que le stockage doit couvrir.</dd></div>
+        </dl>
+      </div>
+      <figure class="plate">
+        <img src="../assets/img/besoins.webp" alt="Bilan des consommations du projet exemple : appareils, profil annuel et carte de chaleur" width="1600" height="1000" loading="lazy">
+        <figcaption>
+          <span><small>Écran</small><b>Bilan des consommations</b></span>
+          <span><small>Charge</small><b class="num">10,08 kWh/j</b></span>
+          <span><small>Au soleil</small><b class="num">63,1 %</b></span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="tarifs" data-block="tarifs">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Choisissez votre édition</h2>
+        <p>Une licence par poste. Elle s'active avec sa clé, se renouvelle depuis votre espace client, et vos projets restent consultables même à l'échéance.</p>
+      </div>
+      <div class="pricing">
+        <div class="editions" role="radiogroup" aria-label="Édition">
+          <label class="edition">
+            <input type="radio" name="edition" value="commercial" checked>
+            <div><h3>Commerciale</h3><p>Pour les bureaux d'études et installateurs qui chiffrent et remettent des dossiers à leurs clients.</p></div>
+            <span class="for">Professionnels</span>
+          </label>
+          <label class="edition">
+            <input type="radio" name="edition" value="academic">
+            <div><h3>Académique</h3><p>Pour les écoles et universités : toutes les fonctions d'étude, documents marqués « Usage académique », sans prix de vente.</p></div>
+            <span class="for">Enseignement</span>
+          </label>
+          <label class="edition">
+            <input type="radio" name="edition" value="student">
+            <div><h3>Étudiant</h3><p>Pour apprendre : l'étude complète jusqu'au rapport PDF, cinq projets, documents marqués « Usage étudiant ».</p></div>
+            <span class="for">Étudiants</span>
+          </label>
+        </div>
+
+        <aside class="order" aria-live="polite">
+          <h3><span id="order-title">Licence Commerciale</span><span class="tag-example">prix exemple</span></h3>
+          <fieldset class="durations" id="durations"><legend>Durée</legend></fieldset>
+          <div class="price"><b id="price" class="num">—</b><span>FCFA TTC</span></div>
+          <p class="price-note" id="price-note">Un poste · renouvellement depuis votre espace client</p>
+          <ul class="includes" id="includes"></ul>
+          <a class="btn btn-buy" href="#espace-client" id="buy">Acheter la licence</a>
+          <p class="secure"><svg aria-hidden="true"><use href="#i-shield"/></svg><span>Paiement sécurisé par Semoa : Mobile Money (Flooz, T-Money, Wave, Orange Money, MTN) ou carte bancaire. La clé de licence est envoyée par courriel et reste dans votre espace client.</span></p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-white" data-block="grille des fonctions">
+    <div class="wrap">
+      <div class="section-head"><h2>Ce que chaque édition ouvre</h2></div>
+      <div class="matrix-wrap">
+        <table class="matrix" id="matrix">
+          <thead><tr><th scope="col">Fonction</th><th scope="col" data-col="commercial">Commerciale</th><th scope="col" data-col="academic">Académique</th><th scope="col" data-col="student">Étudiant</th></tr></thead>
+          <tbody>
+            <tr><td>Étude complète, du site au rapport PDF</td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td></tr>
+            <tr><td>Optimisation parmi vos références de matériel</td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td class="no">—</td></tr>
+            <tr><td>Export Word des documents</td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td class="no">—</td></tr>
+            <tr><td>Prix de vente et facture proforma</td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td class="no">—</td><td class="no">—</td></tr>
+            <tr><td>Émission et révisions du dossier</td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td class="no">—</td></tr>
+            <tr><td>Matériel ajouté au catalogue</td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td><svg aria-label="Inclus"><use href="#i-check"/></svg></td><td class="no">—</td></tr>
+            <tr><td>Nombre de projets</td><td>Illimité</td><td>Illimité</td><td class="num">5</td></tr>
+            <tr><td>Filigrane sur les documents</td><td class="no">Aucun</td><td>Usage académique</td><td>Usage étudiant</td></tr>
+            <tr><td>Délai de grâce après l'échéance</td><td class="num">7 jours</td><td class="num">3 jours</td><td class="no">Aucun</td></tr>
+            <tr><td>Durées proposées</td><td>1 mois · 1 trimestre · 1 an</td><td>1 an</td><td>1 jour · 1 mois</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="versions" data-block="fiche technique et versions">
+    <div class="wrap tech">
+      <div>
+        <h2>Fiche technique</h2>
+        <table class="spec" style="margin-top:24px">
+          <tbody>
+            <tr><th scope="row">Système</th><td>Windows 10 ou 11, 64 bits</td></tr>
+            <tr><th scope="row">Installation</th><td>Installateur unique, WebView2 inclus : aucune connexion nécessaire pour installer</td></tr>
+            <tr><th scope="row">Connexion</th><td>Facultative : météo PVGIS, activation de la licence, mises à jour</td></tr>
+            <tr><th scope="row">Langues</th><td>Français, anglais (interface et documents)</td></tr>
+            <tr><th scope="row">Données météo</th><td>Séries horaires PVGIS (TMY), vérifiées et liées au projet</td></tr>
+            <tr><th scope="row">Normes</th><td>Câbles et protections : IEC 60364-5-52</td></tr>
+            <tr><th scope="row">Exports</th><td>PDF, Word (.docx), schéma en PNG et SVG, profils en Excel</td></tr>
+            <tr><th scope="row">Projets</th><td>Enregistrement automatique, sauvegarde à chaque démarrage, fichier .ksd</td></tr>
+            <tr><th scope="row">Mises à jour</th><td>Automatiques et signées ; canal stable ou bêta</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h2>Versions</h2>
+        <ol class="releases" style="margin-top:24px">
+          <li class="release">
+            <div class="release-v"><b>1.2.0</b><span>25 sept. 2026</span></div>
+            <div><span class="status status-ok">Stable · actuelle</span><h3>Mise en production</h3><p>Éditions de licence et temps restant, rapport en vraies pages A4 avec sommaire, schéma unifilaire refait, mises à jour par canal, menu Fichier et Aide, avis et statistiques anonymes avec votre accord.</p></div>
+          </li>
+          <li class="release">
+            <div class="release-v"><b>1.1.0</b><span>24 sept. 2026</span></div>
+            <div><h3>Refonte de bout en bout</h3><p>Tableau d'appareils unique et horaires peints, sources de consommation, optimisation sur vos références simulée sur l'année, émission et révisions du dossier, projet exemple.</p></div>
+          </li>
+          <li class="release">
+            <div class="release-v"><b>1.0.0</b><span>24 sept. 2026</span></div>
+            <div><h3>Première version distribuée</h3><p>Application de bureau, simulation horaire, protections et câbles selon l'<span class="nowrap">IEC 60364-5-52</span>, documents complets, interface bilingue.</p></div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-white" data-block="témoignages">
+    <div class="wrap">
+      <div class="section-head"><h2>Ce qu'en disent ses utilisateurs</h2></div>
+      <div class="quotes">
+        <figure class="quote">
+          <blockquote>La fiabilité simulée sur l'année a changé nos discussions avec les clients : on montre ce que le système servira en août, pas seulement en moyenne.</blockquote>
+          <figcaption><span class="avatar" aria-hidden="true">YM</span><span><b>Yao M., installateur</b><span>Entreprise d'installation solaire</span></span><span class="tag-example">exemple</span></figcaption>
+        </figure>
+        <figure class="quote">
+          <blockquote>Le projet exemple sert de fil rouge au semestre : chaque groupe le reprend, change un appareil, et voit l'effet jusqu'au schéma unifilaire.</blockquote>
+          <figcaption><span class="avatar" aria-hidden="true">EK</span><span><b>Essi K., responsable de formation</b><span>École d'ingénieurs</span></span><span class="tag-example">exemple</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="questions" data-block="questions fréquentes">
+    <div class="wrap">
+      <div class="section-head"><h2>Questions fréquentes</h2></div>
+      <div class="faq">
+        <details><summary>Que se passe-t-il à l'échéance de ma licence ?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><p>Des rappels arrivent 30, 7 et 1 jour avant. Passé l'échéance et le délai de grâce de votre édition, le logiciel passe en lecture seule : vos projets restent consultables et imprimables, rien n'est effacé. Un renouvellement rend la main aussitôt.</p></details>
+        <details><summary>Puis-je changer d'ordinateur ?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><p>Oui. Dans le logiciel, « Libérer ce poste » rend la licence disponible ; activez-la ensuite sur le nouvel ordinateur avec la même clé.</p></details>
+        <details><summary>Faut-il une connexion Internet ?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><p>Non pour travailler. La connexion sert à télécharger la météo PVGIS, à activer et vérifier la licence, et à recevoir les mises à jour.</p></details>
+        <details><summary>Comment payer ?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><p>En ligne, par Mobile Money ou carte bancaire, via Semoa. La facture et la clé de licence sont disponibles dans votre espace client dès la confirmation du paiement.</p></details>
+        <details><summary>Comment reçoit-on les nouvelles versions ?<svg aria-hidden="true"><use href="#i-plus"/></svg></summary><p>Le logiciel les propose tout seul, avec leurs nouveautés ; l'installation se fait sans question et conserve vos projets.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" data-block="appel à l'action">
+    <div class="wrap">
+      <div class="close">
+        <div>
+          <h2>Prêt à dimensionner votre prochain site ?</h2>
+          <p>Choisissez votre édition, payez par Mobile Money ou carte, et activez KYA-SolDesign dans la minute.</p>
+        </div>
+        <div class="close-actions">
+          <a class="btn btn-buy" href="#tarifs">Choisir une licence</a>
+          <a class="btn btn-on-deep" href="../index.html">Retour aux logiciels</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot" id="contact" data-block="pied de page">
+  <div class="wrap">
+    <div class="foot-legal" style="margin-top:0;padding-top:0;border-top:0"><span>© 2026 KYA-Energy Group · Lomé, Togo · ISO 9001:2015</span><span>Maquette de conception : non publiée</span></div>
+  </div>
+</footer>
+
+<button class="canvas-toggle" type="button" aria-pressed="false"><svg aria-hidden="true"><use href="#i-blocks"/></svg><span>Afficher le canevas</span></button>
+<script src="../assets/js/site.js" defer></script>
+</body>
+</html>

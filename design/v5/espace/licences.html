@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Licences · Espace client · KYA-EnergyMarket</title>
+  <link rel="icon" href="../assets/img/kya-mark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-root="../" data-chrome="market" data-auth="in" data-acct="licences">
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div data-chrome-top></div>
+
+<div class="acct">
+  <nav class="acct-side" data-acct-nav aria-label="Espace client"></nav>
+  <main class="acct-main" id="contenu">
+    <header class="acct-head">
+      <div><h1>Licences.</h1><p>Vos licences et vos essais, avec leurs postes.</p></div>
+      <a class="btn btn-buy" href="../kya-soldesign/tarifs.html#acheter">Acheter une licence</a>
+    </header>
+
+    <article class="lic">
+      <div class="lic-top">
+        <img src="../assets/img/ksd-mark.png" alt="">
+        <h2>KYA-SolDesign · Commerciale</h2>
+        <small>1 an · du 1er mars 2026 au 1er mars 2027</small>
+        <div class="end"><span class="state ok">Active</span><a class="btn btn-buy btn-sm" href="../achat.html?edition=commercial&plan=12m&seats=3">Renouveler</a></div>
+      </div>
+      <div class="lic-stats">
+        <div><small>Clé de licence</small><div class="key"><code>KYA-COM-12M-8F3K-Q2LM</code><button class="icon-btn" type="button" aria-label="Copier la clé" data-copy="KYA-COM-12M-8F3K-Q2LM" data-copy-msg="Clé copiée"><i data-i="copy"></i></button></div></div>
+        <div><small>Temps restant</small><b>157 jours</b><div class="meter"><i style="--v:57%"></i></div></div>
+        <div><small>Postes utilisés</small><b>2 sur 3</b><div class="meter"><i style="--v:67%"></i></div></div>
+      </div>
+      <div class="seats">
+        <div class="seats-head"><h3>Postes</h3><button class="btn btn-line btn-sm" type="button" data-assign="assign-row"><i data-i="plus"></i>Attribuer un poste</button></div>
+        <form class="assign" id="assign-row" data-assign-send>
+          <input class="input" type="email" placeholder="Courriel du collègue" aria-label="Courriel du collègue">
+          <button class="btn btn-deep btn-sm" type="submit">Envoyer l'invitation</button>
+        </form>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th>Poste</th><th>Attribué à</th><th>Ordinateur</th><th>Activé le</th><th></th></tr></thead>
+            <tbody>
+              <tr><td class="num">1</td><td class="who"><b>Afi Kodjo (vous)</b><small>afi.k@exemple.tg</small></td><td class="num" data-machine>PC-BUREAU-01</td><td class="num">02/03/2026</td><td class="act"><button class="btn btn-line btn-sm" type="button" data-release>Libérer</button></td></tr>
+              <tr><td class="num">2</td><td class="who"><b>Koffi Mensah</b><small>k.mensah@exemple.tg</small></td><td class="num" data-machine>PORTABLE-TERRAIN</td><td class="num">15/04/2026</td><td class="act"><button class="btn btn-line btn-sm" type="button" data-release>Libérer</button></td></tr>
+              <tr><td class="num">3</td><td class="who"><b>Poste libre</b><small>Prêt à être attribué</small></td><td class="num" data-machine>—</td><td class="num">—</td><td class="act"><button class="btn btn-deep btn-sm" type="button" data-assign="assign-row">Attribuer</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+
+    <div class="callout"><i data-i="shield"></i><span><b>Libérer un poste</b> ferme KYA-SolDesign sur l'ordinateur concerné à sa prochaine connexion. Le poste peut aussitôt être attribué à quelqu'un d'autre. Vos projets restent sur l'ordinateur.</span></div>
+
+    <article class="lic" style="margin-top:24px">
+      <div class="lic-top">
+        <img src="../assets/img/ksd-mark.png" alt="">
+        <h2>KYA-SolDesign · Essai</h2>
+        <small>14 jours · du 29 janvier au 12 février 2026 · clé KYA-ESSAI-7Q4M-2XRD</small>
+        <div class="end"><span class="state off">Terminé</span></div>
+      </div>
+    </article>
+    <p class="muted" style="margin-top:28px;font-size:13px">Espace de démonstration : noms, clés, dates et montants sont des <span class="ex">exemple</span>.</p>
+  </main>
+</div>
+
+<script src="../assets/js/site.js" defer></script>
+</body>
+</html>
