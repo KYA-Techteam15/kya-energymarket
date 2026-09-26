@@ -29,3 +29,11 @@
   color: var(--kya-green-ink);
   font-weight: 600;
 }
+
+/* Essai (spec 006) : sur petit écran, les étapes s'empilent au lieu de défiler (accessibles sans clavier). */
+@media (max-width: 980px) {
+  .flow .flow-steps {
+    grid-auto-flow: row;
+    overflow-x: visible;
+  }
+}
