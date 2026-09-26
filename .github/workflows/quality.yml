@@ -28,6 +28,19 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    # Base des tests de parcours (comptes) : un Postgres jetable, jamais une base réelle.
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: kya
+          POSTGRES_PASSWORD: kya
+          POSTGRES_DB: kya_e2e
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U kya" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      E2E_DATABASE_URL: postgresql://kya:kya@localhost:5432/kya_e2e
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4

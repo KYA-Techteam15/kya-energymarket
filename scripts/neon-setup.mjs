@@ -110,6 +110,19 @@ writeSecret('NEON_PROJECT_ID', project.id);
 const strict = (value) => value.replace(/sslmode=require/u, 'sslmode=verify-full');
 writeSecret('DATABASE_URL', strict(await uri(true)));
 writeSecret('DATABASE_MIGRATION_URL', strict(await uri(false)));
+
+// Branche « test » : base des tests de parcours en local (la CI utilise un conteneur Postgres).
+const testBranch = all.find((branch) => branch.name === 'test');
+const testUri = async (pooled) =>
+  strict(
+    (
+      await neon(
+        `/projects/${project.id}/connection_uri?branch_id=${testBranch.id}&database_name=${DATABASE}&role_name=${ROLE}&pooled=${pooled}`,
+      )
+    ).uri,
+  );
+writeSecret('DATABASE_TEST_URL', await testUri(true));
+writeSecret('DATABASE_TEST_MIGRATION_URL', await testUri(false));
 console.log(
   `NEON_PROJECT_ID, DATABASE_URL (poolée) et DATABASE_MIGRATION_URL (directe) de la branche « dev » écrites dans ${SECRETS}.`,
 );

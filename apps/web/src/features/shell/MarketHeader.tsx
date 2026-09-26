@@ -1,15 +1,17 @@
 import { Icon } from '@kya-em/ui';
-import { Link } from '@tanstack/react-router';
+import { Link, useLoaderData } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { LanguageLinks, LanguageMenu } from '@/features/i18n/LanguageMenu';
 import { SOFTWARE } from '@/features/marketplace/software';
 import { m } from '@/paraglide/messages.js';
+import { MeMenu } from './MeMenu';
 
 /** En-tête de la marketplace : `[Logo] KYA-EnergyMarket  Logiciels ▾  Aide  FR ▾  Se connecter`. */
 export function MarketHeader() {
   const [open, setOpen] = useState(false);
   const [stuck, setStuck] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
+  const { viewer } = useLoaderData({ from: '__root__' });
 
   useEffect(() => {
     const onScroll = () => setStuck(window.scrollY > 60);
@@ -112,9 +114,13 @@ export function MarketHeader() {
         </nav>
         <div className="mk-end">
           <LanguageMenu />
-          <Link to="/connexion" className="mk-link">
-            {m.nav_sign_in()}
-          </Link>
+          {viewer ? (
+            <MeMenu viewer={viewer} />
+          ) : (
+            <Link to="/connexion" className="mk-link">
+              {m.nav_sign_in()}
+            </Link>
+          )}
           <button
             type="button"
             className="menu-btn"

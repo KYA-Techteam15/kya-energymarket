@@ -25,6 +25,8 @@
     "db:generate": "pnpm --filter @kya-em/db generate",
     "db:migrate": "pnpm --filter @kya-em/db migrate",
     "check:branch": "node scripts/check-branch.mjs",
+    "staff:grant": "tsx scripts/staff-grant.ts",
+    "auth:schema": "auth generate --config packages/auth/schema.config.ts --output packages/db/src/schema/auth.ts --yes",
     "coolify:deploy": "node scripts/coolify-deploy.mjs",
     "verify": "pnpm format:check && pnpm lint && pnpm test && pnpm build && pnpm typecheck && pnpm e2e && pnpm secrets:scan"
   },
@@ -32,6 +34,7 @@
     "@eslint/js": "^10.0.1",
     "@secretlint/secretlint-rule-preset-recommend": "^13.0.6",
     "@types/node": "^22.18.6",
+    "auth": "1.7.6",
     "eslint": "^10.11.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^7.1.1",
