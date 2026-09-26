@@ -139,8 +139,30 @@ Quand un fournisseur de courriel est configuré, on peut se connecter par un lie
 
 ## Hypothèses
 
-- Pas encore de fournisseur de courriel : vérification du courriel non obligatoire, lien de connexion
-  désactivé, invitations par lien copié. Tout se branche sans rupture dès le fournisseur choisi.
+- ~~Pas encore de fournisseur de courriel~~ : levée par l'avenant A (SMTP de KYA). Sans SMTP (poste de
+  développement nu, tests), le comportement d'origine demeure : pas de vérification, lien de connexion
+  masqué, invitations par lien copié.
 - Connexion Google ou autre : hors de cette spécification.
 - Les tests de parcours utilisent une base Postgres dédiée (conteneur en CI, branche Neon `test` en
   local).
+
+## Avenant A — Courriel transactionnel (2026-09-26)
+
+**Demande** : utiliser le SMTP de KYA (o2switch, `website@kya-energy.com`) pour l'instant, gérer
+l'envoi des courriels nous-mêmes, et nommer le premier administrateur par courriel.
+
+- **FR-014** : Port `Mailer` dans un paquet `@kya-em/mail` ; adaptateurs SMTP (nodemailer), journal
+  (développement sans SMTP), boîte d'envoi fichier (tests de parcours, interdite en production),
+  mémoire (tests unitaires). Variables `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`,
+  `SMTP_FROM`, tout ou rien. Changer de fournisseur = changer les variables, pas le code.
+- **FR-015** : Courriels en français et en anglais (cookie de langue du site, sinon navigateur, sinon
+  français), version texte et HTML aux couleurs de la charte : confirmation d'adresse, lien de
+  connexion, mot de passe oublié, invitation, bienvenue dans l'équipe KYA.
+- **FR-016** : Dès qu'un courriel peut partir, l'adresse est **confirmée avant la première connexion**
+  (lien valable 24 heures, renvoyé à chaque tentative de connexion) ; le lien confirme et connecte.
+- **FR-017** : Mot de passe oublié : lien à usage unique valable 1 heure, réponse identique que le
+  compte existe ou non, autres sessions fermées après le changement, audit `account.password_reset`.
+- **FR-018** : Invitations envoyées par courriel ; le lien reste affiché à l'invitant.
+- **FR-019** : `pnpm staff:grant --email … --role … --site …` ouvre le compte s'il n'existe pas,
+  attribue le rôle et envoie un courriel de bienvenue qui mène au choix du mot de passe (72 heures).
+- Audit ajouté : `account.email_verified`, `account.password_reset`, `staff.invited`.

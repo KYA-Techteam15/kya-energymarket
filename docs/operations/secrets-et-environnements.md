@@ -10,6 +10,7 @@ arrivent dans l'application.
 | Secrets du poste local | `F:\programmation\perso\.secrets\kya-energy-market.env` | fichier du responsable, hors dépôt ; modèle sans valeurs : [`.env.example`](../../.env.example) |
 | Clé API Neon de KYA | à coller dans ce fichier (`NEON_API_KEY`) | organisation Neon « techteam@kya-energy.com » (`org-snowy-poetry-15196989`), plan gratuit ; projets existants `KYA`, `KYA-Platform-Recette` |
 | Jeton API Coolify | recopié dans ce fichier (`COOLIFY_API_TOKEN`) | Coolify Cloud (`app.coolify.io`), équipe « KYA-TechTeam » ; même équipe que le projet « KYA Platform » |
+| Courriel SMTP | ce fichier (`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM`) | o2switch, `website@kya-energy.com`, provisoire ; valeur entre guillemets si elle contient des caractères spéciaux ; recopié dans Coolify par `pnpm coolify:deploy` |
 | Identité Infisical | plus tard | kya-platform garde la sienne dans `.env.provisioner` à sa racine (non suivi) et ses secrets d'exécution dans Infisical |
 | Secrets de CI | GitHub → dépôt → Settings → Secrets and variables → Actions | ajoutés par la spécification qui en a besoin |
 
