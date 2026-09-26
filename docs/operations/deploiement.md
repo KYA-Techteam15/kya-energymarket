@@ -40,6 +40,11 @@ fichier de secrets avec le suffixe de l'environnement (`MEDIA_BUCKET_DEV`, `AWS_
 `AWS_SECRET_ACCESS_KEY_DEV`, `AWS_ENDPOINT_URL_S3_DEV`, `AWS_REGION_DEV`) ; `pnpm coolify:deploy` les
 recopie sans suffixe. La branche `dev` est prête ; `main` le sera à la mise en production.
 
+Licences (spec 005) : une clé de signature par environnement, créée par
+`pnpm license:keygen --env dev|production` (clé privée dans le fichier de secrets, clé publique dans
+[cles-licences.md](cles-licences.md)) ; `pnpm coolify:deploy` recopie la clé de l'environnement. Ne
+jamais la régénérer sans raison : les jetons déjà émis deviendraient invalides.
+
 Premier administrateur d'un environnement :
 `pnpm staff:grant --email <courriel> --role kya_admin --site <adresse de l'environnement>`, avec
 `DATABASE_URL` de la base visée. Le compte est ouvert s'il n'existe pas et un courriel de bienvenue

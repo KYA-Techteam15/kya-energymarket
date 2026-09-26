@@ -6,6 +6,13 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), versions [Sem
 
 ### Ajouté
 
+- Licences et API KYA-SolDesign (spécification 005) : licences au nom d'une organisation, clés
+  lisibles chiffrées au repos, jetons ECDSA P-256 au format exact du logiciel (test de contrat),
+  droits lus dans le catalogue à chaque jeton ; API /api/software/v1 (heure, offre, activer,
+  rafraîchir, libérer) avec limitation de débit ; espace client Licences (clé, temps restant,
+  postes, libérer, attribuer par courriel) ; administration (recherche, émission, prolongation,
+  postes, révocation, journal) ; outils MCP des licences (portée admin:licenses) ; clés de
+  signature par environnement (pnpm license:keygen).
 - Catalogue et pages composées (spécification 004) : logiciels, fonctions, éditions, durées et prix
   par poste en base ; 21 types de blocs issus de la maquette v5 (dont l'exemple interactif et le
   point juste réglable), Markdown assaini ; pages publiques Logiciels, KYA-SolDesign (Présentation,

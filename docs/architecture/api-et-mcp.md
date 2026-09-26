@@ -44,7 +44,7 @@ ajouté plus tard, sans rupture, par de nouvelles portées.
 | `admin:catalog` | créer et modifier logiciels, éditions, durées, prix, essais (outils de la spécification 004) |
 | `admin:content` | pages, blocs, Markdown, médias, témoignages (outils de la spécification 004) |
 | `admin:sales` | commandes, devis, factures d'achat, remboursements (confirmation) |
-| `admin:licenses` | émettre, prolonger, révoquer des licences (confirmation) |
+| `admin:licenses` | émettre, prolonger, révoquer des licences (confirmation) — outils de la spécification 005 |
 | `admin:support` | lire et répondre aux demandes et avis |
 | `admin:stats` | statistiques de ventes et d'usage |
 

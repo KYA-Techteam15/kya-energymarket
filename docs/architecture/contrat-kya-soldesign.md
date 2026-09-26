@@ -22,7 +22,7 @@ Format existant, à reproduire à l'octet près :
 | `licenseId` | string | identifiant stable de la licence |
 | `customer` | string | nom affiché (organisation ou personne) |
 | `edition` | `commercial` \| `academic` \| `student` | édition |
-| `plan` | string | `1d`, `1m`, `3m`, `12m`… |
+| `plan` | string | `1d`, `1w`, `1m`, `3m`, `6m`, `12m` (1, 7, 30, 91, 182, 365 jours) |
 | `features` | FeatureId[] | fonctions ouvertes (liste fermée du logiciel) |
 | `limits` | `{ maxProjects: number \| null, seats: number }` | limites |
 | `watermark` | `academic` \| `student` \| null | filigrane des documents |
@@ -38,7 +38,12 @@ logiciel. Une rotation de clé suppose une version du logiciel qui connaît les 
 ## Points d'entrée `/api/software/v1`
 
 Réponses JSON ; erreurs métier sous forme `{ "error": "CODE" }` avec les codes déjà attendus par le
-logiciel.
+logiciel (statut 404 pour `KEY_UNKNOWN` et `LICENSE_UNKNOWN`, 409 pour les autres refus, 429
+`RATE_LIMITED`, 503 `LICENSING_UNAVAILABLE` sans clé de signature). Pas de cookie : CORS ouvert
+(`*`, préflight `OPTIONS`), le logiciel appelant depuis sa vue web. **Mis en place par la
+spécification 005** ; `activate` accepte en plus un `deviceName` facultatif (nom de l'ordinateur,
+affiché dans l'espace client). Les clés publiques par environnement sont dans
+[cles-licences.md](../operations/cles-licences.md).
 
 | Méthode `AdminApi` | Route | Entrée | Sortie |
 |---|---|---|---|

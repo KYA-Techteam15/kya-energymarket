@@ -48,6 +48,9 @@ codex mcp login kya-energy-market
 | `update_product`, `update_edition`, `set_plan_price` | `admin:catalog` | modifier le catalogue (rôles administrateur, contenus) |
 | `update_page_draft`, `publish_page` | `admin:content` | écrire un brouillon, publier (rôles administrateur, contenus) |
 
+| `find_license` | `admin:read` | chercher une licence, ses postes et son journal |
+| `issue_license`, `extend_license`, `set_license_seats`, `release_seat`, `revoke_license` | `admin:licenses` | licences (rôles administrateur et ventes ; révoquer : administrateur) |
+
 Un client connecté avant la spécification 004 n'a que `admin:read` : retirez-le puis ajoutez-le de
 nouveau pour accorder les portées d'écriture.
 
