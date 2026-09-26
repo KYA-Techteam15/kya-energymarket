@@ -1,47 +1,64 @@
 import {
   editionFeatures,
   editions,
-  plans,
+  licenseTypes,
   productFeatures,
   products,
   type Database,
+  type LicenseTypeNature,
   type LocalizedText,
 } from '@kya-em/db';
-import { and, asc, eq, inArray, ne } from 'drizzle-orm';
+import { asc, eq, inArray, ne } from 'drizzle-orm';
 import { z } from 'zod';
 import { recordAuditEvent } from '../audit/recordAuditEvent.ts';
 
 /**
- * Catalogue (spec 004, FR-001) : la seule source des logiciels, éditions, durées et prix. Les pages,
- * l'API, le MCP et, plus tard, les licences le lisent ici.
+ * Catalogue (spec 004, 005b) : la seule source des logiciels, éditions, types de licence et prix. Les
+ * pages, l'API, le MCP et les licences lisent ici l'offre **publiée** ; les modifications de l'équipe
+ * passent par le brouillon (`draft.ts`).
  */
 export type Locale = 'fr' | 'en';
 export type ProductStatus = 'available' | 'soon' | 'hidden';
+export type { LicenseTypeNature };
+
+export { NATURES } from '../constants.ts';
 
 /** Texte dans la langue demandée, sinon le français. */
 export const pick = (text: LocalizedText | null | undefined, locale: Locale) =>
   (text ? (locale === 'en' ? text.en || text.fr : text.fr) : '') ?? '';
 
-export const DURATIONS = ['P1D', 'P1W', 'P1M', 'P3M', 'P6M', 'P1Y'] as const;
-export type Duration = (typeof DURATIONS)[number];
-
-const DURATION_LABELS: Record<Duration, LocalizedText> = {
-  P1D: { fr: '1 jour', en: '1 day' },
-  P1W: { fr: '1 semaine', en: '1 week' },
-  P1M: { fr: '1 mois', en: '1 month' },
-  P3M: { fr: '1 trimestre', en: '3 months' },
-  P6M: { fr: '6 mois', en: '6 months' },
-  P1Y: { fr: '1 an', en: '1 year' },
+const NAMED_DAYS: Record<number, LocalizedText> = {
+  1: { fr: '1 jour', en: '1 day' },
+  7: { fr: '1 semaine', en: '1 week' },
+  30: { fr: '1 mois', en: '1 month' },
+  91: { fr: '1 trimestre', en: '3 months' },
+  182: { fr: '6 mois', en: '6 months' },
+  365: { fr: '1 an', en: '1 year' },
+  730: { fr: '2 ans', en: '2 years' },
 };
-export const durationLabel = (duration: string, locale: Locale) =>
-  pick(DURATION_LABELS[duration as Duration] ?? { fr: duration }, locale);
 
-export interface CatalogPlan {
+/** Durée lisible : « 1 an », « 1 trimestre », sinon « 45 jours ». */
+export const daysLabel = (days: number, locale: Locale) =>
+  pick(NAMED_DAYS[days] ?? { fr: `${days} jours`, en: `${days} days` }, locale);
+
+/** Code de formule porté par le jeton et la clé : `1d`, `1w`, `1m`, `3m`, `6m`, `12m`, sinon `<jours>d`. */
+export const planCodeOf = (days: number) =>
+  ({ 1: '1d', 7: '1w', 30: '1m', 91: '3m', 182: '6m', 365: '12m' })[days] ?? `${days}d`;
+
+export interface CatalogLicenseType {
   readonly id: string;
-  readonly duration: string;
+  readonly name: LocalizedText;
+  readonly nature: LicenseTypeNature;
+  readonly days: number;
   readonly pricePerSeat: number;
   readonly indicative: boolean;
-  readonly active: boolean;
+  readonly seatsMin: number;
+  /** `null` : le maximum de l'édition. */
+  readonly seatsMax: number | null;
+  readonly renewable: boolean;
+  readonly visible: boolean;
+  readonly forSale: boolean;
+  readonly archived: boolean;
 }
 
 export interface CatalogEdition {
@@ -49,14 +66,19 @@ export interface CatalogEdition {
   readonly code: string;
   readonly name: LocalizedText;
   readonly audience: LocalizedText;
+  /** Code d'édition porté par le jeton, parmi ceux que le logiciel connaît. */
+  readonly softwareEdition: string;
   readonly watermark: LocalizedText | null;
   readonly graceDays: number;
   readonly maxSeats: number | null;
   readonly maxProjects: number | null;
-  readonly active: boolean;
+  readonly highlights: readonly LocalizedText[];
+  readonly visible: boolean;
+  readonly forSale: boolean;
+  readonly archived: boolean;
   /** Clés des fonctions incluses. */
   readonly features: readonly string[];
-  readonly plans: readonly CatalogPlan[];
+  readonly types: readonly CatalogLicenseType[];
 }
 
 export interface CatalogProduct {
@@ -68,6 +90,8 @@ export interface CatalogProduct {
   readonly summary: LocalizedText;
   readonly logo: string | null;
   readonly monogram: string | null;
+  readonly softwareEditions: readonly string[];
+  readonly catalogVersion: number;
   readonly features: readonly { key: string; label: LocalizedText }[];
   readonly editions: readonly CatalogEdition[];
 }
@@ -92,8 +116,8 @@ export async function listProducts(db: Database, options: { includeHidden?: bool
 }
 
 /**
- * Un logiciel et son offre. `publicOnly` : logiciel non masqué, éditions et durées actives seulement
- * (pages publiques, API) ; sinon tout (administration, MCP).
+ * Un logiciel et son offre publiée. `publicOnly` : logiciel non masqué, éditions et types visibles et
+ * non archivés (site, API) ; sinon tout (console, MCP, licences).
  */
 export async function getCatalogProduct(
   db: Database,
@@ -112,13 +136,20 @@ export async function getCatalogProduct(
     db.select().from(editions).where(eq(editions.productId, product.id)).orderBy(asc(editions.sort)),
   ]);
   const editionIds = editionRows.map((row) => row.id);
-  const [planRows, links] = editionIds.length
+  const [typeRows, links] = editionIds.length
     ? await Promise.all([
-        db.select().from(plans).where(inArray(plans.editionId, editionIds)).orderBy(asc(plans.sort)),
+        db
+          .select()
+          .from(licenseTypes)
+          .where(inArray(licenseTypes.editionId, editionIds))
+          .orderBy(asc(licenseTypes.sort), asc(licenseTypes.createdAt)),
         db.select().from(editionFeatures).where(inArray(editionFeatures.editionId, editionIds)),
       ])
     : [[], []];
   const keyOf = new Map(featureRows.map((row) => [row.id, row.key]));
+  const order = new Map(featureRows.map((row, index) => [row.key, index]));
+  const shown = (item: { visible: boolean; archivedAt: Date | null }) =>
+    !options.publicOnly || (item.visible && !item.archivedAt);
 
   return {
     id: product.id,
@@ -129,41 +160,56 @@ export async function getCatalogProduct(
     summary: product.summary,
     logo: product.logo,
     monogram: product.monogram,
+    softwareEditions: product.softwareEditions,
+    catalogVersion: product.catalogVersion,
     features: featureRows.map((row) => ({ key: row.key, label: row.label })),
-    editions: editionRows
-      .filter((row) => !options.publicOnly || row.active)
-      .map((row) => ({
-        id: row.id,
-        code: row.code,
-        name: row.name,
-        audience: row.audience,
-        watermark: row.watermark,
-        graceDays: row.graceDays,
-        maxSeats: row.maxSeats,
-        maxProjects: row.maxProjects,
-        active: row.active,
-        features: links
-          .filter((link) => link.editionId === row.id)
-          .map((link) => keyOf.get(link.featureId))
-          .filter((key): key is string => Boolean(key))
-          .sort((a, b) => featureRows.findIndex((f) => f.key === a) - featureRows.findIndex((f) => f.key === b)),
-        plans: planRows
-          .filter((plan) => plan.editionId === row.id && (!options.publicOnly || plan.active))
-          .map((plan) => ({
-            id: plan.id,
-            duration: plan.duration,
-            pricePerSeat: plan.pricePerSeat,
-            indicative: plan.indicative,
-            active: plan.active,
-          })),
-      })),
+    editions: editionRows.filter(shown).map((row) => ({
+      id: row.id,
+      code: row.code,
+      name: row.name,
+      audience: row.audience,
+      softwareEdition: row.softwareEdition,
+      watermark: row.watermark,
+      graceDays: row.graceDays,
+      maxSeats: row.maxSeats,
+      maxProjects: row.maxProjects,
+      highlights: row.highlights,
+      visible: row.visible,
+      forSale: row.forSale,
+      archived: row.archivedAt !== null,
+      features: links
+        .filter((link) => link.editionId === row.id)
+        .map((link) => keyOf.get(link.featureId))
+        .filter((key): key is string => Boolean(key))
+        .sort((a, b) => (order.get(a) ?? 0) - (order.get(b) ?? 0)),
+      types: typeRows
+        .filter((type) => type.editionId === row.id && shown(type))
+        .map((type) => ({
+          id: type.id,
+          name: type.name,
+          nature: type.nature,
+          days: type.days,
+          pricePerSeat: type.pricePerSeat,
+          indicative: type.indicative,
+          seatsMin: type.seatsMin,
+          seatsMax: type.seatsMax,
+          renewable: type.renewable,
+          visible: type.visible,
+          forSale: type.forSale,
+          archived: type.archivedAt !== null,
+        })),
+    })),
   };
 }
 
-// ---------------------------------------------------------------- administration
+// ---------------------------------------------------------------- écritures directes (amorçage)
 
-const localized = z.object({ fr: z.string().trim().min(1).max(400), en: z.string().trim().max(400).optional() });
-const slugSchema = z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/u, 'identifiant en minuscules et tirets');
+export const localized = z.object({
+  fr: z.string().trim().min(1).max(400),
+  en: z.string().trim().max(400).optional(),
+});
+export const slugSchema = z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/u, 'identifiant en minuscules et tirets');
+export const featureKeySchema = z.string().regex(/^[a-z][a-zA-Z0-9]*(\.[a-z][a-zA-Z0-9]*)*$/u);
 
 export const ProductInput = z.strictObject({
   name: z.string().trim().min(2).max(60).optional(),
@@ -177,26 +223,10 @@ export const ProductInput = z.strictObject({
     .nullable()
     .optional(),
   monogram: z.string().trim().max(3).nullable().optional(),
-});
-
-export const EditionInput = z.strictObject({
-  name: localized.optional(),
-  audience: localized.optional(),
-  sort: z.number().int().min(0).max(999).optional(),
-  watermark: localized.nullable().optional(),
-  graceDays: z.number().int().min(0).max(90).optional(),
-  maxSeats: z.number().int().min(1).max(10_000).nullable().optional(),
-  maxProjects: z.number().int().min(1).max(100_000).nullable().optional(),
-  active: z.boolean().optional(),
-  /** Clés des fonctions incluses (remplace la liste). */
-  features: z.array(z.string().min(1).max(60)).max(60).optional(),
-});
-
-export const PlanInput = z.strictObject({
-  pricePerSeat: z.number().int().min(0).max(100_000_000),
-  indicative: z.boolean().optional(),
-  active: z.boolean().optional(),
-  sort: z.number().int().min(0).max(999).optional(),
+  softwareEditions: z
+    .array(z.string().regex(/^[a-z][a-z0-9_]{1,30}$/u))
+    .max(20)
+    .optional(),
 });
 
 export const FeatureInput = z.strictObject({
@@ -204,8 +234,21 @@ export const FeatureInput = z.strictObject({
   sort: z.number().int().min(0).max(999).optional(),
 });
 
+export type CatalogErrorCode =
+  | 'PRODUCT_NOT_FOUND'
+  | 'EDITION_NOT_FOUND'
+  | 'TYPE_NOT_FOUND'
+  | 'UNKNOWN_FEATURE'
+  | 'INVALID_CATALOG'
+  | 'DRAFT_CONFLICT'
+  | 'NOTHING_TO_PUBLISH'
+  | 'NOT_REMOVABLE';
+
 export class CatalogError extends Error {
-  constructor(readonly code: 'PRODUCT_NOT_FOUND' | 'EDITION_NOT_FOUND' | 'UNKNOWN_FEATURE' | 'INVALID_DURATION') {
+  constructor(
+    readonly code: CatalogErrorCode,
+    readonly issues: readonly { path: string; message: string }[] = [],
+  ) {
     super(code);
   }
 }
@@ -215,23 +258,14 @@ export interface Actor {
   readonly id: string | null;
 }
 
-async function productBySlug(db: Database, slug: string) {
-  const [row] = await db.select().from(products).where(eq(products.slug, slug)).limit(1);
-  if (!row) throw new CatalogError('PRODUCT_NOT_FOUND');
-  return row;
-}
-
-async function editionOf(db: Database, productId: string, code: string) {
-  const [row] = await db
-    .select()
-    .from(editions)
-    .where(and(eq(editions.productId, productId), eq(editions.code, code)))
-    .limit(1);
-  if (!row) throw new CatalogError('EDITION_NOT_FOUND');
-  return row;
-}
-
-const audit = (db: Database, actor: Actor, action: string, resourceType: string, resourceId: string, details = {}) =>
+export const audit = (
+  db: Database,
+  actor: Actor,
+  action: string,
+  resourceType: string,
+  resourceId: string,
+  details: Record<string, unknown> = {},
+) =>
   recordAuditEvent(db, {
     actorType: actor.type,
     actorId: actor.id,
@@ -242,7 +276,7 @@ const audit = (db: Database, actor: Actor, action: string, resourceType: string,
     details,
   });
 
-/** Crée le logiciel s'il n'existe pas (amorçage, MCP) ; sinon applique les champs fournis. */
+/** Crée le logiciel s'il n'existe pas (amorçage) ; sinon applique les champs fournis. */
 export async function upsertProduct(
   db: Database,
   actor: Actor,
@@ -264,6 +298,7 @@ export async function upsertProduct(
         summary: values.summary ?? { fr: values.name ?? slug },
         logo: values.logo ?? null,
         monogram: values.monogram ?? null,
+        softwareEditions: values.softwareEditions ?? [],
       })
       .returning();
     await audit(db, actor, 'catalog.product_created', 'product', created!.id, { slug });
@@ -278,6 +313,7 @@ export async function upsertProduct(
   return updated!;
 }
 
+/** Fonction d'un logiciel : sa clé est fixée par le logiciel (amorçage, MCP). */
 export async function upsertFeature(
   db: Database,
   actor: Actor,
@@ -286,10 +322,9 @@ export async function upsertFeature(
   input: z.input<typeof FeatureInput>,
 ) {
   const values = FeatureInput.parse(input);
-  z.string()
-    .regex(/^[a-z][a-zA-Z0-9]*(\.[a-z][a-zA-Z0-9]*)*$/u)
-    .parse(key);
-  const product = await productBySlug(db, productSlug);
+  featureKeySchema.parse(key);
+  const [product] = await db.select().from(products).where(eq(products.slug, productSlug)).limit(1);
+  if (!product) throw new CatalogError('PRODUCT_NOT_FOUND');
   const [row] = await db
     .insert(productFeatures)
     .values({ productId: product.id, key, label: values.label, sort: values.sort ?? 0 })
@@ -299,112 +334,5 @@ export async function upsertFeature(
     })
     .returning();
   await audit(db, actor, 'catalog.feature_saved', 'product_feature', row!.id, { key });
-  return row!;
-}
-
-export async function upsertEdition(
-  db: Database,
-  actor: Actor,
-  productSlug: string,
-  code: string,
-  input: z.input<typeof EditionInput>,
-) {
-  const { features: featureKeys, ...values } = EditionInput.parse(input);
-  z.string()
-    .regex(/^[a-z][a-z0-9_]{1,30}$/u)
-    .parse(code);
-  const product = await productBySlug(db, productSlug);
-  const [existing] = await db
-    .select()
-    .from(editions)
-    .where(and(eq(editions.productId, product.id), eq(editions.code, code)))
-    .limit(1);
-  const edition = existing
-    ? (
-        await db
-          .update(editions)
-          .set({ ...values, updatedAt: new Date() })
-          .where(eq(editions.id, existing.id))
-          .returning()
-      )[0]!
-    : (
-        await db
-          .insert(editions)
-          .values({
-            productId: product.id,
-            code,
-            name: values.name ?? { fr: code },
-            audience: values.audience ?? { fr: '' },
-            sort: values.sort ?? 0,
-            watermark: values.watermark ?? null,
-            graceDays: values.graceDays ?? 0,
-            maxSeats: values.maxSeats ?? null,
-            maxProjects: values.maxProjects ?? null,
-            active: values.active ?? true,
-          })
-          .returning()
-      )[0]!;
-
-  if (featureKeys) {
-    const known = await db.select().from(productFeatures).where(eq(productFeatures.productId, product.id));
-    const ids = featureKeys.map((key) => {
-      const feature = known.find((row) => row.key === key);
-      if (!feature) throw new CatalogError('UNKNOWN_FEATURE');
-      return feature.id;
-    });
-    await db.transaction(async (tx) => {
-      await tx.delete(editionFeatures).where(eq(editionFeatures.editionId, edition.id));
-      if (ids.length)
-        await tx.insert(editionFeatures).values(ids.map((featureId) => ({ editionId: edition.id, featureId })));
-    });
-  }
-  await audit(db, actor, existing ? 'catalog.edition_updated' : 'catalog.edition_created', 'edition', edition.id, {
-    product: productSlug,
-    code,
-    fields: Object.keys(input),
-  });
-  return edition;
-}
-
-/** Prix d'une durée d'une édition (création ou mise à jour), en FCFA entiers par poste. */
-export async function setPlan(
-  db: Database,
-  actor: Actor,
-  productSlug: string,
-  editionCode: string,
-  duration: string,
-  input: z.input<typeof PlanInput>,
-) {
-  if (!(DURATIONS as readonly string[]).includes(duration)) throw new CatalogError('INVALID_DURATION');
-  const values = PlanInput.parse(input);
-  const product = await productBySlug(db, productSlug);
-  const edition = await editionOf(db, product.id, editionCode);
-  const [row] = await db
-    .insert(plans)
-    .values({
-      editionId: edition.id,
-      duration,
-      pricePerSeat: values.pricePerSeat,
-      indicative: values.indicative ?? true,
-      active: values.active ?? true,
-      sort: values.sort ?? DURATIONS.indexOf(duration as Duration),
-    })
-    .onConflictDoUpdate({
-      target: [plans.editionId, plans.duration],
-      set: {
-        pricePerSeat: values.pricePerSeat,
-        ...(values.indicative === undefined ? {} : { indicative: values.indicative }),
-        ...(values.active === undefined ? {} : { active: values.active }),
-        ...(values.sort === undefined ? {} : { sort: values.sort }),
-        updatedAt: new Date(),
-      },
-    })
-    .returning();
-  await audit(db, actor, 'catalog.plan_saved', 'plan', row!.id, {
-    product: productSlug,
-    edition: editionCode,
-    duration,
-    pricePerSeat: values.pricePerSeat,
-  });
   return row!;
 }

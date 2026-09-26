@@ -1,6 +1,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { getMediaAdmin } from '@/features/admin/content';
 import { MediaAdminPage } from '@/features/admin/MediaAdminPage';
+import { ConsolePage } from '@/features/admin/console/ui';
 import { m } from '@/paraglide/messages.js';
 
 export const Route = createFileRoute('/admin/medias')({
@@ -14,5 +15,9 @@ export const Route = createFileRoute('/admin/medias')({
 });
 
 function MediaAdminRoute() {
-  return <MediaAdminPage admin={Route.useLoaderData()} />;
+  return (
+    <ConsolePage crumbs={[{ label: m.cx_nav_content() }, { label: m.cx_nav_media() }]}>
+      <MediaAdminPage admin={Route.useLoaderData()} />
+    </ConsolePage>
+  );
 }

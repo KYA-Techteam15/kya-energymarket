@@ -1,6 +1,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { McpAdminPage } from '@/features/mcp/McpAdminPage';
 import { getMcpAdmin } from '@/features/mcp/server';
+import { ConsolePage } from '@/features/admin/console/ui';
 import { m } from '@/paraglide/messages.js';
 
 export const Route = createFileRoute('/admin/mcp')({
@@ -14,5 +15,9 @@ export const Route = createFileRoute('/admin/mcp')({
 });
 
 function McpAdminRoute() {
-  return <McpAdminPage admin={Route.useLoaderData()} />;
+  return (
+    <ConsolePage crumbs={[{ label: m.cx_nav_system() }, { label: m.cx_nav_mcp() }]}>
+      <McpAdminPage admin={Route.useLoaderData()} />
+    </ConsolePage>
+  );
 }

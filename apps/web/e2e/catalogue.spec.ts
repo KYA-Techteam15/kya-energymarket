@@ -111,7 +111,7 @@ test.describe('pages publiques (spec 004)', () => {
       'academic',
       'student',
     ]);
-    expect(soldesign.editions[0].plans[0]).toMatchObject({ currency: 'XOF' });
+    expect(soldesign.editions[0].types[0]).toMatchObject({ currency: 'XOF', forSale: true });
   });
 });
 
@@ -121,7 +121,10 @@ test.describe('administration des contenus (spec 004)', () => {
 
   const email = `contenus-${run}@exemple.test`;
 
-  test('catalogue : un prix changé dans l’administration change la page Tarifs et l’API', async ({ page, request }) => {
+  test('catalogue : un prix changé passe par le brouillon, puis la publication change la page Tarifs et l’API', async ({
+    page,
+    request,
+  }) => {
     await page.goto('/fr/connexion?onglet=creer');
     await page.getByLabel('Nom et prénom').fill('Afi Contenus');
     await page.getByLabel('Courriel').fill(email);
@@ -136,24 +139,48 @@ test.describe('administration des contenus (spec 004)', () => {
       stdio: 'pipe',
     });
 
+    // Prix propre à ce passage : la base des parcours garde l'état des passages précédents.
+    const price = 70_000 + (Number.parseInt(run, 36) % 90) * 100;
+    const shown = new RegExp(new Intl.NumberFormat('fr-FR').format(price).replace(/\s/gu, '\\s'), 'u');
+
     await page.goto('/fr/admin/catalogue');
-    await expect(page.getByRole('heading', { name: 'Catalogue.' })).toBeVisible();
-    await page.getByRole('link', { name: 'Modifier KYA-SolDesign' }).click();
-    const price = page.getByTestId('price-commercial-P3M');
-    await price.fill('70000');
-    await price
-      .locator('xpath=ancestor::form')
-      .getByRole('button', { name: /Enregistrer/u })
-      .click();
-    await expect(page.getByRole('status')).toHaveText('Enregistré.');
+    await expect(page.getByRole('heading', { name: 'Logiciels' })).toBeVisible();
+    await page.getByRole('link', { name: 'KYA-SolDesign' }).click();
+    await expect(page.getByRole('heading', { name: 'Éditions' })).toBeVisible();
+    // Brouillon laissé par un passage précédent : on repart de l'offre publiée.
+    const draftBar = page.getByRole('region', { name: 'Modifications non publiées' });
+    if (await draftBar.isVisible()) {
+      await draftBar.getByRole('button', { name: 'Annuler' }).click();
+      await draftBar.getByRole('button', { name: 'Abandonner' }).click();
+      await expect(draftBar).toBeHidden({ timeout: 30_000 });
+    }
     expect(await axe(page)).toEqual([]);
+
+    await page.getByRole('link', { name: 'Commerciale', exact: true }).click();
+    await page.getByRole('tab', { name: /Types de licence/u }).click();
+    await page.getByRole('link', { name: '1 trimestre' }).click();
+    await page.getByLabel('Prix par poste (FCFA)').fill(String(price));
+    await page.getByRole('button', { name: 'Enregistrer dans le brouillon' }).click();
+    await expect(page.getByRole('status')).toContainText('Enregistré dans le brouillon.');
+    await expect(draftBar).toContainText('1 modification en brouillon');
+    expect(await axe(page)).toEqual([]);
+
+    // Brouillon : le site ne change pas.
+    await page.goto('/fr/logiciels/kya-soldesign/tarifs');
+    await page.locator('label.opt', { hasText: '1 trimestre' }).click();
+    await expect(page.getByTestId('pricing-total')).not.toHaveText(shown);
+
+    await page.goBack();
+    await draftBar.getByRole('button', { name: 'Publier' }).click();
+    await expect(page.getByRole('status')).toContainText('Publié');
+    await expect(draftBar).toBeHidden({ timeout: 30_000 });
 
     await page.goto('/fr/logiciels/kya-soldesign/tarifs');
     await page.locator('label.opt', { hasText: '1 trimestre' }).click();
-    await expect(page.getByTestId('pricing-total')).toHaveText(/70\s000/u);
+    await expect(page.getByTestId('pricing-total')).toHaveText(shown);
     const api = await (await request.get('/api/v1/catalog')).json();
     const commercial = api.products[0].editions[0];
-    expect(commercial.plans.find((plan: { duration: string }) => plan.duration === 'P3M').pricePerSeat).toBe(70_000);
+    expect(commercial.types.find((type: { days: number }) => type.days === 91).pricePerSeat).toBe(price);
   });
 
   test('pages : un brouillon reste privé jusqu’à la publication, puis se restaure', async ({ page }) => {

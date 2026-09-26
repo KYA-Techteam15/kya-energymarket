@@ -3,19 +3,10 @@ import { Link, useRouter } from '@tanstack/react-router';
 import { useState, type FormEvent } from 'react';
 import { m } from '@/paraglide/messages.js';
 import { getLocale } from '@/paraglide/runtime.js';
-import { assignSeatFn, releaseSeatFn, type getMyLicenses } from './server';
+import { assignSeatFn, claimKeyFn, releaseSeatFn, type getMyLicenses } from './server';
 
 type Licenses = NonNullable<Awaited<ReturnType<typeof getMyLicenses>>>;
 type License = Licenses[number];
-
-const DURATION: Record<string, { fr: string; en: string }> = {
-  P1D: { fr: '1 jour', en: '1 day' },
-  P1W: { fr: '1 semaine', en: '1 week' },
-  P1M: { fr: '1 mois', en: '1 month' },
-  P3M: { fr: '1 trimestre', en: '3 months' },
-  P6M: { fr: '6 mois', en: '6 months' },
-  P1Y: { fr: '1 an', en: '1 year' },
-};
 
 /** Clé masquée par défaut : on la montre ou on la copie d'un geste. */
 function LicenseKey({ value }: { value: string | null }) {
@@ -57,8 +48,8 @@ function LicenseCard({ license }: { license: License }) {
   const [notice, setNotice] = useState<{ ok: boolean; text: string } | null>(null);
   const date = new Intl.DateTimeFormat(getLocale(), { dateStyle: 'long' });
   const short = new Intl.DateTimeFormat(getLocale(), { dateStyle: 'short' });
-  const starts = Date.parse(license.startsAt);
-  const expires = Date.parse(license.expiresAt);
+  const starts = license.startsAt ? Date.parse(license.startsAt) : null;
+  const expires = license.expiresAt ? Date.parse(license.expiresAt) : null;
   const remaining = license.remainingDays;
   const elapsedShare = license.remainingShare;
   const used = license.activations.length;
@@ -66,10 +57,13 @@ function LicenseCard({ license }: { license: License }) {
   const state =
     license.status === 'revoked'
       ? { className: 'state state-off', label: m.licences_state_revoked() }
-      : expired
-        ? { className: 'state state-off', label: m.licences_state_expired() }
-        : { className: 'state state-ok', label: m.licences_state_active() };
+      : license.waiting
+        ? { className: 'state state-off', label: m.licences_state_waiting() }
+        : expired
+          ? { className: 'state state-off', label: m.licences_state_expired() }
+          : { className: 'state state-ok', label: m.licences_state_active() };
   const editionName = locale === 'en' ? license.editionName.en || license.editionName.fr : license.editionName.fr;
+  const typeName = locale === 'en' ? license.typeName.en || license.typeName.fr : license.typeName.fr;
 
   const release = async (activationId: string) => {
     const result = await releaseSeatFn({ data: { licenseId: license.id, activationId } });
@@ -109,8 +103,10 @@ function LicenseCard({ license }: { license: License }) {
           {license.productName} · {editionName}
         </h2>
         <small>
-          {DURATION[license.duration]?.[locale] ?? license.duration} ·{' '}
-          {m.licences_period({ from: date.format(starts), to: date.format(expires) })}
+          {typeName} ·{' '}
+          {starts !== null && expires !== null
+            ? m.licences_period({ from: date.format(starts), to: date.format(expires) })
+            : m.licences_waiting()}
         </small>
         <div className="end">
           <span className={state.className}>{state.label}</span>
@@ -235,6 +231,59 @@ function LicenseCard({ license }: { license: License }) {
   );
 }
 
+/** « Vous avez reçu une clé ? » : la licence rejoint l'espace (spec 005b, FR-006). */
+function AddKey() {
+  const router = useRouter();
+  const [notice, setNotice] = useState<{ ok: boolean; text: string } | null>(null);
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const key = String(new FormData(form).get('key') ?? '').trim();
+    const result = await claimKeyFn({ data: { key } });
+    if (result.ok) {
+      form.reset();
+      setNotice({ ok: true, text: m.licences_key_added() });
+      await router.invalidate();
+    } else {
+      setNotice({
+        ok: false,
+        text: result.code === 'ALREADY_CLAIMED' ? m.licences_key_taken() : m.licences_key_unknown(),
+      });
+    }
+  };
+  return (
+    <section className="box" aria-labelledby="ajouter-cle">
+      <div className="box-head">
+        <h2 id="ajouter-cle">{m.licences_add_key_title()}</h2>
+      </div>
+      <div className="box-body">
+        <p className="muted" style={{ marginTop: 0 }}>
+          {m.licences_add_key_text()}
+        </p>
+        <form className="assign is-open" style={{ padding: 0 }} onSubmit={(event) => void submit(event)}>
+          <input
+            className="input mono"
+            name="key"
+            required
+            minLength={12}
+            maxLength={64}
+            placeholder="KYA-COM-12M-XXXX-XXXX-XXXX"
+            aria-label={m.licences_add_key_label()}
+          />
+          <button className="btn btn-primary btn-sm" type="submit">
+            {m.licences_add_key_submit()}
+          </button>
+        </form>
+        {notice ? (
+          <p className={notice.ok ? 'form-ok' : 'form-error'} role="status" style={{ marginTop: 10 }}>
+            {notice.text}
+          </p>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
 /** Espace client, Licences (spec 005, design/v5/espace/licences.html). */
 export function LicencesPage({ licenses }: { licenses: Licenses }) {
   return (
@@ -272,6 +321,7 @@ export function LicencesPage({ licenses }: { licenses: Licenses }) {
           </div>
         </>
       )}
+      <AddKey />
     </>
   );
 }

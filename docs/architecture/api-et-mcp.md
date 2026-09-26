@@ -41,7 +41,7 @@ ajouté plus tard, sans rupture, par de nouvelles portées.
 |---|---|
 | `admin:read` | lecture de tout ce que l'équipe KYA administre (catalogue, clients, commandes, licences, support) |
 | `admin:customers` | comptes et organisations clientes : consulter, corriger, attribuer ou libérer un poste pour un client |
-| `admin:catalog` | créer et modifier logiciels, éditions, durées, prix, essais (outils de la spécification 004) |
+| `admin:catalog` | brouillon du catalogue (logiciels, éditions, types de licence, prix) et sa publication (spécifications 004, 005b) |
 | `admin:content` | pages, blocs, Markdown, médias, témoignages (outils de la spécification 004) |
 | `admin:sales` | commandes, devis, factures d'achat, remboursements (confirmation) |
 | `admin:licenses` | émettre, prolonger, révoquer des licences (confirmation) — outils de la spécification 005 |
@@ -52,7 +52,7 @@ ajouté plus tard, sans rupture, par de nouvelles portées.
 
 - Lecture : `search_catalog`, `get_product`, `find_customer`, `list_licenses`, `list_invoices`,
   `get_order`, `list_support_threads`, `get_sales_stats`, `get_usage_stats`.
-- Écriture : `upsert_product`, `upsert_edition`, `set_plan_price`, `configure_trial`,
+- Écriture : `change_catalog`, `publish_catalog`, `configure_trial`, `generate_license_batch`,
   `update_page_block`, `publish_page`, `publish_software_release`, `issue_license`,
   `extend_license`, `revoke_license` (confirmation), `create_quote`, `refund_order` (confirmation),
   `reply_support_thread`, `assign_seat`, `release_seat`.
@@ -67,8 +67,9 @@ ajouté plus tard, sans rupture, par de nouvelles portées.
 ## API REST
 
 Premier point ouvert (spécification 004) : `GET /api/v1/catalog`, public, logiciels visibles et, pour
-ceux qui sont disponibles, éditions et durées actives (prix en FCFA entiers, `currency: XOF`,
-`indicative` pour un prix exemple).
+ceux qui sont disponibles, éditions et types de licence visibles (`types` : nom, nature, jours, prix en
+FCFA entiers, `currency: XOF`, `indicative` pour un prix exemple, postes, `forSale` quand l'achat en
+ligne est ouvert) et caractéristiques affichées (`highlights`).
 
 `/api/v1`, JSON, pagination par curseur, erreurs au format `application/problem+json`, clés
 d'idempotence sur les écritures, OpenAPI générée depuis les schémas Zod. Versionnée : une rupture

@@ -21,8 +21,8 @@ Format existant, à reproduire à l'octet près :
 |---|---|---|
 | `licenseId` | string | identifiant stable de la licence |
 | `customer` | string | nom affiché (organisation ou personne) |
-| `edition` | `commercial` \| `academic` \| `student` | édition |
-| `plan` | string | `1d`, `1w`, `1m`, `3m`, `6m`, `12m` (1, 7, 30, 91, 182, 365 jours) |
+| `edition` | `commercial` \| `academic` \| `student` | profil dans le logiciel de l'édition de la licence (une édition Partenaire porte par exemple `commercial`) |
+| `plan` | string | tiré de la durée du type de licence : `1d`, `1w`, `1m`, `3m`, `6m`, `12m` (1, 7, 30, 91, 182, 365 jours), sinon `<jours>d` (`14d`) |
 | `features` | FeatureId[] | fonctions ouvertes (liste fermée du logiciel) |
 | `limits` | `{ maxProjects: number \| null, seats: number }` | limites |
 | `watermark` | `academic` \| `student` \| null | filigrane des documents |
@@ -75,4 +75,10 @@ PKCE) pour activer sans saisir de clé, et activation d'une clé d'essai.
 ## Changements côté logiciel (pour mémoire)
 
 - T061 : `HttpAdminApi`, vraie clé publique, retrait des clés et de la licence de démonstration.
+- T061, en même temps (spécification 005b) — le logiciel **accepte ce qu'il ne connaît pas** :
+  ignorer une fonction inconnue au lieu de refuser le jeton ; accepter un profil d'édition inconnu
+  en lecture seule ; afficher un code de formule inconnu (`14d`) comme une durée en jours.
+  Indispensable avant la vente : une fois installé chez les clients, le format ne se change plus.
+- Une licence peut démarrer à sa première activation : `startsAt` et `expiresAt` du jeton sont alors
+  fixés au moment de l'activation (rien à changer côté logiciel).
 - Vocabulaire : « Devis » remplace « facture proforma » dans l'interface et les documents.

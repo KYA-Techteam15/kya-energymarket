@@ -56,17 +56,25 @@ test.describe('licences (spec 005)', () => {
       stdio: 'pipe',
     });
     await page.goto('/fr/admin/licences');
-    await expect(page.getByRole('heading', { name: 'Licences.' })).toBeVisible();
-    await page.getByLabel(/Courriel du titulaire/u).fill(customer);
-    await page.getByLabel('Édition').selectOption('commercial');
-    await page.getByLabel('Durée').selectOption('P1Y');
-    await page.getByRole('spinbutton', { name: 'Postes' }).fill('1');
-    await page.getByRole('button', { name: 'Émettre', exact: true }).click();
-    await expect(page).toHaveURL(/\/fr\/admin\/licences\/lic_/u);
-    key = (await page.getByTestId('admin-license-key').textContent())!.trim();
-    licenseId = page.url().split('/').at(-1)!;
+    await expect(page.getByRole('heading', { name: 'Licences', exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'Émettre une licence' }).click();
+    const drawer = page.getByRole('dialog', { name: 'Émettre une licence' });
+    // Commerciale · 1 an (types masqués compris dans la liste).
+    const option = drawer.locator('#issue-type optgroup[label*="Commerciale"] option', { hasText: /^1 an/u });
+    await drawer.locator('#issue-type').selectOption((await option.first().getAttribute('value'))!);
+    await drawer.locator('#issue-holder').fill(customer);
+    await drawer.locator('li', { hasText: 'Ama Cliente' }).getByRole('button', { name: 'Choisir' }).click();
+    await drawer.getByRole('spinbutton', { name: 'Postes' }).fill('1');
+    await drawer.locator('#issue-reason').fill('Parcours de test');
+    await drawer.getByRole('button', { name: 'Émettre la licence' }).click();
+    await expect(page).toHaveURL(/licence=lic_/u);
+    licenseId = new URL(page.url()).searchParams.get('licence')!;
+    const sheet = page.getByRole('dialog');
+    await expect(sheet).toContainText('Ama Cliente');
+    await expect(sheet).toContainText('Attribution équipe');
+    await sheet.getByRole('button', { name: 'Afficher' }).click();
+    key = (await page.getByTestId('console-license-key').textContent())!.trim();
     expect(key).toMatch(/^KYA-COM-12M-/u);
-    await expect(page.getByRole('heading', { name: 'Ama Cliente' })).toBeVisible();
     expect(await axe(page)).toEqual([]);
   });
 
@@ -158,15 +166,19 @@ test.describe('licences (spec 005)', () => {
 
   test('l’équipe révoque : le logiciel reçoit LICENSE_REVOKED', async ({ page, request }) => {
     await signIn(page, admin);
+    // L'ancienne adresse d'une licence ouvre sa fiche dans la liste.
     await page.goto(`/fr/admin/licences/${licenseId}`);
-    await page.getByLabel('Je confirme la révocation de cette licence.').check();
-    await page.getByRole('button', { name: 'Révoquer la licence' }).click();
-    await expect(page.getByRole('status')).toHaveText('Enregistré.');
+    await expect(page).toHaveURL(new RegExp(`licence=${licenseId}`, 'u'));
+    const sheet = page.getByRole('dialog');
+    await sheet.getByRole('button', { name: 'Révoquer' }).click();
+    await sheet.locator('#revoke-reason').fill('Fin du parcours de test');
+    await sheet.locator('.cx-panel').getByRole('button', { name: 'Révoquer' }).click();
+    await expect(page.getByRole('status')).toContainText('Licence révoquée.');
     const revoked = await request.post(`${API}/licenses/${licenseId}/refresh`, {
       data: { deviceId: `poste-b-${run}` },
     });
     expect(await revoked.json()).toEqual({ error: 'LICENSE_REVOKED' });
     await page.goto(`/fr/admin/licences?q=${encodeURIComponent(customer)}`);
-    await expect(page.locator('.tbl')).toContainText('Révoquée');
+    await expect(page.locator('.cx-tbl')).toContainText('Révoquée');
   });
 });

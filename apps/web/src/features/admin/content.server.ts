@@ -1,22 +1,15 @@
 import { staffCan, type Resource } from '@kya-em/auth';
 import {
   BLOCKS,
-  CatalogError,
-  getCatalogProduct,
   getPageForEditing,
   listMedia,
   listPages,
-  listProducts,
   MediaError,
   PageError,
   publishDraft,
   restoreVersion,
   saveDraft,
-  setPlan,
   updateMediaTexts,
-  upsertEdition,
-  upsertFeature,
-  upsertProduct,
   uploadImage,
   type Actor,
   type Locale,
@@ -26,7 +19,7 @@ import { ZodError } from 'zod';
 import { runtime } from '@/shared/server/runtime.server';
 
 /**
- * Administration du catalogue, des pages et des médias (spec 004, FR-007). Chaque fonction repart de
+ * Administration des pages et des médias (spec 004, FR-007) ; le catalogue passe par son brouillon (005b). Chaque fonction repart de
  * la session et vérifie le droit d'équipe côté serveur ; l'interface ne fait que refléter ces droits.
  */
 export type AdminResult<T = null> =
@@ -62,7 +55,7 @@ async function write<T>(run: () => Promise<T>): Promise<AdminResult<T>> {
         issues: issues?.map((issue) => ({ path: issue.path.map(String).join('.'), message: issue.message })),
       };
     }
-    if (error instanceof CatalogError || error instanceof MediaError) return { ok: false, code: error.code };
+    if (error instanceof MediaError) return { ok: false, code: error.code };
     throw error;
   }
 }
@@ -81,61 +74,6 @@ interface EditorContent {
   readonly blocks: { id: string; type: string; data: { [key: string]: Json } }[];
   readonly publishedAt: string | null;
   readonly updatedAt: string;
-}
-
-// ---------------------------------------------------------------- catalogue
-
-export async function loadCatalogAdmin() {
-  const current = await staff('catalog', 'read');
-  if (!current) return null;
-  return {
-    products: await listProducts(current.db, { includeHidden: true }),
-    canWrite: staffCan(current.role, 'catalog', 'write'),
-  };
-}
-
-export async function loadProductAdmin(slug: string) {
-  const current = await staff('catalog', 'read');
-  if (!current) return null;
-  const product = await getCatalogProduct(current.db, slug);
-  if (!product) return null;
-  return { product, canWrite: staffCan(current.role, 'catalog', 'write') };
-}
-
-export async function saveProduct(slug: string, input: unknown) {
-  const current = await staff('catalog', 'write');
-  if (!current) return FORBIDDEN;
-  return write(async () => {
-    await upsertProduct(current.db, current.actor, slug, input as never);
-    return null;
-  });
-}
-
-export async function saveFeature(slug: string, key: string, input: unknown) {
-  const current = await staff('catalog', 'write');
-  if (!current) return FORBIDDEN;
-  return write(async () => {
-    await upsertFeature(current.db, current.actor, slug, key, input as never);
-    return null;
-  });
-}
-
-export async function saveEdition(slug: string, code: string, input: unknown) {
-  const current = await staff('catalog', 'write');
-  if (!current) return FORBIDDEN;
-  return write(async () => {
-    await upsertEdition(current.db, current.actor, slug, code, input as never);
-    return null;
-  });
-}
-
-export async function savePlan(slug: string, code: string, duration: string, input: unknown) {
-  const current = await staff('catalog', 'write');
-  if (!current) return FORBIDDEN;
-  return write(async () => {
-    await setPlan(current.db, current.actor, slug, code, duration, input as never);
-    return null;
-  });
 }
 
 // ---------------------------------------------------------------- pages

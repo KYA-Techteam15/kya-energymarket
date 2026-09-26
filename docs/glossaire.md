@@ -6,10 +6,16 @@ Les mots de l'interface, de la documentation et du code. Un terme par idée, le 
 |---|---|---|
 | **KYA-EnergyMarket** | La marketplace (ce projet). | — |
 | **Logiciel** | Un produit vendu : KYA-SolDesign, KYA-EcoLabel… | `Product` (type `software`) |
-| **Édition** | Variante d'un logiciel : Commerciale, Académique, Étudiant. Définit les fonctions, limites, filigrane et délai de grâce. | `Edition` |
-| **Durée** | Formule d'une édition : 1 jour, 1 mois, 1 trimestre, 1 an. Porte le prix par poste. | `Plan` |
+| **Édition** | Variante d'un logiciel : Commerciale, Académique, Étudiant, Partenaire… Définit les fonctions, limites, filigrane, délai de grâce, profil dans le logiciel et caractéristiques affichées. S'ajoute quand on veut ; visible ou non, en vente ou non ; s'archive, ne se supprime pas. | `Edition` |
+| **Profil dans le logiciel** | Code d'édition que KYA-SolDesign connaît (`commercial`, `academic`, `student`) et reçoit dans le jeton. Une nouvelle édition choisit l'un d'eux. | `Edition.softwareEdition` |
+| **Caractéristiques affichées** | Lignes libres d'une édition pour la page Tarifs (« Support prioritaire »…). Sans effet dans le logiciel. | `Edition.highlights` |
+| **Type de licence** | Ce qu'on vend ou émet dans une édition : nom (Annuelle, Partenaire 1 an…), nature (vente, essai, offerte, éducation, partenariat), durée en jours, prix par poste, postes permis, renouvelable. Visible ou non, en vente ou non. Remplace l'ancienne « durée ». | `LicenseType` |
+| **Version** | Version du logiciel (1.2.1), jamais une édition. Voir spécification 008. | `SoftwareRelease` |
+| **Brouillon du catalogue** | Modifications de l'offre pas encore publiées. Le site, l'API et le logiciel ne voient que l'offre publiée. | `CatalogDraft` |
+| **Lot** | Licences distinctes générées en une fois : une par courriel, N pour une organisation, ou N clés à distribuer. | `LicenseBatch` |
+| **Canal** | D'où vient une licence : achat, essai, attribution par l'équipe, lot, partenariat. Sert aux statistiques. | `License.channel` |
 | **Poste** | Un ordinateur sur lequel le logiciel est activé. Une licence compte un nombre de postes. | `Seat` |
-| **Licence** | Droit d'utiliser un logiciel dans une édition, pour une durée et un nombre de postes. Identifiée par une clé. | `License` |
+| **Licence** | Droit d'utiliser un logiciel dans une édition, selon un type de licence, pour un nombre de postes. Garde une copie figée de son offre (type, jours, prix, montant payé, canal, motif). Identifiée par une clé ; peut attendre son titulaire (clé à distribuer, destinataire sans compte). | `License` |
 | **Clé de licence** | Code lisible (`KYA-COM-12M-…`) saisi dans le logiciel, ou retrouvé par connexion au compte. | `License.key` |
 | **Jeton de licence** | Charge utile signée (ECDSA P-256) remise au logiciel pour un poste ; vérifiable hors ligne. | `LicenseToken` |
 | **Essai** | Licence gratuite, une fois par compte et par logiciel, réglée dans l'administration. | `Trial` |

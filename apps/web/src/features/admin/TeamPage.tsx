@@ -2,7 +2,7 @@ import { Icon } from '@kya-em/ui';
 import { useRouter } from '@tanstack/react-router';
 import { useState, type FormEvent } from 'react';
 import { m } from '@/paraglide/messages.js';
-import { roleLabel } from './AdminHomePage';
+import { roleLabel } from './roles';
 import { grantRole, revokeRole, type listTeam } from './server';
 
 type Team = NonNullable<Awaited<ReturnType<typeof listTeam>>>;

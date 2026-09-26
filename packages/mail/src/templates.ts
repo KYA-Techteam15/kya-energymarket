@@ -24,6 +24,17 @@ export type MailTemplate =
       readonly inviterName: string;
       readonly key: string;
       readonly url: string;
+    }
+  | {
+      /** Licence émise par l'équipe ou dans un lot (spec 005b) : la clé et la marche à suivre. */
+      readonly kind: 'license-key';
+      readonly productName: string;
+      /** « Étudiant · 1 an » */
+      readonly offer: string;
+      /** « valable 365 jours à partir de la première activation » ou « jusqu'au 14 mars 2027 » */
+      readonly validity: string;
+      readonly key: string;
+      readonly url: string;
     };
 
 interface Content {
@@ -85,6 +96,18 @@ const copy: Record<MailLocale, (template: MailTemplate) => Content> = {
           action: 'Démarrer',
           note: 'Gardez cette clé pour vous : elle ouvre les postes de votre organisation.',
         };
+      case 'license-key':
+        return {
+          subject: `Votre licence ${template.productName} — KYA-EnergyMarket`,
+          heading: `Votre licence ${template.productName}`,
+          paragraphs: [
+            `Une licence ${template.productName} (${template.offer}) vous est attribuée, ${template.validity}.`,
+            `Votre clé de licence : ${template.key}`,
+            'Installez le logiciel, puis collez cette clé au premier lancement. Créez votre compte KYA-EnergyMarket avec cette adresse pour retrouver la licence dans votre espace.',
+          ],
+          action: 'Retrouver ma licence',
+          note: 'Gardez cette clé pour vous : elle est personnelle.',
+        };
       case 'staff-welcome':
         return {
           subject: 'Bienvenue dans l’équipe KYA-EnergyMarket',
@@ -145,6 +168,18 @@ const copy: Record<MailLocale, (template: MailTemplate) => Content> = {
           ],
           action: 'Get started',
           note: 'Keep this key to yourself: it opens your organisation’s seats.',
+        };
+      case 'license-key':
+        return {
+          subject: `Your ${template.productName} licence — KYA-EnergyMarket`,
+          heading: `Your ${template.productName} licence`,
+          paragraphs: [
+            `A ${template.productName} licence (${template.offer}) has been assigned to you, ${template.validity}.`,
+            `Your licence key: ${template.key}`,
+            'Install the software, then paste this key on first launch. Create your KYA-EnergyMarket account with this address to find the licence in your space.',
+          ],
+          action: 'Find my licence',
+          note: 'Keep this key to yourself: it is personal.',
         };
       case 'staff-welcome':
         return {

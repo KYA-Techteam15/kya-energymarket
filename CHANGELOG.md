@@ -6,6 +6,18 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), versions [Sem
 
 ### Ajouté
 
+- Offre modulable et console d'administration (spécification 005b) : éditions et types de licence
+  ajoutés, masqués, retirés de la vente ou archivés sans développeur, profil de l'édition dans le
+  logiciel, caractéristiques affichées ; catalogue en brouillon, publié d'un bloc (conflits
+  détectés) ; licences à copie figée de leur offre (prix, montant payé, canal, motif, référence),
+  début de validité à la première activation, rattachement par courriel vérifié ou par clé saisie
+  dans l'espace client ; lots de licences distinctes (courriels, organisation, clés à distribuer),
+  idempotents ; file de travaux en base avec reprise (courriel de clé, nouveau modèle
+  `license-key`) ; console à part (menu par domaine filtré par rôle, tableau de bord, licences avec
+  vues et actions groupées, fiche en panneau, assistant de génération, lots, catalogue, journal,
+  recherche Ctrl K) ; outils MCP `change_catalog`, `publish_catalog`, `discard_catalog_draft`,
+  `generate_license_batch`, `find_batches`, `license_stats` ; API `/api/v1/catalog` sur les types de
+  licence. Migrations 0005 (reprise des données) et 0006.
 - Licences et API KYA-SolDesign (spécification 005) : licences au nom d'une organisation, clés
   lisibles chiffrées au repos, jetons ECDSA P-256 au format exact du logiciel (test de contrat),
   droits lus dans le catalogue à chaque jeton ; API /api/software/v1 (heure, offre, activer,

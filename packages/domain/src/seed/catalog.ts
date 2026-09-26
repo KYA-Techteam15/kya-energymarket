@@ -1,7 +1,7 @@
 import type { LocalizedText } from '@kya-em/db';
 
 /**
- * Contenu initial du catalogue (spec 004, FR-010), repris de `design/v5` et de PRODUCT.md. Les prix
+ * Contenu initial du catalogue (spec 004, FR-010 ; 005b), repris de `design/v5` et de PRODUCT.md. Les prix
  * ne sont pas fixés : ceux-ci sont les valeurs d'exemple de la maquette, marqués « prix exemple ».
  */
 export interface SeedProduct {
@@ -14,6 +14,8 @@ export interface SeedProduct {
   readonly logo?: string;
   readonly monogram?: string;
   readonly features?: readonly { key: string; label: LocalizedText }[];
+  /** Codes d'édition que le logiciel connaît. */
+  readonly softwareEditions?: readonly string[];
   readonly editions?: readonly {
     code: string;
     name: LocalizedText;
@@ -23,7 +25,7 @@ export interface SeedProduct {
     maxSeats: number | null;
     maxProjects: number | null;
     features: readonly string[];
-    plans: readonly { duration: string; pricePerSeat: number }[];
+    types: readonly { name: LocalizedText; days: number; pricePerSeat: number }[];
   }[];
 }
 
@@ -48,6 +50,7 @@ export const SEED_PRODUCTS: readonly SeedProduct[] = [
       en: 'From the site to the single-line diagram: technical reliability and economic affordability to decide, a quote for the customer, technical documents for the technicians.',
     },
     logo: '/images/ksd-mark.png',
+    softwareEditions: ['commercial', 'academic', 'student'],
     features: [
       { key: 'system.aio', label: { fr: 'Parcours complet et calculs', en: 'Full workflow and calculations' } },
       {
@@ -78,10 +81,10 @@ export const SEED_PRODUCTS: readonly SeedProduct[] = [
         maxSeats: 50,
         maxProjects: null,
         features: ALL,
-        plans: [
-          { duration: 'P1M', pricePerSeat: 25_000 },
-          { duration: 'P3M', pricePerSeat: 65_000 },
-          { duration: 'P1Y', pricePerSeat: 220_000 },
+        types: [
+          { name: { fr: '1 mois', en: '1 month' }, days: 30, pricePerSeat: 25_000 },
+          { name: { fr: '1 trimestre', en: '3 months' }, days: 91, pricePerSeat: 65_000 },
+          { name: { fr: '1 an', en: '1 year' }, days: 365, pricePerSeat: 220_000 },
         ],
       },
       {
@@ -93,7 +96,7 @@ export const SEED_PRODUCTS: readonly SeedProduct[] = [
         maxSeats: 200,
         maxProjects: null,
         features: ['system.aio', 'sizing.optimize', 'documents.word', 'lifecycle.issue', 'catalog.userEquipment'],
-        plans: [{ duration: 'P1Y', pricePerSeat: 90_000 }],
+        types: [{ name: { fr: '1 an', en: '1 year' }, days: 365, pricePerSeat: 90_000 }],
       },
       {
         code: 'student',
@@ -104,9 +107,9 @@ export const SEED_PRODUCTS: readonly SeedProduct[] = [
         maxSeats: 1,
         maxProjects: 5,
         features: ['system.aio'],
-        plans: [
-          { duration: 'P1D', pricePerSeat: 1_500 },
-          { duration: 'P1M', pricePerSeat: 7_500 },
+        types: [
+          { name: { fr: '1 jour', en: '1 day' }, days: 1, pricePerSeat: 1_500 },
+          { name: { fr: '1 mois', en: '1 month' }, days: 30, pricePerSeat: 7_500 },
         ],
       },
     ],

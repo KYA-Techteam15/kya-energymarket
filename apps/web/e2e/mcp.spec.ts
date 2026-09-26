@@ -192,34 +192,37 @@ test.describe('serveur MCP (spec 003)', () => {
 
     const tools = await rpc(request, accessToken, 'tools/list');
     expect(tools.body.result.tools.map((tool: { name: string }) => tool.name).sort()).toEqual([
+      'change_catalog',
+      'discard_catalog_draft',
       'extend_license',
+      'find_batches',
       'find_customer',
       'find_license',
+      'generate_license_batch',
       'get_page',
       'get_product',
       'issue_license',
+      'license_stats',
       'list_pages',
       'list_staff',
+      'publish_catalog',
       'publish_page',
       'release_seat',
       'revoke_license',
       'search_catalog',
       'set_license_seats',
-      'set_plan_price',
-      'update_edition',
       'update_page_draft',
-      'update_product',
       'whoami',
     ]);
-    // Outils du catalogue (spec 004) : lecture avec admin:read, écriture refusée sans admin:catalog.
+    // Outils du catalogue (spec 004, 005b) : lecture avec admin:read, brouillon refusé sans admin:catalog.
     const offer = await rpc(request, accessToken, 'tools/call', {
       name: 'get_product',
       arguments: { product: 'kya-soldesign' },
     });
     expect(offer.body.result.content[0].text).toContain('"code": "commercial"');
     const denied = await rpc(request, accessToken, 'tools/call', {
-      name: 'set_plan_price',
-      arguments: { product: 'kya-soldesign', edition: 'student', duration: 'P1M', pricePerSeat: 1 },
+      name: 'change_catalog',
+      arguments: { product: 'kya-soldesign', changes: [{ op: 'product', fields: { monogram: 'SD' } }] },
     });
     expect(denied.body.result.isError).toBe(true);
     expect(denied.body.result.content[0].text).toContain('admin:catalog');

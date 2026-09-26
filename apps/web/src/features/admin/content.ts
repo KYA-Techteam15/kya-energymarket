@@ -1,69 +1,23 @@
 import { createServerFn } from '@tanstack/react-start';
 import {
-  loadCatalogAdmin,
   loadMediaAdmin,
   loadPageEditor,
   loadPagesAdmin,
-  loadProductAdmin,
   publishAdmin,
   restoreAdmin,
   saveDraftAdmin,
-  saveEdition,
-  saveFeature,
   saveMediaTexts,
-  savePlan,
-  saveProduct,
   uploadMediaAdmin,
 } from './content.server';
 
-// Fonctions serveur de l'administration du catalogue, des pages et des médias (spec 004). Les entrées
+// Fonctions serveur de l'administration des pages et des médias (spec 004). Les entrées
 // sont validées ici dans leur forme, puis par les schémas du domaine ; les droits dans content.server.ts.
 const str = (value: unknown, max = 200) => {
   if (typeof value !== 'string' || value.length === 0 || value.length > max) throw new Error('valeur invalide');
   return value;
 };
-const slug = (value: unknown) => {
-  const text = str(value, 60);
-  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/u.test(text)) throw new Error('identifiant invalide');
-  return text;
-};
 const locale = (value: unknown) => (value === 'en' ? ('en' as const) : ('fr' as const));
 const record = (input: unknown) => (input ?? {}) as Record<string, unknown>;
-
-export const getCatalogAdmin = createServerFn({ method: 'GET' }).handler(() => loadCatalogAdmin());
-
-export const getProductAdmin = createServerFn({ method: 'GET' })
-  .validator((input: unknown) => ({ slug: slug(record(input).slug) }))
-  .handler(({ data }) => loadProductAdmin(data.slug));
-
-export const updateProduct = createServerFn({ method: 'POST' })
-  .validator((input: unknown) => ({ slug: slug(record(input).slug), values: record(input).values }))
-  .handler(({ data }) => saveProduct(data.slug, data.values));
-
-export const updateFeature = createServerFn({ method: 'POST' })
-  .validator((input: unknown) => ({
-    slug: slug(record(input).slug),
-    key: str(record(input).key, 60),
-    values: record(input).values,
-  }))
-  .handler(({ data }) => saveFeature(data.slug, data.key, data.values));
-
-export const updateEdition = createServerFn({ method: 'POST' })
-  .validator((input: unknown) => ({
-    slug: slug(record(input).slug),
-    code: str(record(input).code, 30),
-    values: record(input).values,
-  }))
-  .handler(({ data }) => saveEdition(data.slug, data.code, data.values));
-
-export const updatePlan = createServerFn({ method: 'POST' })
-  .validator((input: unknown) => ({
-    slug: slug(record(input).slug),
-    code: str(record(input).code, 30),
-    duration: str(record(input).duration, 5),
-    values: record(input).values,
-  }))
-  .handler(({ data }) => savePlan(data.slug, data.code, data.duration, data.values));
 
 export const getPagesAdmin = createServerFn({ method: 'GET' }).handler(() => loadPagesAdmin());
 

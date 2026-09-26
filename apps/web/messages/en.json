@@ -433,5 +433,722 @@
   "admin_licenses_revoke_help": "Final: the key no longer activates and computers become read-only at their next connection. No project is erased.",
   "admin_licenses_revoke_confirm": "I confirm revoking this licence.",
   "admin_licenses_journal": "Log",
-  "consent_scope_admin_licenses": "Issue, extend and revoke licences"
+  "consent_scope_admin_licenses": "Issue, extend and revoke licences",
+  "cx_brand": "Console",
+  "cx_breadcrumb": "Breadcrumb",
+  "cx_menu_open": "Open the menu",
+  "cx_environment": "Platform environment",
+  "cx_search": "Search",
+  "cx_search_act": "Search, act…",
+  "cx_close": "Close",
+  "cx_soon": "soon",
+  "cx_to_customer_space": "Go to my customer space",
+  "cx_nav_label": "Console navigation",
+  "cx_nav_dashboard": "Dashboard",
+  "cx_nav_sales": "Sales",
+  "cx_nav_licenses": "Licences",
+  "cx_nav_batches": "Batches",
+  "cx_nav_orders": "Orders and quotes",
+  "cx_nav_catalog": "Catalogue",
+  "cx_nav_products": "Software",
+  "cx_nav_content": "Content",
+  "cx_nav_pages": "Pages",
+  "cx_nav_media": "Media",
+  "cx_nav_system": "System",
+  "cx_nav_team": "Team",
+  "cx_nav_mcp": "MCP access",
+  "cx_nav_journal": "Log",
+  "cx_p_title": "Search and actions",
+  "cx_p_placeholder": "Key, lic_… id, email, organisation, batch or action",
+  "cx_p_actions": "Actions",
+  "cx_p_generate": "Generate a batch of licences",
+  "cx_p_issue": "Issue a licence",
+  "cx_p_expiring": "Licences expiring within 30 days",
+  "cx_p_catalog": "Open the catalogue",
+  "cx_p_licenses": "Licences",
+  "cx_p_batches": "Batches",
+  "cx_p_catalog_group": "Catalogue",
+  "cx_p_nothing": "Nothing matches. Try a key, an email or a name.",
+  "cx_p_help_nav": "↑ ↓ to move · Enter to open",
+  "cx_p_help_key": "Paste a KYA-… key to jump to the licence",
+  "cx_dash_hello": "Hello {name}",
+  "cx_dash_scope": "All software, over the chosen period.",
+  "cx_dash_no_stats": "Your role does not give access to statistics.",
+  "cx_dash_period": "Period",
+  "cx_dash_summary": "Period summary",
+  "cx_period_30": "Last 30 days",
+  "cx_period_90": "Last 90 days",
+  "cx_period_365": "Last 12 months",
+  "cx_kpi_sold": "Sold",
+  "cx_kpi_sold_count": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} licence bought",
+        "countPlural=*": "{count} licences bought"
+      }
+    }
+  ],
+  "cx_kpi_offered": "Given",
+  "cx_kpi_offered_hint": "Team grants, batches and partnerships",
+  "cx_kpi_trials": "Trials",
+  "cx_kpi_started": "started",
+  "cx_kpi_converted": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} converted",
+        "countPlural=*": "{count} converted"
+      }
+    }
+  ],
+  "cx_kpi_devices": "Active computers",
+  "cx_kpi_devices_new": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} activated in the period",
+        "countPlural=*": "{count} activated in the period"
+      }
+    }
+  ],
+  "cx_licenses_unit": "licences",
+  "cx_chart_title": "Licences issued per week",
+  "cx_chart_offered": "Given or batch",
+  "cx_todo": "To handle",
+  "cx_todo_none": "Nothing to handle right now.",
+  "cx_todo_expiring": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} bought licence expires within 30 days",
+        "countPlural=*": "{count} bought licences expire within 30 days"
+      }
+    }
+  ],
+  "cx_todo_expiring_hint": "Time to offer the renewal.",
+  "cx_todo_idle": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} batch key never activated",
+        "countPlural=*": "{count} batch keys never activated"
+      }
+    }
+  ],
+  "cx_todo_mails": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} key email failed",
+        "countPlural=*": "{count} key emails failed"
+      }
+    }
+  ],
+  "cx_todo_mails_hint": "Five attempts were not enough: check the address and retry from the batch.",
+  "cx_see_licenses": "See the licences",
+  "cx_open_batch": "Open the batch",
+  "cx_recent": "Recent activity",
+  "cx_recent_none": "No activity yet.",
+  "cx_all_journal": "Full log",
+  "cx_actor_mcp": "Claude (MCP) for {name}",
+  "cx_actor_system": "Platform",
+  "cx_actor_unknown": "Unknown",
+  "cx_act_issued": "licence issued",
+  "cx_act_batch": "batch generated",
+  "cx_act_extended": "licence extended",
+  "cx_act_revoked": "licence revoked",
+  "cx_act_claimed": "licence attached to an account",
+  "cx_act_activated": "computer activated",
+  "cx_act_released": "seat released",
+  "cx_act_seats": "seat count changed",
+  "cx_act_assigned": "seat assigned",
+  "cx_act_published": "catalogue published",
+  "cx_act_draft": "catalogue draft changed",
+  "cx_act_discarded": "catalogue draft discarded",
+  "cx_act_mcp": "MCP tool called",
+  "cx_licenses_intro": "Each licence keeps the offer, price and channel of the moment it was issued.",
+  "cx_generate": "Generate licences",
+  "cx_generate_batch": "Generate a batch",
+  "cx_issue": "Issue a licence",
+  "cx_issue_submit": "Issue the licence",
+  "cx_issued": "Licence issued.",
+  "cx_views": "Saved views",
+  "cx_view_all": "All",
+  "cx_view_expiring": "Expire within 30 d",
+  "cx_view_purchased": "Bought",
+  "cx_view_offered": "Given",
+  "cx_view_trials": "Trials",
+  "cx_view_waiting": "Never activated",
+  "cx_view_revoked": "Revoked",
+  "cx_licenses_search": "Search a key, an id, a holder, an email",
+  "cx_edition": "Edition",
+  "cx_editions": "Editions",
+  "cx_all_editions": "All editions",
+  "cx_channel": "Channel",
+  "cx_all_channels": "All channels",
+  "cx_batch": "Batch",
+  "cx_remove_filter": "Remove the filter",
+  "cx_select_all": "Select all",
+  "cx_select_one": "Select {id}",
+  "cx_col_license": "Licence",
+  "cx_col_holder": "Holder",
+  "cx_col_offer": "Offer",
+  "cx_col_amount": "Amount",
+  "cx_col_seats": "Seats",
+  "cx_col_end": "End",
+  "cx_col_state": "State",
+  "cx_licenses_none": "No licence matches these filters.",
+  "cx_unassigned": "Unassigned",
+  "cx_unassigned_hint": "Unassigned: “{name}” in the software, attached to the account that enters the key",
+  "cx_expired": "expired",
+  "cx_in_days": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "in {count} day",
+        "countPlural=*": "in {count} days"
+      }
+    }
+  ],
+  "cx_on_activation": "on first activation",
+  "cx_page_range": "{from} to {to} of {total}",
+  "cx_previous": "Previous",
+  "cx_next": "Next",
+  "cx_bulk_label": "Actions on the selection",
+  "cx_selected": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} selected",
+        "countPlural=*": "{count} selected"
+      }
+    }
+  ],
+  "cx_days_label": "Number of days",
+  "cx_extend": "Extend",
+  "cx_extend_by": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "Extend by {count} day",
+        "countPlural=*": "Extend by {count} days"
+      }
+    }
+  ],
+  "cx_extend_all": "Extend the batch",
+  "cx_copy_csv": "Copy as CSV",
+  "cx_revoke": "Revoke",
+  "cx_revoke_all": "Revoke the batch",
+  "cx_confirm_revoke": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "Revoke {count} licence",
+        "countPlural=*": "Revoke {count} licences"
+      }
+    }
+  ],
+  "cx_clear_selection": "Clear the selection",
+  "cx_cancel": "Cancel",
+  "cx_reason": "Reason",
+  "cx_reason_required": "Reason (required)",
+  "cx_reason_example": "E.g. 2026 agreement, goodwill gesture, trade show",
+  "cx_reason_stats": "Reason (required, used in statistics)",
+  "cx_csv_copied": "Keys copied as CSV.",
+  "cx_copy_refused": "The browser refused to copy: select the text by hand.",
+  "cx_bulk_extended": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} licence extended.",
+        "countPlural=*": "{count} licences extended."
+      }
+    }
+  ],
+  "cx_bulk_revoked": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} licence revoked.",
+        "countPlural=*": "{count} licences revoked."
+      }
+    }
+  ],
+  "cx_license_of": "Licence",
+  "cx_loading": "Loading…",
+  "cx_license_missing": "This licence does not exist.",
+  "cx_key": "Key",
+  "cx_key_unavailable": "Key cannot be decrypted (server secret changed)",
+  "cx_show": "Show",
+  "cx_hide": "Hide",
+  "cx_copy": "Copy",
+  "cx_key_copied": "Key copied.",
+  "cx_holder": "Holder",
+  "cx_shown_name": "Displayed name",
+  "cx_recipient": "Recipient",
+  "cx_offer_at_issue": "Offer at issue",
+  "cx_type": "Licence type",
+  "cx_types": "Licence types",
+  "cx_duration": "Duration",
+  "cx_price_per_seat": "Price per seat",
+  "cx_free": "free",
+  "cx_amount_paid": "Amount paid",
+  "cx_validity": "Validity",
+  "cx_starts_on_activation": "starts on first activation",
+  "cx_issued_by": "Issued by",
+  "cx_price_drift": "This type now costs {price} per seat. This licence keeps the terms it was issued with.",
+  "cx_devices": "Computers",
+  "cx_computer": "Computer",
+  "cx_last_check": "Last check {date}",
+  "cx_release": "Release",
+  "cx_release_named": "Release {name}",
+  "cx_released": "Seat released.",
+  "cx_no_device": "No computer activated.",
+  "cx_mails": "Key emails",
+  "cx_mail_done": "Sent",
+  "cx_mail_failed": "Failed",
+  "cx_mail_pending": "Queued",
+  "cx_history": "History",
+  "cx_resend_key": "Resend the key",
+  "cx_send_to": "Send to",
+  "cx_send": "Send",
+  "cx_key_queued": "Key email queued for {email}.",
+  "cx_extended": "Licence extended by {days}.",
+  "cx_save": "Save",
+  "cx_saved": "Saved.",
+  "cx_revoke_title": "Revoke this licence?",
+  "cx_revoke_hint": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} computer loses access at its next refresh. Nothing is deleted.",
+        "countPlural=*": "{count} computers lose access at their next refresh. Nothing is deleted."
+      }
+    }
+  ],
+  "cx_revoked": "Licence revoked.",
+  "cx_offer": "Offer",
+  "cx_hidden": "hidden",
+  "cx_seat": "seat",
+  "cx_holder_account": "Account or organisation",
+  "cx_holder_email": "Email",
+  "cx_holder_none": "Key to hand out",
+  "cx_holder_search": "Holder",
+  "cx_holder_placeholder": "Name, email or organisation",
+  "cx_holder_results": "Holders found",
+  "cx_holder_none_found": "No account found: use “Email” for someone without an account.",
+  "cx_organization": "Organisation",
+  "cx_person": "Person",
+  "cx_choose": "Choose",
+  "cx_change": "Change",
+  "cx_recipient_email": "Recipient email",
+  "cx_recipient_hint": "The licence joins their space when they sign in with this verified email.",
+  "cx_shown_in_software": "Name shown in the software",
+  "cx_free_key_hint": "No holder: the key activates as is and attaches to the account that enters it.",
+  "cx_seats_range": "{min} to {max} seats",
+  "cx_seats_min": "at least {min} seat",
+  "cx_channel_offline_purchase": "Offline purchase",
+  "cx_amount_paid_fcfa": "Amount paid (FCFA)",
+  "cx_catalog_price": "Catalogue price: {price}",
+  "cx_reference": "Reference (order, quote)",
+  "cx_starts_on_activation_choice": "Validity starts on first activation",
+  "cx_send_key_to": "Email the key to {email}",
+  "cx_channel_purchase": "Purchase",
+  "cx_channel_trial": "Trial",
+  "cx_channel_staff": "Team grant",
+  "cx_channel_batch": "Batch",
+  "cx_channel_partner": "Partnership",
+  "cx_nature": "Nature",
+  "cx_nature_sale": "Sale",
+  "cx_nature_trial": "Trial",
+  "cx_nature_free": "Free",
+  "cx_nature_education": "Education",
+  "cx_nature_partner": "Partnership",
+  "cx_nature_hint": "Groups licences in statistics.",
+  "cx_state_active": "Active",
+  "cx_state_soon": "Expires soon",
+  "cx_state_expired": "Expired",
+  "cx_state_revoked": "Revoked",
+  "cx_state_waiting": "Never activated",
+  "cx_days_1": "1 day",
+  "cx_days_7": "1 week",
+  "cx_days_30": "1 month",
+  "cx_days_91": "3 months",
+  "cx_days_182": "6 months",
+  "cx_days_365": "1 year",
+  "cx_days_730": "2 years",
+  "cx_days_n": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} day",
+        "countPlural=*": "{count} days"
+      }
+    }
+  ],
+  "cx_err_forbidden": "Your role does not allow this action.",
+  "cx_err_invalid": "Values rejected: check the fields.",
+  "cx_err_draft_conflict": "The draft changed in the meantime (someone else or another tab): it has been reloaded.",
+  "cx_err_nothing": "Nothing to publish.",
+  "cx_err_not_removable": "Already published: archive it instead.",
+  "cx_err_too_many_seats": "More seats than this type or edition allows.",
+  "cx_err_too_few_seats": "Fewer seats than this type’s minimum.",
+  "cx_err_reason": "Give a reason.",
+  "cx_err_seats_below": "More active computers than this seat count: release some first.",
+  "cx_err_type_archived": "This licence type is archived.",
+  "cx_err_no_recipient": "No recipient email.",
+  "cx_err_holder": "Holder not found.",
+  "cx_err_generic": "The operation did not go through.",
+  "cx_batches_intro": "Distinct licences generated at once: one per person, for an organisation, or keys to hand out.",
+  "cx_batches_none": "No batch yet.",
+  "cx_batches_hint": "A batch is extended or revoked as a whole; it stays visible after expiry for statistics.",
+  "cx_recipients": "Recipients",
+  "cx_activated": "Activated",
+  "cx_created": "Created",
+  "cx_by": "By",
+  "cx_n_licenses": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} licence",
+        "countPlural=*": "{count} licences"
+      }
+    }
+  ],
+  "cx_failed_mails": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} failed email",
+        "countPlural=*": "{count} failed emails"
+      }
+    }
+  ],
+  "cx_mode_emails": "One licence per person",
+  "cx_mode_organization": "For an organisation",
+  "cx_mode_keys": "Keys to hand out",
+  "cx_seats_per_license": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} seat per licence",
+        "countPlural=*": "{count} seats per licence"
+      }
+    }
+  ],
+  "cx_created_on": "created on {date} by {name}",
+  "cx_resend_mails": "Resend the emails",
+  "cx_never_activated": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} never activated",
+        "countPlural=*": "{count} never activated"
+      }
+    }
+  ],
+  "cx_shown_name_value": "Shown: {name}",
+  "cx_mails_queued": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} email queued again.",
+        "countPlural=*": "{count} emails queued again."
+      }
+    }
+  ],
+  "cx_revoke_batch_title": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "Revoke {count} active licence of this batch?",
+        "countPlural=*": "Revoke the {count} active licences of this batch?"
+      }
+    }
+  ],
+  "cx_mail_retried": "Email retried.",
+  "cx_retry": "Retry",
+  "cx_wizard_intro": "One licence or a whole batch: the same flow.",
+  "cx_steps": "Steps",
+  "cx_step_offer": "Offer",
+  "cx_step_recipients": "Recipients",
+  "cx_step_check": "Check",
+  "cx_step_keys": "Keys",
+  "cx_which_offer": "Which offer?",
+  "cx_hidden_available": "Editions and types hidden on the site remain available here.",
+  "cx_for_whom": "For whom?",
+  "cx_emails_label": "Emails, one per line (or paste a spreadsheet column)",
+  "cx_valid": "valid",
+  "cx_invalid": "invalid",
+  "cx_duplicates": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} duplicate ignored",
+        "countPlural=*": "{count} duplicates ignored"
+      }
+    }
+  ],
+  "cx_too_many": "{max} at most per batch: make several batches.",
+  "cx_emails_hint": "Each person gets an email with their own key. Their licence joins their space as soon as they sign in with this email.",
+  "cx_organization_holder": "Holding organisation",
+  "cx_organization_hint": "The licences appear in the organisation’s space, which assigns them itself.",
+  "cx_how_many": "Number of licences",
+  "cx_keys_hint": "No holder at first: each key activates as is and attaches to the account that enters it.",
+  "cx_seats_each": "Seats per licence",
+  "cx_validity_start": "Validity start",
+  "cx_start_activation": "On first activation",
+  "cx_start_today": "From today",
+  "cx_batch_label": "Batch label",
+  "cx_batch_label_example": "Kara Solar Institute — class of 2026",
+  "cx_what_happens": "What will happen",
+  "cx_distinct_licenses": "distinct licences, each with its own key",
+  "cx_check_offer": "{offer}, {seats} seat(s) per licence, {duration}",
+  "cx_check_from_activation": "from first activation.",
+  "cx_check_from_today": "from today.",
+  "cx_check_mails": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} email goes through the send queue; a failure is retried and stays visible in the batch.",
+        "countPlural=*": "{count} emails go through the send queue; a failure is retried and stays visible in the batch."
+      }
+    }
+  ],
+  "cx_check_organization": "The licences are attached to {name}.",
+  "cx_check_keys": "The keys appear at the next step and remain available in the batch.",
+  "cx_check_stats": "Statistics: counted as “Given · Batch”, nature {nature}, amount 0 FCFA, reason “{reason}”.",
+  "cx_check_actions": "The batch can then be extended or revoked as a whole.",
+  "cx_check_once": "Generation happens once: a double click or a reloaded page creates no duplicate.",
+  "cx_batch_generated": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} licence generated",
+        "countPlural=*": "{count} licences generated"
+      }
+    }
+  ],
+  "cx_batch_replayed": "This batch already existed: here are its keys, nothing was recreated.",
+  "cx_back": "Back",
+  "cx_continue": "Continue",
+  "cx_generate_n": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "Generate {count} licence",
+        "countPlural=*": "Generate {count} licences"
+      }
+    }
+  ],
+  "cx_generate_another": "Generate another batch",
+  "cx_summary": "Summary",
+  "cx_software": "Software",
+  "cx_to_fill": "to fill in",
+  "cx_catalog_intro": "A software has editions; each edition has its rights in the software, displayed highlights and licence types.",
+  "cx_f_status": "Status",
+  "cx_status_available": "Available",
+  "cx_status_soon": "Soon",
+  "cx_status_hidden": "Hidden",
+  "cx_draft": "Draft",
+  "cx_draft_label": "Unpublished changes",
+  "cx_draft_count": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} draft change",
+        "countPlural=*": "{count} draft changes"
+      }
+    }
+  ],
+  "cx_draft_hint": "The site, the API and the software only change when you publish.",
+  "cx_draft_details": "Details",
+  "cx_discard_confirm": "Discard every change?",
+  "cx_discard": "Discard",
+  "cx_keep": "Keep",
+  "cx_publish": "Publish",
+  "cx_published": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "Published: {count} change applied.",
+        "countPlural=*": "Published: {count} changes applied."
+      }
+    }
+  ],
+  "cx_discarded": "Draft discarded.",
+  "cx_diff_added": "Added",
+  "cx_diff_changed": "Changed",
+  "cx_n_editions": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} edition",
+        "countPlural=*": "{count} editions"
+      }
+    }
+  ],
+  "cx_public_page": "Public page",
+  "cx_product_sheet": "Software sheet",
+  "cx_f_name": "Name",
+  "cx_f_kind": "Kind",
+  "cx_f_summary": "Summary",
+  "cx_save_draft": "Save to draft",
+  "cx_saved_draft": "Saved to draft.",
+  "cx_editions_hint": "The order is the site’s. A hidden edition remains usable by the team.",
+  "cx_new_edition": "New edition",
+  "cx_new_edition_example": "Partner",
+  "cx_f_code": "Code",
+  "cx_code_hint": "Lowercase, stable: it no longer changes once published.",
+  "cx_create_draft": "Create as draft",
+  "cx_edition_created": "Edition created as draft, hidden and not for sale.",
+  "cx_order": "Order",
+  "cx_f_visible": "Shown on the site",
+  "cx_f_for_sale": "For sale",
+  "cx_f_profile": "Software profile",
+  "cx_move_up": "Move {name} up",
+  "cx_move_down": "Move {name} down",
+  "cx_new": "new",
+  "cx_visible_named": "{name} shown on the site",
+  "cx_for_sale_named": "{name} for sale",
+  "cx_n_hidden": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} hidden",
+        "countPlural=*": "{count} hidden"
+      }
+    }
+  ],
+  "cx_archived_editions": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} archived edition",
+        "countPlural=*": "{count} archived editions"
+      }
+    }
+  ],
+  "cx_unarchive": "Restore",
+  "cx_archive": "Archive",
+  "cx_features_title": "{product} technical features",
+  "cx_features_hint": "List provided by the software; each edition picks which ones it includes.",
+  "cx_n_features": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} feature",
+        "countPlural=*": "{count} features"
+      }
+    }
+  ],
+  "cx_tab_rights": "Rights in the software",
+  "cx_tab_highlights": "Displayed highlights",
+  "cx_tab_types": "Licence types ({count})",
+  "cx_audience_missing": "Audience to define",
+  "cx_f_archived": "Archived",
+  "cx_removed": "Removed from the draft.",
+  "cx_remove_draft": "Remove from draft",
+  "cx_types_hint": "A hidden or not-for-sale type remains usable to issue or generate licences from the console.",
+  "cx_new_type": "New type",
+  "cx_issued_count": "Issued",
+  "cx_types_none": "No licence type: add one to sell or issue this edition.",
+  "cx_renewable": "renewable",
+  "cx_not_renewable": "not renewable",
+  "cx_indicative": "sample price",
+  "cx_types_note": "Changing a price does not affect licences already issued: each keeps the terms it was issued with.",
+  "cx_f_features": "Included features",
+  "cx_features_applied": "Enforced by the software",
+  "cx_edition_settings": "Edition settings",
+  "cx_f_audience": "Audience",
+  "cx_profile_hint": "Edition code the software knows and receives in the token.",
+  "cx_f_grace": "Grace period (days)",
+  "cx_grace_hint": "After the licence ends, before read-only.",
+  "cx_f_max_projects": "Maximum projects",
+  "cx_f_max_seats": "Maximum seats per licence",
+  "cx_unlimited": "Unlimited",
+  "cx_f_watermark": "Watermark",
+  "cx_none": "None",
+  "cx_rights_note": "Once published, these settings apply at each licence’s next refresh, with nothing to reinstall.",
+  "cx_highlights_hint": "Free text for the pricing page and the comparison; no effect in the software.",
+  "cx_highlights_none": "No highlight yet.",
+  "cx_highlight_fr": "Highlight {n} (French)",
+  "cx_highlight_en": "Highlight {n} (English)",
+  "cx_remove_line": "Remove line {n}",
+  "cx_add_line": "Add a line",
+  "cx_f_highlights": "Highlights",
+  "cx_f_seats_min": "Minimum seats",
+  "cx_f_seats_max": "Maximum seats",
+  "cx_f_renewable": "Renewable",
+  "cx_f_indicative": "Sample price (not final)",
+  "cx_type_missing": "This type does not exist in this edition.",
+  "cx_type_created": "Type created as draft, hidden and not for sale.",
+  "cx_type_example": "Annual, Partner 1 year…",
+  "cx_duration_days": "Duration in days",
+  "cx_price_per_seat_fcfa": "Price per seat (FCFA)",
+  "cx_edition_max": "edition max: {max}",
+  "cx_visible_on_site": "Shown on the site",
+  "cx_for_sale_on_site": "For sale on the site",
+  "cx_type_frozen_note": "Licences already issued keep the terms they were issued with.",
+  "cx_journal_intro": "Every action: team, AI clients (MCP), software and platform.",
+  "cx_actor": "Actor",
+  "cx_all_actors": "All actors",
+  "cx_object": "Object",
+  "cx_all_objects": "All objects",
+  "cx_when": "When",
+  "cx_action": "Action",
+  "cx_outcome": "Outcome",
+  "cx_success": "Success",
+  "cx_failure": "Failure",
+  "cx_actor_type_staff": "KYA team",
+  "cx_actor_type_mcp": "AI client (MCP)",
+  "cx_actor_type_user": "Customer",
+  "cx_res_license": "Licence",
+  "cx_res_batch": "Batch",
+  "cx_res_product": "Software",
+  "cx_res_page": "Page",
+  "cx_res_media": "Media",
+  "cx_res_mcp": "MCP tool",
+  "cx_res_user": "Account",
+  "block_pricing_not_for_sale": "This offer is not on sale online yet: write to us to get it.",
+  "licences_waiting": "starts on first activation",
+  "licences_state_waiting": "To activate",
+  "licences_add_key_title": "Received a key?",
+  "licences_add_key_text": "A key given by your school, a partner or the KYA team joins your space: you then find its seats and duration here.",
+  "licences_add_key_label": "Licence key",
+  "licences_add_key_submit": "Add to my space",
+  "licences_key_added": "Licence added to your space.",
+  "licences_key_unknown": "Unknown or revoked key: check it character by character.",
+  "licences_key_taken": "This key is already attached to another account."
 }

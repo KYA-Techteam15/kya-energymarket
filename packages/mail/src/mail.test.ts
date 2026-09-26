@@ -49,6 +49,14 @@ describe('modèles de courriel', () => {
         key: 'KYA-COM-12M-AAAA-BBBB-CCCC',
         url: 'u',
       },
+      {
+        kind: 'license-key',
+        productName: 'KYA-SolDesign',
+        offer: 'Étudiant · 1 an',
+        validity: 'valable 365 jours à partir de la première activation',
+        key: 'KYA-ETU-12M-AAAA-BBBB-CCCC',
+        url: 'u',
+      },
     ] as const;
     for (const template of templates) {
       for (const locale of ['fr', 'en'] as const) {

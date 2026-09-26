@@ -1,6 +1,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { getPageEditor } from '@/features/admin/content';
 import { PageEditor } from '@/features/admin/editor/PageEditor';
+import { ConsolePage } from '@/features/admin/console/ui';
 import { m } from '@/paraglide/messages.js';
 
 interface EditorSearch {
@@ -25,5 +26,15 @@ export const Route = createFileRoute('/admin/pages/$id')({
 
 function PageEditorRoute() {
   const editor = Route.useLoaderData();
-  return <PageEditor key={`${editor.page.id}-${editor.locale}`} editor={editor} />;
+  return (
+    <ConsolePage
+      crumbs={[
+        { label: m.cx_nav_content() },
+        { label: m.cx_nav_pages(), to: '/admin/pages' },
+        { label: editor.page.key },
+      ]}
+    >
+      <PageEditor key={`${editor.page.id}-${editor.locale}`} editor={editor} />
+    </ConsolePage>
+  );
 }
