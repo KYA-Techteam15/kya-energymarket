@@ -20,6 +20,7 @@ export {
 } from './accounts/organizations.ts';
 export {
   grantStaffRole,
+  accountIdByEmail,
   isStaffRole,
   listStaff,
   revokeStaffRole,

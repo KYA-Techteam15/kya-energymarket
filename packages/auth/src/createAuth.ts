@@ -1,10 +1,10 @@
 import { drizzleAdapter } from '@better-auth/drizzle-adapter';
 import { authSchema, type Database } from '@kya-em/db';
 import { ensurePersonalOrganization, preferredOrganizationId, recordAuditEvent, type Logger } from '@kya-em/domain';
+import { localeFromRequest, renderMail, type Mailer } from '@kya-em/mail';
 import { betterAuth } from 'better-auth';
 import { admin, magicLink, organization } from 'better-auth/plugins';
 import { tanstackStartCookies } from 'better-auth/tanstack-start';
-import type { Mailer } from './mailer.ts';
 import { ac, roles } from './permissions.ts';
 
 export interface AuthDependencies {
@@ -13,7 +13,10 @@ export interface AuthDependencies {
   /** Adresse publique du site (sans /api/auth). */
   readonly baseUrl: string;
   readonly environment: 'development' | 'test' | 'production';
-  /** `null` : aucun fournisseur de courriel (lien de connexion désactivé, invitations par lien). */
+  /**
+   * `null` : aucun courriel (lien de connexion désactivé, invitations par lien, adresse non vérifiée).
+   * Avec un courriel, la vérification de l'adresse devient obligatoire avant la première connexion.
+   */
   readonly mailer: Mailer | null;
   readonly logger?: Logger;
   /** Écriture des cookies par TanStack Start ; désactivée hors du serveur web (tests, scripts). */
@@ -28,6 +31,10 @@ const DAY = 60 * 60 * 24;
  */
 export function createAuth(dependencies: AuthDependencies) {
   const { db, mailer, logger } = dependencies;
+  const send = async (message: Parameters<Mailer['send']>[0]) => {
+    if (!mailer) throw new Error('Aucun fournisseur de courriel configuré.');
+    await mailer.send(message);
+  };
   const audit = (event: Parameters<typeof recordAuditEvent>[1]) =>
     recordAuditEvent(db, event).catch((error: unknown) => logger?.error({ err: error }, 'audit impossible'));
 
@@ -42,8 +49,46 @@ export function createAuth(dependencies: AuthDependencies) {
       minPasswordLength: 10,
       maxPasswordLength: 128,
       autoSignIn: true,
-      // Vérification obligatoire dès qu'un fournisseur de courriel sera branché.
-      requireEmailVerification: false,
+      // Adresse vérifiée avant la première connexion, dès qu'un courriel peut partir (spec 002, avenant A).
+      requireEmailVerification: mailer !== null,
+      resetPasswordTokenExpiresIn: 60 * 60,
+      // Un nouveau mot de passe ferme les autres sessions (appareil perdu, mot de passe compromis).
+      revokeSessionsOnPasswordReset: true,
+      sendResetPassword: async ({ user, url }, request) => {
+        await send(
+          renderMail({ kind: 'reset-password', name: user.name, url }, localeFromRequest(request), user.email),
+        );
+      },
+      onPasswordReset: async ({ user }) => {
+        await audit({
+          actorType: 'user',
+          actorId: user.id,
+          action: 'account.password_reset',
+          resourceType: 'user',
+          resourceId: user.id,
+          outcome: 'success',
+        });
+      },
+    },
+    emailVerification: {
+      sendOnSignUp: mailer !== null,
+      // Connexion refusée tant que l'adresse n'est pas vérifiée : le lien est renvoyé à cette occasion.
+      sendOnSignIn: mailer !== null,
+      autoSignInAfterVerification: true,
+      expiresIn: DAY,
+      sendVerificationEmail: async ({ user, url }, request) => {
+        await send(renderMail({ kind: 'verify-email', name: user.name, url }, localeFromRequest(request), user.email));
+      },
+      afterEmailVerification: async (user) => {
+        await audit({
+          actorType: 'user',
+          actorId: user.id,
+          action: 'account.email_verified',
+          resourceType: 'user',
+          resourceId: user.id,
+          outcome: 'success',
+        });
+      },
     },
     session: {
       expiresIn: 30 * DAY,
@@ -60,6 +105,8 @@ export function createAuth(dependencies: AuthDependencies) {
         '/sign-in/email': { window: 60, max: 5 },
         '/sign-up/email': { window: 60, max: 5 },
         '/sign-in/magic-link': { window: 60, max: 3 },
+        '/request-password-reset': { window: 60, max: 3 },
+        '/send-verification-email': { window: 60, max: 3 },
       },
     },
     advanced: {
@@ -97,13 +144,21 @@ export function createAuth(dependencies: AuthDependencies) {
         creatorRole: 'owner',
         invitationExpiresIn: 7 * DAY,
         cancelPendingInvitationsOnReInvite: true,
-        sendInvitationEmail: async ({ email, organization: invitedTo, id }) => {
+        sendInvitationEmail: async ({ email, organization: invitedTo, id, inviter }, request) => {
           if (!mailer) return; // le lien est affiché à l'invitant (FR-004)
-          await mailer.send({
-            to: email,
-            subject: `Invitation à rejoindre ${invitedTo.name} sur KYA-EnergyMarket`,
-            text: `Vous êtes invité à rejoindre ${invitedTo.name}. Acceptez l'invitation : ${dependencies.baseUrl}/fr/invitation/${id}`,
-          });
+          const locale = localeFromRequest(request);
+          await mailer.send(
+            renderMail(
+              {
+                kind: 'invitation',
+                organizationName: invitedTo.name,
+                inviterName: inviter.user.name,
+                url: `${dependencies.baseUrl}/${locale}/invitation/${id}`,
+              },
+              locale,
+              email,
+            ),
+          );
         },
         organizationHooks: {
           afterCreateOrganization: async ({ organization: created, user }) => {
@@ -162,13 +217,8 @@ export function createAuth(dependencies: AuthDependencies) {
       magicLink({
         expiresIn: 10 * 60,
         disableSignUp: true,
-        sendMagicLink: async ({ email, url }) => {
-          if (!mailer) throw new Error('Aucun fournisseur de courriel configuré.');
-          await mailer.send({
-            to: email,
-            subject: 'Votre lien de connexion à KYA-EnergyMarket',
-            text: `Connectez-vous : ${url} (valable 10 minutes)`,
-          });
+        sendMagicLink: async ({ email, url }, context) => {
+          await send(renderMail({ kind: 'magic-link', url }, localeFromRequest(context?.request), email));
         },
       }),
       ...(dependencies.tanstackCookies === false ? [] : [tanstackStartCookies()]),

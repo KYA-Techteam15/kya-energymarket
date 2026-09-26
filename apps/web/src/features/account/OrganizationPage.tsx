@@ -8,12 +8,13 @@ import type { getActiveOrganization } from './server';
 type Organization = NonNullable<Awaited<ReturnType<typeof getActiveOrganization>>>;
 
 /** Organisation d'entreprise : nom, membres, invitations (spec 002, histoires 2 et 3). */
-export function OrganizationPage({ organization }: { organization: Organization }) {
+export function OrganizationPage({ organization, mail }: { organization: Organization; mail: boolean }) {
   const router = useRouter();
   const isOwner = organization.myRole === 'owner';
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [inviteLink, setInviteLink] = useState<string | null>(null);
+  const [invitedEmail, setInvitedEmail] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const after = async (result: { error?: unknown }, ok?: string) => {
@@ -47,7 +48,8 @@ export function OrganizationPage({ organization }: { organization: Organization 
       organizationId: organization.id,
     });
     if ((await after(result)) && result.data) {
-      // Tant qu'aucun fournisseur de courriel n'est branché, le lien est remis à l'invitant (FR-004).
+      // Le lien est aussi remis à l'invitant : indispensable sans courriel (FR-004), pratique avec.
+      setInvitedEmail(email);
       setInviteLink(new URL(localizeHref(`/invitation/${result.data.id}`), window.location.origin).href);
       setCopied(false);
       form.reset();
@@ -153,7 +155,7 @@ export function OrganizationPage({ organization }: { organization: Organization 
               </label>
               <div>
                 <button className="btn btn-primary" type="submit">
-                  {m.org_invite_send()}
+                  {mail ? m.org_invite_send_mail() : m.org_invite_send()}
                 </button>
               </div>
             </form>
@@ -162,7 +164,9 @@ export function OrganizationPage({ organization }: { organization: Organization 
           )}
           {inviteLink ? (
             <div role="status">
-              <p style={{ marginTop: 18 }}>{m.org_invite_link()}</p>
+              <p style={{ marginTop: 18 }}>
+                {mail && invitedEmail ? m.org_invite_sent({ email: invitedEmail }) : m.org_invite_link()}
+              </p>
               <div className="keybox">
                 <code data-testid="invite-link">{inviteLink}</code>
                 <button

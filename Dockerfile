@@ -8,9 +8,11 @@ WORKDIR /app
 RUN corepack enable
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY apps/web/package.json apps/web/
+COPY packages/auth/package.json packages/auth/
 COPY packages/config/package.json packages/config/
 COPY packages/db/package.json packages/db/
 COPY packages/domain/package.json packages/domain/
+COPY packages/mail/package.json packages/mail/
 COPY packages/ui/package.json packages/ui/
 RUN pnpm install --frozen-lockfile
 COPY . .

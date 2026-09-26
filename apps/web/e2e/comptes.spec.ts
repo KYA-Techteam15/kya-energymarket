@@ -2,6 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { linkFromMail } from './outbox';
 
 // Parcours des comptes (spec 002). Demandent une base : ignorés si E2E_DATABASE_URL est absente.
 test.skip(!process.env.E2E_DATABASE_URL, 'aucune base de test (E2E_DATABASE_URL)');
@@ -19,6 +20,9 @@ async function signUp(page: Page, name: string, address: string) {
   await page.getByLabel('Mot de passe').fill(PASSWORD);
   await page.getByLabel(/J'accepte/u).check();
   await page.getByRole('button', { name: 'Créer mon compte' }).click();
+  // Adresse à confirmer : le lien arrive par courriel, puis ouvre l'espace, connecté.
+  await expect(page.getByRole('heading', { name: 'Vérifiez votre boîte.' })).toBeVisible();
+  await page.goto(await linkFromMail(address, 'verify-email'));
   await expect(page).toHaveURL(/\/fr\/espace\/?$/u);
 }
 
@@ -68,7 +72,9 @@ test.describe('comptes (spec 002)', () => {
     await expect(page.getByRole('heading', { name: 'Organisation.' })).toBeVisible();
 
     await page.getByLabel('Courriel du collègue').fill(email('ama'));
-    await page.getByRole('button', { name: "Créer l'invitation" }).click();
+    await page.getByRole('button', { name: "Envoyer l'invitation" }).click();
+    await expect(page.getByText(`Invitation envoyée par courriel à ${email('ama')}`)).toBeVisible();
+    expect(await linkFromMail(email('ama'), 'invitation')).toMatch(/\/fr\/invitation\//u);
     const link = (await page.getByTestId('invite-link').textContent()) ?? '';
     expect(link).toMatch(/\/fr\/invitation\//u);
 
