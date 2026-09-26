@@ -16,11 +16,13 @@ Le serveur MCP est **réservé aux administrateurs de KYA** : il sert à adminis
 Claude ou Codex. Un compte client est refusé dès la connexion OAuth. Un accès client pourra être
 ajouté plus tard, sans rupture, par de nouvelles portées.
 
-- **Transport** : Streamable HTTP sur `/mcp`, sans session serveur, révision du protocole la plus
-  récente prise en charge par les clients visés (à fixer dans la spécification MCP).
+- **Transport** : Streamable HTTP sur `/mcp`, sans session serveur, révision 2026-07-28 et, pour les
+  clients plus anciens, service sans état 2025 (SDK `@modelcontextprotocol/server` 2). Mis en place par
+  la spécification 003 ; guide de connexion : [Connecter Claude ou Codex](../operations/mcp.md).
 - **Découverte** : métadonnées de ressource protégée (RFC 9728) sur
   `/.well-known/oauth-protected-resource/mcp` ; métadonnées du serveur d'autorisation (RFC 8414) sur
-  `/.well-known/oauth-authorization-server`.
+  `/.well-known/oauth-authorization-server/api/auth` (émetteur `https://<site>/api/auth`), avec les
+  variantes `/.well-known/oauth-authorization-server` et `/.well-known/openid-configuration`.
 - **Autorisation** : OAuth 2.1 avec PKCE ; enregistrement des clients par documents de métadonnées
   client (CIMD) et, pour les clients actuels, enregistrement dynamique (RFC 7591). Page de
   consentement dans l'application ; jeton d'accès court, lié à la ressource `/mcp` (audience exacte),
