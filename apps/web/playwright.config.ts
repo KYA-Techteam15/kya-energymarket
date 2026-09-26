@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { defineConfig, devices } from '@playwright/test';
+import { OUTBOX_DIR } from './e2e/outbox';
 
 const PORT = 4173;
 
@@ -38,7 +39,13 @@ export default defineConfig({
     command: 'node e2e/start-server.mjs',
     port: PORT,
     reuseExistingServer: !process.env.CI,
-    env: { PORT: String(PORT), APP_BASE_URL: `http://localhost:${PORT}`, LOG_LEVEL: 'warn' },
+    // Courriels écrits dans la boîte d'envoi des tests : les parcours suivent les liens reçus.
+    env: {
+      PORT: String(PORT),
+      APP_BASE_URL: `http://localhost:${PORT}`,
+      LOG_LEVEL: 'warn',
+      MAIL_OUTBOX_DIR: OUTBOX_DIR,
+    },
     timeout: 120_000,
   },
 });

@@ -6,7 +6,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./styles/tokens.css": "./styles/tokens.css",
-    "./styles/base.css": "./styles/base.css"
+    "./styles/base.css": "./styles/base.css",
+    "./tokens": "./src/tokens.ts"
   },
   "scripts": {
     "typecheck": "tsc6 -p tsconfig.json"

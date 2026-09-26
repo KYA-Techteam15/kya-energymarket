@@ -12,13 +12,24 @@ const safeRedirect = (value: unknown): string | undefined =>
 interface SignInSearch {
   readonly redirect?: string;
   readonly onglet?: 'creer';
+  /** Posé par Better Auth quand un lien de courriel est invalide ou expiré. */
+  readonly error?: string;
+  /** Retour de la page « mot de passe » après un changement réussi. */
+  readonly motdepasse?: 'change';
 }
 
 export const Route = createFileRoute('/connexion')({
   // Paramètres facultatifs dans les liens ; valeurs sûres après validation.
-  validateSearch: (search: { redirect?: unknown; onglet?: unknown }): SignInSearch => ({
+  validateSearch: (search: {
+    redirect?: unknown;
+    onglet?: unknown;
+    error?: unknown;
+    motdepasse?: unknown;
+  }): SignInSearch => ({
     redirect: safeRedirect(search.redirect),
     onglet: search.onglet === 'creer' ? ('creer' as const) : undefined,
+    error: typeof search.error === 'string' && /^[A-Z_]{1,64}$/u.test(search.error) ? search.error : undefined,
+    motdepasse: search.motdepasse === 'change' ? ('change' as const) : undefined,
   }),
   beforeLoad: async ({ search }) => {
     // « to » passe par la réécriture des adresses de langue (/fr, /en), contrairement à « href ».
@@ -41,6 +52,8 @@ function SignInRoute() {
       redirectTo={search.redirect ?? '/espace'}
       magicLink={capabilities.magicLink}
       available={capabilities.available}
+      initialError={search.error ? m.auth_error_link() : null}
+      initialNotice={search.motdepasse === 'change' ? m.auth_password_changed() : null}
     />
   );
 }

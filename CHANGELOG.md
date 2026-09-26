@@ -6,6 +6,10 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), versions [Sem
 
 ### Ajouté
 
+- Courriel transactionnel (spécification 002, avenant A) : paquet `@kya-em/mail` (SMTP, modèles
+  français/anglais aux couleurs de la charte), confirmation d'adresse avant la première connexion,
+  mot de passe oublié, lien de connexion par courriel, invitations envoyées par courriel, entrée dans
+  l'équipe KYA par `pnpm staff:grant --site …` (compte ouvert, courriel de bienvenue).
 - Comptes, organisations et rôles (spécification 002) : inscription et connexion par courriel et mot de
   passe (Better Auth), limitation des tentatives, organisation personnelle invisible, organisation
   d'entreprise créée à la demande, membres et invitations par lien, rôles d'équipe KYA (`kya_admin`,

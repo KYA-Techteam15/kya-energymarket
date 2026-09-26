@@ -31,6 +31,12 @@ function serialize(roles: readonly string[]): string {
   return unique.length ? unique.join(',') : 'user';
 }
 
+/** Identifiant du compte pour ce courriel, s'il existe. */
+export async function accountIdByEmail(db: Database, email: string): Promise<string | undefined> {
+  const [row] = await db.select({ id: user.id }).from(user).where(eq(user.email, email.trim().toLowerCase())).limit(1);
+  return row?.id;
+}
+
 async function findByEmail(db: Database, email: string) {
   const [row] = await db.select().from(user).where(eq(user.email, email.trim().toLowerCase())).limit(1);
   if (!row) throw new StaffError('ACCOUNT_NOT_FOUND');

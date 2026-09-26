@@ -26,7 +26,17 @@ Adresses : `https://kya-energy-market-<env>.<ip-du-serveur>.sslip.io` en attenda
 
 Contrôle de santé Coolify : hôte `127.0.0.1` (dans l'image Alpine, `localhost` se résout en IPv6 alors que le
 serveur écoute en IPv4). L'API de Coolify lance un déploiement par `POST /deploy`.
+
+Courriel : `pnpm coolify:deploy` recopie les variables `SMTP_*` du fichier de secrets quand elles sont
+toutes remplies (sinon l'application tourne sans courriel : ni confirmation d'adresse, ni lien de
+connexion). Aujourd'hui, SMTP o2switch de KYA (`website@kya-energy.com`), provisoire.
+
+Premier administrateur d'un environnement :
+`pnpm staff:grant --email <courriel> --role kya_admin --site <adresse de l'environnement>`, avec
+`DATABASE_URL` de la base visée. Le compte est ouvert s'il n'existe pas et un courriel de bienvenue
+mène au choix du mot de passe.
+
 ## Ce qui reste à décider
 
-Nom de domaine de production, fournisseur de courriel transactionnel, stockage objet des médias et
+Nom de domaine de production, fournisseur de courriel définitif (le SMTP actuel est provisoire), stockage objet des médias et
 des factures (Neon Object Storage, Cloudflare R2 ou autre), sauvegardes et supervision.

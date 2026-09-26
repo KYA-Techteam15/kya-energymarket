@@ -1,1 +1,1 @@
-export { EnvError, loadServerEnv, serverEnvSchema, type ServerEnv } from './env.ts';
+export { EnvError, loadServerEnv, serverEnvSchema, smtpConfigOf, type ServerEnv } from './env.ts';

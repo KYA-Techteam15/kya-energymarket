@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { EnvError, loadServerEnv } from './env.ts';
+import { EnvError, loadServerEnv, smtpConfigOf } from './env.ts';
 
 // Valeurs factices, assemblées à l'exécution pour que la recherche de secrets reste stricte.
 const SECRET_URL = ['postgresql://owner', 'tres-secret@ep-example-pooler.eu-central-1.aws.neon.tech/app'].join(':');
@@ -42,5 +42,29 @@ describe('variables d’environnement (spec 001, FR-010)', () => {
 
   it('accepte une connexion Neon valide', () => {
     expect(loadServerEnv({ DATABASE_URL: SECRET_URL }).DATABASE_URL).toBe(SECRET_URL);
+  });
+
+  it('prend les réglages SMTP tout ou rien', () => {
+    const smtp = {
+      SMTP_HOST: 'smtp.exemple.test',
+      SMTP_PORT: '465',
+      SMTP_USER: 'site@exemple.test',
+      SMTP_PASSWORD: ['mot', 'de', 'passe'].join('-'),
+      SMTP_FROM: 'site@exemple.test',
+    };
+    expect(smtpConfigOf(loadServerEnv(smtp))).toMatchObject({ host: 'smtp.exemple.test', port: 465 });
+    expect(smtpConfigOf(loadServerEnv({}))).toBeUndefined();
+    expect(() => loadServerEnv({ SMTP_HOST: 'smtp.exemple.test' })).toThrow(/SMTP_PASSWORD \(manquante/u);
+  });
+
+  it('refuse la boîte d’envoi des tests en production', () => {
+    expect(() =>
+      loadServerEnv({
+        APP_ENV: 'production',
+        DATABASE_URL: SECRET_URL,
+        BETTER_AUTH_SECRET: 'x'.repeat(40),
+        MAIL_OUTBOX_DIR: 'o',
+      }),
+    ).toThrow(/MAIL_OUTBOX_DIR \(interdite en production\)/u);
   });
 });

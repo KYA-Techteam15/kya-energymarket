@@ -13,6 +13,8 @@ const optional = <T extends z.ZodType>(schema: T) => z.preprocess(blankToUndefin
 const withDefault = <T extends z.ZodType>(schema: T, fallback: z.input<T>) =>
   z.preprocess(blankToUndefined, schema.default(fallback as never));
 
+const SMTP_KEYS = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASSWORD', 'SMTP_FROM'] as const;
+
 const postgresUrl = z.string().regex(/^postgres(ql)?:\/\//u);
 
 export const serverEnvSchema = z
@@ -27,6 +29,14 @@ export const serverEnvSchema = z
     BETTER_AUTH_SECRET: optional(z.string().min(32)),
     /** Connexion directe : migrations uniquement. */
     DATABASE_MIGRATION_URL: optional(postgresUrl),
+    /** Courriel transactionnel (SMTP) : tout ou rien. Sans lui, pas de courriel hors développement. */
+    SMTP_HOST: optional(z.string().min(1)),
+    SMTP_PORT: optional(z.coerce.number().int().min(1).max(65535)),
+    SMTP_USER: optional(z.string().min(1)),
+    SMTP_PASSWORD: optional(z.string().min(1)),
+    SMTP_FROM: optional(z.email()),
+    /** Tests de parcours uniquement : dossier où les courriels sont écrits au lieu d'être envoyés. */
+    MAIL_OUTBOX_DIR: optional(z.string().min(1)),
   })
   .superRefine((env, context) => {
     if (env.APP_ENV === 'production' && !env.DATABASE_URL) {
@@ -35,7 +45,28 @@ export const serverEnvSchema = z
     if (env.APP_ENV === 'production' && !env.BETTER_AUTH_SECRET) {
       context.addIssue({ code: 'custom', path: ['BETTER_AUTH_SECRET'], message: 'obligatoire en production' });
     }
+    const smtp = SMTP_KEYS.filter((key) => env[key] !== undefined);
+    if (smtp.length > 0 && smtp.length < SMTP_KEYS.length) {
+      for (const key of SMTP_KEYS.filter((candidate) => env[candidate] === undefined)) {
+        context.addIssue({ code: 'custom', path: [key], message: 'manquante (les variables SMTP vont ensemble)' });
+      }
+    }
+    if (env.APP_ENV === 'production' && env.MAIL_OUTBOX_DIR) {
+      context.addIssue({ code: 'custom', path: ['MAIL_OUTBOX_DIR'], message: 'interdite en production' });
+    }
   });
+
+/** Réglages SMTP complets, ou `undefined` si le courriel n'est pas configuré. */
+export function smtpConfigOf(env: ServerEnv) {
+  if (!env.SMTP_HOST || !env.SMTP_PORT || !env.SMTP_USER || !env.SMTP_PASSWORD || !env.SMTP_FROM) return undefined;
+  return {
+    host: env.SMTP_HOST,
+    port: env.SMTP_PORT,
+    user: env.SMTP_USER,
+    password: env.SMTP_PASSWORD,
+    from: env.SMTP_FROM,
+  };
+}
 
 export type ServerEnv = z.output<typeof serverEnvSchema>;
 

@@ -1,7 +1,8 @@
 import { Icon } from '@kya-em/ui';
-import { useRouter } from '@tanstack/react-router';
+import { Link, useRouter } from '@tanstack/react-router';
 import { useState, type FormEvent } from 'react';
 import { m } from '@/paraglide/messages.js';
+import { localizeHref } from '@/paraglide/runtime.js';
 import { authClient } from './authClient';
 
 type Tab = 'in' | 'up';
@@ -12,6 +13,9 @@ interface Props {
   readonly redirectTo: string;
   readonly magicLink: boolean;
   readonly available: boolean;
+  /** Message à l'arrivée : lien de courriel invalide, mot de passe changé. */
+  readonly initialError?: string | null;
+  readonly initialNotice?: string | null;
 }
 
 /** Traduit une erreur de Better Auth en message neutre (spec 002, histoire 1). */
@@ -28,17 +32,25 @@ function messageFor(error: { status?: number; code?: string } | null | undefined
       return m.auth_error_exists();
     case 'PASSWORD_TOO_SHORT':
       return m.auth_error_password();
+    case 'EMAIL_NOT_VERIFIED':
+      return m.auth_error_unverified();
     default:
       return error.status === 401 ? m.auth_error_credentials() : m.auth_error_generic();
   }
 }
 
-export function SignInPage({ initialTab, redirectTo, magicLink, available }: Props) {
+export function SignInPage({ initialTab, redirectTo, magicLink, available, initialError, initialNotice }: Props) {
   const router = useRouter();
   const [tab, setTab] = useState<Tab>(initialTab);
-  const [error, setError] = useState<string | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(initialError ?? null);
+  const [notice, setNotice] = useState<string | null>(initialNotice ?? null);
   const [busy, setBusy] = useState(false);
+  /** Adresse en attente de confirmation après l'inscription (courriel envoyé). */
+  const [pending, setPending] = useState<string | null>(null);
+
+  // Liens des courriels : adresses complètes dans la langue de la page (Better Auth ne réécrit pas).
+  // Après confirmation, la page de connexion renvoie la personne, désormais connectée, vers sa destination.
+  const afterEmailLink = localizeHref(`/connexion?redirect=${encodeURIComponent(redirectTo)}`);
 
   const done = async () => {
     await router.invalidate();
@@ -77,15 +89,34 @@ export function SignInPage({ initialTab, redirectTo, magicLink, available }: Pro
       setError(m.auth_error_password());
       return;
     }
-    void run(() =>
-      authClient.signUp.email({ name: String(data.get('name')), email: String(data.get('email')), password }),
-    );
+    const email = String(data.get('email'));
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    authClient.signUp
+      .email({ name: String(data.get('name')), email, password, callbackURL: afterEmailLink })
+      .then(async (result) => {
+        if (result.error) setError(messageFor(result.error));
+        // Sans session : l'adresse doit d'abord être confirmée par le lien reçu.
+        else if (!result.data?.token) setPending(email);
+        else await done();
+      })
+      .catch(() => setError(m.auth_error_generic()))
+      .finally(() => setBusy(false));
+  };
+
+  const resend = async () => {
+    if (!pending) return;
+    setBusy(true);
+    await authClient.sendVerificationEmail({ email: pending, callbackURL: afterEmailLink }).catch(() => undefined);
+    setBusy(false);
+    setNotice(m.auth_check_resent());
   };
 
   const onMagicLink = async (email: string) => {
     setBusy(true);
     setError(null);
-    await authClient.signIn.magicLink({ email, callbackURL: redirectTo }).catch(() => undefined);
+    await authClient.signIn.magicLink({ email, callbackURL: localizeHref(redirectTo) }).catch(() => undefined);
     setBusy(false);
     setNotice(m.auth_magic_sent());
   };
@@ -111,7 +142,41 @@ export function SignInPage({ initialTab, redirectTo, magicLink, available }: Pro
         <div className="auth-box">
           <h1>{m.auth_welcome()}</h1>
           <p>{m.auth_intro()}</p>
-          {!available ? (
+          {pending ? (
+            <div className="form" role="status" aria-live="polite">
+              <h2 className="h3">{m.auth_check_title()}</h2>
+              <p>{m.auth_check_body({ email: pending })}</p>
+              {notice ? <p className="form-ok">{notice}</p> : null}
+              <button
+                className="btn btn-line btn-lg btn-block"
+                type="button"
+                disabled={busy}
+                onClick={() => void resend()}
+              >
+                <Icon name="mail" />
+                {m.auth_check_resend()}
+              </button>
+              <button
+                className="link"
+                style={{
+                  justifySelf: 'start',
+                  fontSize: 14,
+                  background: 'none',
+                  border: 0,
+                  padding: 0,
+                  cursor: 'pointer',
+                }}
+                type="button"
+                onClick={() => {
+                  setPending(null);
+                  setNotice(null);
+                  setTab('in');
+                }}
+              >
+                {m.auth_check_back()}
+              </button>
+            </div>
+          ) : !available ? (
             <p className="form-error" role="alert" style={{ marginTop: 24 }}>
               {m.auth_unavailable()}
             </p>
@@ -147,9 +212,15 @@ export function SignInPage({ initialTab, redirectTo, magicLink, available }: Pro
                     <span>{m.field_password()}</span>
                     <input className="input" name="password" type="password" autoComplete="current-password" required />
                   </label>
+                  {magicLink ? (
+                    <Link to="/mot-de-passe" className="link" style={{ justifySelf: 'start', fontSize: 14 }}>
+                      {m.auth_forgot()}
+                    </Link>
+                  ) : null}
                   <button className="btn btn-primary btn-lg btn-block" type="submit" disabled={busy}>
                     {busy ? m.busy() : m.nav_sign_in()}
                   </button>
+
                   {magicLink ? (
                     <button
                       className="btn btn-line btn-lg btn-block"

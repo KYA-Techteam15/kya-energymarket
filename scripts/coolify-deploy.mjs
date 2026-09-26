@@ -28,13 +28,15 @@ const DATABASE = 'kya_energy_market';
 const ROLE = 'kya_app';
 
 // ---------------------------------------------------------------- secrets
+// Valeur entre guillemets (caractères spéciaux) : les guillemets ne font pas partie de la valeur.
+const unquote = (value) => (/^(["']).*\1$/su.test(value) ? value.slice(1, -1) : value);
 const readSecrets = () => {
   if (!existsSync(SECRETS)) throw new Error(`Fichier de secrets introuvable : ${SECRETS}`);
   return Object.fromEntries(
     readFileSync(SECRETS, 'utf8')
       .split(/\r?\n/u)
       .filter((line) => /^[A-Z][A-Z0-9_]*=/u.test(line))
-      .map((line) => [line.slice(0, line.indexOf('=')), line.slice(line.indexOf('=') + 1).trim()]),
+      .map((line) => [line.slice(0, line.indexOf('=')), unquote(line.slice(line.indexOf('=') + 1).trim())]),
   );
 };
 const writeSecret = (name, value) => {
@@ -158,6 +160,13 @@ if (!authSecret) {
   console.log(`Secret ${secretName} généré et rangé dans le fichier de secrets.`);
 }
 
+// Courriel transactionnel : tout ou rien (l'application refuse un réglage SMTP partiel).
+const SMTP_KEYS = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASSWORD', 'SMTP_FROM'];
+const smtpVariables = SMTP_KEYS.every((key) => secrets[key])
+  ? SMTP_KEYS.map((key) => ({ key, value: secrets[key], is_preview: false, is_literal: true }))
+  : [];
+if (!smtpVariables.length) console.log('SMTP incomplet dans le fichier de secrets : aucun courriel ne partira.');
+
 await coolify(`/applications/${application.uuid}/envs/bulk`, {
   method: 'PATCH',
   body: JSON.stringify({
@@ -167,10 +176,13 @@ await coolify(`/applications/${application.uuid}/envs/bulk`, {
       { key: 'LOG_LEVEL', value: 'info', is_preview: false },
       { key: 'DATABASE_URL', value: databaseUrl, is_preview: false },
       { key: 'BETTER_AUTH_SECRET', value: authSecret, is_preview: false },
+      ...smtpVariables,
     ],
   }),
 });
-console.log('Coolify : variables APP_ENV, APP_BASE_URL, LOG_LEVEL, DATABASE_URL, BETTER_AUTH_SECRET réglées.');
+console.log(
+  `Coolify : variables APP_ENV, APP_BASE_URL, LOG_LEVEL, DATABASE_URL, BETTER_AUTH_SECRET${smtpVariables.length ? ', SMTP_*' : ''} réglées.`,
+);
 
 // ---------------------------------------------------------------- déploiement et santé
 await coolify(`/deploy?uuid=${application.uuid}&force=true`, { method: 'POST' });
