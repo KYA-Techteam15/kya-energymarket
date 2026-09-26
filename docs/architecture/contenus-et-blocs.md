@@ -41,8 +41,11 @@ alimentent le sommaire.
 
 ## Médias
 
-Téléversés dans un stockage objet derrière un port (`MediaStorage`), redimensionnés et convertis
-(WebP/AVIF), texte alternatif obligatoire, mention « Photo d'illustration » possible.
+Téléversés dans Neon Object Storage (seau privé `media`, branché avec la base) derrière un port
+(`MediaStorage`), convertis en WebP (2 400 px de large au plus), servis par `/media/<clé>` avec un cache
+immuable ; texte alternatif obligatoire (FR, EN), mention « Photo d'illustration » possible. Mis en
+place par la spécification 004 : les champs de chaque type de bloc sont décrits dans
+`packages/domain/src/content/blocks.ts` (schéma et formulaire de l'éditeur en découlent).
 
 ## Données liées plutôt que recopiées
 

@@ -6,6 +6,14 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), versions [Sem
 
 ### Ajouté
 
+- Catalogue et pages composées (spécification 004) : logiciels, fonctions, éditions, durées et prix
+  par poste en base ; 21 types de blocs issus de la maquette v5 (dont l'exemple interactif et le
+  point juste réglable), Markdown assaini ; pages publiques Logiciels, KYA-SolDesign (Présentation,
+  Tarifs, Ressources, Support, Guide) et marketplace (aide, à propos, contact, légal) en FR/EN ;
+  tarifs et comparatif liés au catalogue ; administration du catalogue, éditeur de pages (brouillon,
+  aperçu, publication, versions) et médiathèque (WebP, Neon Object Storage) ; outils MCP du
+  catalogue et des pages (portées admin:catalog, admin:content) ; API GET /api/v1/catalog ;
+  contenu initial pnpm db:seed.
 - Serveur MCP et OAuth pour l'équipe KYA (spécification 003) : `/mcp` (Streamable HTTP, révisions
   2026-07-28 et 2025), OAuth 2.1 + PKCE par Better Auth (`@better-auth/mcp`), découverte RFC 9728 et
   RFC 8414, enregistrement dynamique et CIMD, jetons JWT de 15 minutes liés à `/mcp` ; rôle d'équipe

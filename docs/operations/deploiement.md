@@ -31,6 +31,15 @@ Courriel : `pnpm coolify:deploy` recopie les variables `SMTP_*` du fichier de se
 toutes remplies (sinon l'application tourne sans courriel : ni confirmation d'adresse, ni lien de
 connexion). Aujourd'hui, SMTP o2switch de KYA (`website@kya-energy.com`), provisoire.
 
+Contenu initial (spec 004) : après la migration, `pnpm coolify:deploy` lance `pnpm db:seed` (catalogue,
+pages FR/EN, images livrées). Rien de ce qui a été saisi dans l'administration n'est remplacé.
+
+Médias (spec 004) : Neon Object Storage, seau privé `media` par branche (`neon buckets create media
+--branch <branche>`, puis `neon env pull --service object-storage`). Les identifiants vont dans le
+fichier de secrets avec le suffixe de l'environnement (`MEDIA_BUCKET_DEV`, `AWS_ACCESS_KEY_ID_DEV`,
+`AWS_SECRET_ACCESS_KEY_DEV`, `AWS_ENDPOINT_URL_S3_DEV`, `AWS_REGION_DEV`) ; `pnpm coolify:deploy` les
+recopie sans suffixe. La branche `dev` est prête ; `main` le sera à la mise en production.
+
 Premier administrateur d'un environnement :
 `pnpm staff:grant --email <courriel> --role kya_admin --site <adresse de l'environnement>`, avec
 `DATABASE_URL` de la base visée. Le compte est ouvert s'il n'existe pas et un courriel de bienvenue
