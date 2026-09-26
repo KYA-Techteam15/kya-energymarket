@@ -185,21 +185,47 @@ console.log(
 );
 
 // ---------------------------------------------------------------- déploiement et santé
-await coolify(`/deploy?uuid=${application.uuid}&force=true`, { method: 'POST' });
+// Coolify refuse deux déploiements simultanés de la même application (conteneur d'aide en conflit) :
+// on attend la fin d'un déploiement en cours avant d'en lancer un.
+const active = (list) => list.filter((item) => ['queued', 'in_progress'].includes(item.status));
+for (let attempt = 0; attempt < 60; attempt += 1) {
+  const history = await coolify(`/deployments/applications/${application.uuid}?take=5`);
+  if (!active(history.deployments ?? history).length) break;
+  if (attempt === 0) console.log('Un déploiement est déjà en cours : attente de sa fin.');
+  await new Promise((resolve) => setTimeout(resolve, 10_000));
+}
+
+const launched = await coolify(`/deploy?uuid=${application.uuid}&force=true`, { method: 'POST' });
+const deploymentUuid = launched.deployments?.[0]?.deployment_uuid;
 console.log(`Déploiement lancé : image ${IMAGE}:${tag} → ${domain}`);
 
-for (let attempt = 0; attempt < 60; attempt += 1) {
-  await new Promise((resolve) => setTimeout(resolve, 10_000));
+// Suivi du déploiement lui-même : la santé seule ne suffit pas, l'ancien conteneur répond jusqu'à la bascule.
+if (deploymentUuid) {
+  let status = 'queued';
+  for (let attempt = 0; attempt < 90 && ['queued', 'in_progress'].includes(status); attempt += 1) {
+    await new Promise((resolve) => setTimeout(resolve, 10_000));
+    status = (await coolify(`/deployments/${deploymentUuid}`)).status;
+  }
+  if (status !== 'finished') {
+    console.error(`Déploiement Coolify ${status} : voir ses journaux dans Coolify (${deploymentUuid}).`);
+    process.exit(1);
+  }
+}
+
+for (let attempt = 0; attempt < 30; attempt += 1) {
   try {
     const response = await fetch(`${domain}/api/health`, { signal: AbortSignal.timeout(8000) });
     if (response.ok) {
       const report = await response.json();
-      console.log(`En ligne : ${domain} — santé ${report.status}, base ${report.checks?.database}`);
+      console.log(
+        `En ligne : ${domain} — version ${String(report.version).slice(0, 7)}, santé ${report.status}, base ${report.checks?.database}`,
+      );
       process.exit(0);
     }
   } catch {
     // pas encore prêt
   }
+  await new Promise((resolve) => setTimeout(resolve, 10_000));
 }
-console.error(`La santé ne répond pas encore après 10 minutes : voir les journaux de l'application dans Coolify.`);
+console.error(`La santé ne répond pas après la bascule : voir les journaux de l'application dans Coolify.`);
 process.exit(1);
