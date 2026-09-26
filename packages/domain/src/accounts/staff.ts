@@ -97,3 +97,15 @@ export async function listStaff(db: Database) {
     .filter((row) => row.roles.length > 0)
     .sort((a, b) => a.name.localeCompare(b.name));
 }
+
+/** Membre de l'équipe KYA par identifiant, rôle relu en base ; `null` hors équipe (spec 003, FR-006). */
+export async function staffMemberById(db: Database, id: string) {
+  const [row] = await db
+    .select({ id: user.id, name: user.name, email: user.email, role: user.role })
+    .from(user)
+    .where(eq(user.id, id))
+    .limit(1);
+  const roles = staffRolesOf(row?.role);
+  if (!row || roles.length === 0) return null;
+  return { id: row.id, name: row.name, email: row.email, roles };
+}

@@ -10,7 +10,10 @@
     "typecheck": "tsc6 -p tsconfig.json"
   },
   "dependencies": {
+    "@better-auth/cimd": "1.7.6",
     "@better-auth/drizzle-adapter": "1.7.6",
+    "@better-auth/mcp": "1.7.6",
+    "@better-auth/oauth-provider": "1.7.6",
     "@kya-em/db": "workspace:*",
     "@kya-em/domain": "workspace:*",
     "@kya-em/mail": "workspace:*",

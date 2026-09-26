@@ -1,4 +1,36 @@
-import { account, invitation, member, organization, session, user, verification } from './schema/auth.ts';
+import {
+  account,
+  invitation,
+  jwks,
+  member,
+  oauthAccessToken,
+  oauthClient,
+  oauthClientAssertion,
+  oauthClientResource,
+  oauthConsent,
+  oauthRefreshToken,
+  oauthResource,
+  organization,
+  session,
+  user,
+  verification,
+} from './schema/auth.ts';
 
-/** Tables de Better Auth, passées à son adaptateur Drizzle (spec 002). */
-export const authSchema = { user, session, account, verification, organization, member, invitation };
+/** Tables de Better Auth, passées à son adaptateur Drizzle (spec 002 ; OAuth et MCP : spec 003). */
+export const authSchema = {
+  user,
+  session,
+  account,
+  verification,
+  organization,
+  member,
+  invitation,
+  jwks,
+  oauthClient,
+  oauthResource,
+  oauthClientResource,
+  oauthRefreshToken,
+  oauthAccessToken,
+  oauthConsent,
+  oauthClientAssertion,
+};

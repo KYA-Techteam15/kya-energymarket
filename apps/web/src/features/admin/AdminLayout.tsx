@@ -35,6 +35,9 @@ export function AdminLayout() {
         <Link to="/admin/equipe" activeProps={{ 'aria-current': 'page' }}>
           {m.admin_team()}
         </Link>
+        <Link to="/admin/mcp" activeProps={{ 'aria-current': 'page' }}>
+          {m.admin_mcp()}
+        </Link>
       </nav>
       <main className="acct-main">
         <Outlet />

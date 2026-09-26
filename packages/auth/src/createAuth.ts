@@ -1,11 +1,16 @@
+import { cimd } from '@better-auth/cimd';
+import { fetchClientMetadataResource } from '@better-auth/cimd/node';
 import { drizzleAdapter } from '@better-auth/drizzle-adapter';
+import { mcp } from '@better-auth/mcp';
 import { authSchema, type Database } from '@kya-em/db';
 import { ensurePersonalOrganization, preferredOrganizationId, recordAuditEvent, type Logger } from '@kya-em/domain';
 import { localeFromRequest, renderMail, type Mailer } from '@kya-em/mail';
 import { betterAuth } from 'better-auth';
-import { admin, magicLink, organization } from 'better-auth/plugins';
+import { APIError } from 'better-auth/api';
+import { admin, jwt, magicLink, organization } from 'better-auth/plugins';
 import { tanstackStartCookies } from 'better-auth/tanstack-start';
-import { ac, roles } from './permissions.ts';
+import { MCP_SCOPES, mcpResourceOf, STAFF_ROLES_CLAIM } from './mcp.ts';
+import { ac, isStaff, roles, staffRolesOf } from './permissions.ts';
 
 export interface AuthDependencies {
   readonly db: Database;
@@ -219,6 +224,41 @@ export function createAuth(dependencies: AuthDependencies) {
         disableSignUp: true,
         sendMagicLink: async ({ email, url }, context) => {
           await send(renderMail({ kind: 'magic-link', url }, localeFromRequest(context?.request), email));
+        },
+      }),
+      // Serveur MCP réservé à l'équipe KYA (spec 003, ADR 0004) : OAuth 2.1 + PKCE, jetons JWT liés à /mcp.
+      jwt(),
+      mcp({
+        resource: mcpResourceOf(dependencies.baseUrl),
+        loginPage: '/fr/connexion',
+        consentPage: '/fr/autorisation',
+        scopes: [...MCP_SCOPES],
+        clientRegistrationDefaultScopes: [...MCP_SCOPES],
+        // Les clients MCP s'enregistrent avant toute connexion : clients publics, PKCE obligatoire.
+        allowDynamicClientRegistration: true,
+        allowUnauthenticatedClientRegistration: true,
+        accessTokenExpiresIn: 15 * 60,
+        // Appelé à chaque émission (code et rafraîchissement) : hors équipe KYA, aucun jeton.
+        customAccessTokenClaims: ({ user }) => {
+          const role = (user as { role?: string | null } | null | undefined)?.role;
+          if (!user || !isStaff(role)) {
+            throw new APIError('FORBIDDEN', { message: "Serveur MCP réservé à l'équipe KYA." });
+          }
+          return { [STAFF_ROLES_CLAIM]: staffRolesOf(role) };
+        },
+      }),
+      cimd({
+        fetchClientMetadataResource,
+        metadataProfile: 'mcp-2026-07-28',
+        onClientCreated: async ({ client }) => {
+          await audit({
+            actorType: 'mcp_client',
+            actorId: null,
+            action: 'mcp.client_registered',
+            resourceType: 'oauth_client',
+            resourceId: client.clientId ?? null,
+            outcome: 'success',
+          });
         },
       }),
       ...(dependencies.tanstackCookies === false ? [] : [tanstackStartCookies()]),

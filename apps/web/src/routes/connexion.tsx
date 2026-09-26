@@ -26,6 +26,8 @@ export const Route = createFileRoute('/connexion')({
     error?: unknown;
     motdepasse?: unknown;
   }): SignInSearch => ({
+    // Paramètres OAuth signés (client MCP) conservés tels quels : la connexion les renvoie.
+    ...search,
     redirect: safeRedirect(search.redirect),
     onglet: search.onglet === 'creer' ? ('creer' as const) : undefined,
     error: typeof search.error === 'string' && /^[A-Z_]{1,64}$/u.test(search.error) ? search.error : undefined,

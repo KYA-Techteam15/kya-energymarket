@@ -18,11 +18,13 @@ export {
   type OrganizationKind,
   type UserOrganization,
 } from './accounts/organizations.ts';
+export { findCustomers, type CustomerSummary } from './accounts/customers.ts';
 export {
   grantStaffRole,
   accountIdByEmail,
   isStaffRole,
   listStaff,
+  staffMemberById,
   revokeStaffRole,
   rolesOf,
   STAFF_ROLES,
@@ -30,3 +32,4 @@ export {
   staffRolesOf,
   type StaffRole,
 } from './accounts/staff.ts';
+export { hasMcpConnection, listMcpConnections, revokeMcpConnection, type McpConnection } from './mcp/connections.ts';
