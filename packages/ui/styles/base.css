@@ -1794,3 +1794,12 @@ fieldset.cfg legend {
     padding-right: 16px;
   }
 }
+
+/* ================================================================ Licences (spec 005) */
+.state-off {
+  background: var(--kya-soft);
+  color: var(--kya-muted);
+}
+.state-off::before {
+  background: var(--kya-muted);
+}

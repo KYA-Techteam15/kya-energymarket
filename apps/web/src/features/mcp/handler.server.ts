@@ -16,7 +16,7 @@ let handler: ((request: Request) => Promise<Response>) | undefined;
  * autorisation du client toujours en vigueur. Serveur MCP sans état, révisions 2026-07-28 et 2025.
  */
 export function mcpHandler(request: Request): Promise<Response> {
-  const { auth, database, env, logger } = runtime();
+  const { auth, database, env, logger, secret } = runtime();
   if (!auth || !database) return Promise.resolve(Response.json({ error: 'MCP_UNAVAILABLE' }, { status: 503 }));
 
   handler ??= (() => {
@@ -26,6 +26,7 @@ export function mcpHandler(request: Request): Promise<Response> {
           db: database.db,
           logger,
           version: env.APP_VERSION,
+          secret,
           caller: context.authInfo?.extra?.caller as McpCaller,
         }),
       { onerror: (error) => logger.warn({ err: error }, 'MCP : requête refusée') },

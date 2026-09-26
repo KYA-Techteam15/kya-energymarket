@@ -3,6 +3,7 @@ import { findCustomers, listStaff, recordAuditEvent, type Logger } from '@kya-em
 import { McpServer } from '@modelcontextprotocol/server';
 import { z } from 'zod';
 import { registerContentTools } from './tools-content.server';
+import { registerLicenseTools } from './tools-licenses.server';
 
 /** Personne derrière l'appel : membre de l'équipe KYA, rôle relu en base à chaque requête. */
 export interface McpCaller {
@@ -24,7 +25,14 @@ const result = <T extends Record<string, unknown>>(value: T) => ({
  * outil appelle un service de `@kya-em/domain` et laisse une trace d'audit ; aucune valeur secrète
  * n'est rendue. Les outils d'écriture viendront avec les spécifications qui les apportent.
  */
-export function createKyaMcpServer(context: { db: Database; logger: Logger; version: string; caller: McpCaller }) {
+export function createKyaMcpServer(context: {
+  db: Database;
+  logger: Logger;
+  version: string;
+  caller: McpCaller;
+  /** Secret du serveur : clés de licence chiffrées au repos. */
+  secret: string;
+}) {
   const { db, logger, caller } = context;
   const server = new McpServer({ name: 'kya-energy-market', version: context.version });
 
@@ -137,5 +145,6 @@ export function createKyaMcpServer(context: { db: Database; logger: Logger; vers
   );
 
   registerContentTools(server, { db, logger, caller });
+  registerLicenseTools(server, { db, secret: context.secret, logger, caller });
   return server;
 }

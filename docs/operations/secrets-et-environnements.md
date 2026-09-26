@@ -12,6 +12,7 @@ arrivent dans l'application.
 | Jeton API Coolify | recopié dans ce fichier (`COOLIFY_API_TOKEN`) | Coolify Cloud (`app.coolify.io`), équipe « KYA-TechTeam » ; même équipe que le projet « KYA Platform » |
 | Courriel SMTP | ce fichier (`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM`) | o2switch, `website@kya-energy.com`, provisoire ; valeur entre guillemets si elle contient des caractères spéciaux ; recopié dans Coolify par `pnpm coolify:deploy` |
 | Médias (Neon Object Storage) | ce fichier, par environnement (`MEDIA_BUCKET_DEV`, `AWS_ACCESS_KEY_ID_DEV`, `AWS_SECRET_ACCESS_KEY_DEV`, `AWS_ENDPOINT_URL_S3_DEV`, `AWS_REGION_DEV`) | identifiants de la branche Neon, obtenus par `neon env pull --service object-storage` ; recopiés dans Coolify par `pnpm coolify:deploy` |
+| Clés de signature des licences | ce fichier (`LICENSE_SIGNING_PRIVATE_KEY_DEV`, `_PRODUCTION`, et leurs `LICENSE_SIGNING_KEY_ID_*`) | créées par `pnpm license:keygen` ; clés publiques dans [cles-licences.md](cles-licences.md) |
 | Identité Infisical | plus tard | kya-platform garde la sienne dans `.env.provisioner` à sa racine (non suivi) et ses secrets d'exécution dans Infisical |
 | Secrets de CI | GitHub → dépôt → Settings → Secrets and variables → Actions | ajoutés par la spécification qui en a besoin |
 

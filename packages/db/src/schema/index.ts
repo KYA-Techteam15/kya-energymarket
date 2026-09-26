@@ -3,3 +3,4 @@ export * from './audit.ts';
 export * from './auth.ts';
 export * from './catalog.ts';
 export * from './content.ts';
+export * from './licenses.ts';

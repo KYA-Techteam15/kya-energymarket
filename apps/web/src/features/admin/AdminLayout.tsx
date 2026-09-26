@@ -44,6 +44,9 @@ export function AdminLayout() {
         <Link to="/admin/medias" activeProps={{ 'aria-current': 'page' }}>
           {m.admin_media()}
         </Link>
+        <Link to="/admin/licences" activeProps={{ 'aria-current': 'page' }}>
+          {m.admin_licenses()}
+        </Link>
         <Link to="/admin/mcp" activeProps={{ 'aria-current': 'page' }}>
           {m.admin_mcp()}
         </Link>

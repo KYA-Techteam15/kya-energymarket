@@ -12,12 +12,7 @@ export function AccountLayout() {
     await router.invalidate();
     await router.navigate({ to: '/' });
   };
-  const upcoming = [
-    m.account_licences_title(),
-    m.account_downloads_title(),
-    m.account_invoices_title(),
-    m.account_support_title(),
-  ];
+  const upcoming = [m.account_downloads_title(), m.account_invoices_title(), m.account_support_title()];
   return (
     <div className="acct">
       <nav className="acct-side" aria-label={m.account_nav_label()}>
@@ -33,6 +28,10 @@ export function AccountLayout() {
         <Link to="/espace" activeOptions={{ exact: true }} activeProps={{ 'aria-current': 'page' }}>
           <Icon name="check" />
           {m.me_dashboard()}
+        </Link>
+        <Link to="/espace/licences" activeProps={{ 'aria-current': 'page' }}>
+          <Icon name="shield" />
+          {m.account_licences_title()}
         </Link>
         {viewer.organization?.visible ? (
           <Link to="/espace/organisation" activeProps={{ 'aria-current': 'page' }}>
