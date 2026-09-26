@@ -20,15 +20,6 @@ export const CatalogContext = createContext<{
 const pickText = (value: { fr: string; en?: string } | null | undefined, locale: Locale) =>
   value ? (locale === 'en' ? value.en || value.fr : value.fr) : '';
 
-const DURATION: Record<string, { fr: string; en: string }> = {
-  P1D: { fr: '1 jour', en: '1 day' },
-  P1W: { fr: '1 semaine', en: '1 week' },
-  P1M: { fr: '1 mois', en: '1 month' },
-  P3M: { fr: '1 trimestre', en: '3 months' },
-  P6M: { fr: '6 mois', en: '6 months' },
-  P1Y: { fr: '1 an', en: '1 year' },
-};
-const durationLabel = (duration: string, locale: Locale) => DURATION[duration]?.[locale] ?? duration;
 const fcfa = (value: number) => new Intl.NumberFormat(getLocale()).format(value);
 
 /** Ce que comprend une édition : fonctions du catalogue, projets, filigrane, mises à jour. */
@@ -46,6 +37,8 @@ function included(product: CatalogProduct, edition: CatalogEdition, locale: Loca
   });
   if (edition.watermark)
     items.push({ label: m.block_watermark({ text: pickText(edition.watermark, locale) }), yes: true });
+  // Caractéristiques affichées de l'édition (spec 005b) : texte libre, sans effet dans le logiciel.
+  for (const highlight of edition.highlights) items.push({ label: pickText(highlight, locale), yes: true });
   items.push({ label: m.block_updates_included(), yes: true });
   return [...items.filter((item) => item.yes), ...items.filter((item) => !item.yes)];
 }
@@ -53,32 +46,35 @@ function included(product: CatalogProduct, edition: CatalogEdition, locale: Loca
 export function PricingBlock({ data }: { data: Data }) {
   const { product, edition: requested, select } = useContext(CatalogContext);
   const locale = getLocale() as Locale;
-  const editions = (product?.editions ?? []).filter((edition) => edition.plans.length > 0);
+  const editions = (product?.editions ?? []).filter((edition) => edition.types.length > 0);
   const initial = editions.find((edition) => edition.code === requested) ?? editions[0];
   const [code, setCode] = useState(initial?.code ?? '');
   const edition = editions.find((item) => item.code === code) ?? initial;
-  const defaultPlan = (item: CatalogEdition | undefined) => item?.plans.at(-1)?.duration ?? '';
-  const [duration, setDuration] = useState(defaultPlan(initial));
+  const defaultType = (item: CatalogEdition | undefined) => item?.types.at(-1)?.id ?? '';
+  const [typeId, setTypeId] = useState(defaultType(initial));
   const [seats, setSeats] = useState(1);
   const name = useId();
   if (!product || !edition) return null;
 
-  const plan = edition.plans.find((item) => item.duration === duration) ?? edition.plans.at(-1)!;
-  const maxSeats = edition.maxSeats ?? 999;
-  const count = Math.min(Math.max(seats, 1), maxSeats);
+  const plan = edition.types.find((item) => item.id === typeId) ?? edition.types.at(-1)!;
+  const maxSeats = plan.seatsMax ?? edition.maxSeats ?? 999;
+  const minSeats = Math.min(plan.seatsMin, maxSeats);
+  const count = Math.min(Math.max(seats, minSeats), maxSeats);
   const total = plan.pricePerSeat * count;
-  const anyIndicative = edition.plans.some((item) => item.indicative);
+  const anyIndicative = edition.types.some((item) => item.indicative);
   const buy = data.buy as LinkValue;
+  // Visible mais pas en vente : l'offre se montre, l'achat en ligne attend (spec 005b).
+  const buyable = edition.forSale && plan.forSale;
   const buyLink: LinkValue = {
     label: buy.label,
-    href: `${buy.href}${buy.href.includes('?') ? '&' : '?'}logiciel=${product.slug}&edition=${edition.code}&duree=${plan.duration}&postes=${count}`,
+    href: `${buy.href}${buy.href.includes('?') ? '&' : '?'}logiciel=${product.slug}&edition=${edition.code}&offre=${plan.id}&postes=${count}`,
   };
 
   const chooseEdition = (next: string) => {
     const nextEdition = editions.find((item) => item.code === next);
     setCode(next);
     select?.(next);
-    setDuration(defaultPlan(nextEdition));
+    setTypeId(defaultType(nextEdition));
     setSeats((value) => Math.min(value, nextEdition?.maxSeats ?? 999));
   };
 
@@ -112,20 +108,20 @@ export function PricingBlock({ data }: { data: Data }) {
               <span>2</span>
               {m.block_pricing_duration()}
             </legend>
-            <div className={`choice cols-${Math.min(edition.plans.length, 3)}`}>
-              {edition.plans.map((item) => (
-                <label className="opt" key={item.duration}>
-                  {item.duration === defaultPlan(edition) && edition.plans.length > 1 ? (
+            <div className={`choice cols-${Math.min(edition.types.length, 3)}`}>
+              {edition.types.map((item) => (
+                <label className="opt" key={item.id}>
+                  {item.id === defaultType(edition) && edition.types.length > 1 ? (
                     <span className="badge-top">{m.block_pricing_preselected()}</span>
                   ) : null}
                   <input
                     type="radio"
                     name={`${name}-plan`}
-                    value={item.duration}
-                    checked={item.duration === plan.duration}
-                    onChange={() => setDuration(item.duration)}
+                    value={item.id}
+                    checked={item.id === plan.id}
+                    onChange={() => setTypeId(item.id)}
                   />
-                  <b>{durationLabel(item.duration, locale)}</b>
+                  <b>{pickText(item.name, locale)}</b>
                   <span className="price">
                     <span className="num">{fcfa(item.pricePerSeat)}</span> FCFA <Example show={item.indicative} />
                   </span>
@@ -144,7 +140,7 @@ export function PricingBlock({ data }: { data: Data }) {
                 <button
                   type="button"
                   aria-label={m.block_pricing_less()}
-                  disabled={count <= 1}
+                  disabled={count <= minSeats}
                   onClick={() => setSeats(count - 1)}
                 >
                   <svg className="kya-icon" viewBox="0 0 16 16" aria-hidden="true">
@@ -153,7 +149,7 @@ export function PricingBlock({ data }: { data: Data }) {
                 </button>
                 <input
                   type="number"
-                  min={1}
+                  min={minSeats}
                   max={maxSeats}
                   value={count}
                   aria-labelledby={`${name}-seats`}
@@ -186,7 +182,7 @@ export function PricingBlock({ data }: { data: Data }) {
               {product.name} · {pickText(edition.name, locale)}
             </dd>
             <dt>{m.block_pricing_duration()}</dt>
-            <dd>{durationLabel(plan.duration, locale)}</dd>
+            <dd>{pickText(plan.name, locale)}</dd>
             <dt>{m.block_pricing_seats_short()}</dt>
             <dd>{count === 1 ? m.block_pricing_seat_one() : m.block_pricing_seat_many({ count })}</dd>
             <dt>{m.block_pricing_unit()}</dt>
@@ -208,7 +204,13 @@ export function PricingBlock({ data }: { data: Data }) {
           <p className="muted" style={{ fontSize: 13, marginTop: 6 }}>
             {text(data.taxNote)} {anyIndicative ? <Example show /> : null}
           </p>
-          <SmartLink link={buyLink} className="btn btn-buy btn-lg btn-block" />
+          {buyable ? (
+            <SmartLink link={buyLink} className="btn btn-buy btn-lg btn-block" />
+          ) : (
+            <p className="callout" role="note">
+              {m.block_pricing_not_for_sale()}
+            </p>
+          )}
           <p className="alt">
             {m.block_pricing_not_sure()} <SmartLink link={data.trial as LinkValue} className="link" />
           </p>
@@ -303,7 +305,7 @@ export function ComparisonBlock({ data, headingId }: { data: Data; headingId: st
                 {editions.map((edition) => (
                   <th scope="col" key={edition.code} className={edition.code === highlighted ? 'hl' : undefined}>
                     {pickText(edition.name, locale)}
-                    <small>{edition.plans.map((plan) => durationLabel(plan.duration, locale)).join(' · ')}</small>
+                    <small>{edition.types.map((type) => pickText(type.name, locale)).join(' · ')}</small>
                   </th>
                 ))}
               </tr>

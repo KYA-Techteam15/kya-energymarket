@@ -391,9 +391,18 @@ export interface CatalogEditing {
 }
 
 export async function getCatalogEditing(db: Database, slug: string): Promise<CatalogEditing> {
-  const live = await getCatalogProduct(db, slug);
+  // Offre publiée et brouillon lus en parallèle (moins d'allers-retours vers la base).
+  const [live, [draft]] = await Promise.all([
+    getCatalogProduct(db, slug),
+    db
+      .select({ draft: catalogDrafts })
+      .from(catalogDrafts)
+      .innerJoin(products, eq(catalogDrafts.productId, products.id))
+      .where(eq(products.slug, slug))
+      .limit(1)
+      .then((rows) => rows.map((row) => row.draft)),
+  ]);
   if (!live) throw new CatalogError('PRODUCT_NOT_FOUND');
-  const [draft] = await db.select().from(catalogDrafts).where(eq(catalogDrafts.productId, live.id)).limit(1);
   const base = documentOf(live);
   const document = draft ? (draft.document as CatalogDocument) : base;
   return {

@@ -3,8 +3,8 @@ import { createFileRoute } from '@tanstack/react-router';
 import { runtime } from '@/shared/server/runtime.server';
 
 /**
- * API publique du catalogue (spec 004, FR-009) : logiciels visibles et, pour ceux qui sont
- * disponibles, éditions et durées actives. Textes dans les deux langues, montants en FCFA entiers.
+ * API publique du catalogue (spec 004, FR-009 ; 005b) : logiciels visibles et, pour ceux qui sont
+ * disponibles, éditions et types de licence visibles (achetables ou non). Textes dans les deux langues, montants en FCFA entiers.
  */
 export const Route = createFileRoute('/api/v1/catalog')({
   server: {
@@ -35,11 +35,19 @@ export const Route = createFileRoute('/api/v1/catalog')({
                 maxSeats: edition.maxSeats,
                 maxProjects: edition.maxProjects,
                 features: edition.features,
-                plans: edition.plans.map((plan) => ({
-                  duration: plan.duration,
-                  pricePerSeat: plan.pricePerSeat,
+                highlights: edition.highlights,
+                forSale: edition.forSale,
+                types: edition.types.map((type) => ({
+                  id: type.id,
+                  name: type.name,
+                  nature: type.nature,
+                  days: type.days,
+                  pricePerSeat: type.pricePerSeat,
                   currency: 'XOF',
-                  indicative: plan.indicative,
+                  indicative: type.indicative,
+                  seatsMin: type.seatsMin,
+                  seatsMax: type.seatsMax ?? edition.maxSeats,
+                  forSale: edition.forSale && type.forSale,
                 })),
               })),
             };

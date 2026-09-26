@@ -1,6 +1,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { listTeam } from '@/features/admin/server';
 import { TeamPage } from '@/features/admin/TeamPage';
+import { ConsolePage } from '@/features/admin/console/ui';
 import { m } from '@/paraglide/messages.js';
 
 export const Route = createFileRoute('/admin/equipe')({
@@ -14,5 +15,9 @@ export const Route = createFileRoute('/admin/equipe')({
 });
 
 function TeamRoute() {
-  return <TeamPage team={Route.useLoaderData()} />;
+  return (
+    <ConsolePage crumbs={[{ label: m.cx_nav_system() }, { label: m.cx_nav_team() }]}>
+      <TeamPage team={Route.useLoaderData()} />
+    </ConsolePage>
+  );
 }

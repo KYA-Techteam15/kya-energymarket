@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start';
-import { assignSeat, loadMyLicenses, releaseMySeat } from './client.server';
+import { assignSeat, claimMyKey, loadMyLicenses, releaseMySeat } from './client.server';
 
 // Fonctions serveur de l'espace Licences ; droits revérifiés dans client.server.ts.
 const text = (value: unknown, max: number) => {
@@ -23,3 +23,7 @@ export const assignSeatFn = createServerFn({ method: 'POST' })
     email: text(record(input).email, 254),
   }))
   .handler(({ data }) => assignSeat(data.licenseId, data.email));
+
+export const claimKeyFn = createServerFn({ method: 'POST' })
+  .validator((input: unknown) => ({ key: text(record(input).key, 64) }))
+  .handler(({ data }) => claimMyKey(data.key));

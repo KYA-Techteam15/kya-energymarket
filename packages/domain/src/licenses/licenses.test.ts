@@ -500,16 +500,14 @@ describe('lots (spec 005b, histoire 3)', () => {
       await resendBatchMails(db, staff, (await getLicense({ db, secret: SECRET }, keys[0]!.licenseId))!.batchId!),
     ).toBe(1);
     const now = new Date();
-    await db
-      .insert(user)
-      .values({
-        id: 'user-nouvelle',
-        name: 'Esi Nouvelle',
-        email: 'nouvelle@exemple.tg',
-        emailVerified: true,
-        createdAt: now,
-        updatedAt: now,
-      });
+    await db.insert(user).values({
+      id: 'user-nouvelle',
+      name: 'Esi Nouvelle',
+      email: 'nouvelle@exemple.tg',
+      emailVerified: true,
+      createdAt: now,
+      updatedAt: now,
+    });
     const org = await ensurePersonalOrganization(db, { id: 'user-nouvelle', name: 'Esi Nouvelle' });
     expect(await claimLicensesForEmail(db, { type: 'user', id: 'user-nouvelle' }, 'nouvelle@exemple.tg')).toBe(1);
     const mine = await listLicensesForOrganizations({ db, secret: SECRET }, [org]);

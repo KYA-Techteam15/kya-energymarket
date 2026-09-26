@@ -433,5 +433,722 @@
   "admin_licenses_revoke_help": "Définitif : la clé ne s'active plus et les ordinateurs passent en lecture seule à leur prochaine connexion. Aucun projet n'est effacé.",
   "admin_licenses_revoke_confirm": "Je confirme la révocation de cette licence.",
   "admin_licenses_journal": "Journal",
-  "consent_scope_admin_licenses": "Émettre, prolonger et révoquer des licences"
+  "consent_scope_admin_licenses": "Émettre, prolonger et révoquer des licences",
+  "cx_brand": "Console",
+  "cx_breadcrumb": "Fil d'Ariane",
+  "cx_menu_open": "Ouvrir le menu",
+  "cx_environment": "Environnement de la plateforme",
+  "cx_search": "Rechercher",
+  "cx_search_act": "Rechercher, agir…",
+  "cx_close": "Fermer",
+  "cx_soon": "bientôt",
+  "cx_to_customer_space": "Aller à mon espace client",
+  "cx_nav_label": "Navigation de la console",
+  "cx_nav_dashboard": "Tableau de bord",
+  "cx_nav_sales": "Ventes",
+  "cx_nav_licenses": "Licences",
+  "cx_nav_batches": "Lots",
+  "cx_nav_orders": "Commandes et Devis",
+  "cx_nav_catalog": "Catalogue",
+  "cx_nav_products": "Logiciels",
+  "cx_nav_content": "Contenu",
+  "cx_nav_pages": "Pages",
+  "cx_nav_media": "Médias",
+  "cx_nav_system": "Système",
+  "cx_nav_team": "Équipe",
+  "cx_nav_mcp": "Accès MCP",
+  "cx_nav_journal": "Journal",
+  "cx_p_title": "Recherche et actions",
+  "cx_p_placeholder": "Clé, identifiant lic_…, courriel, organisation, lot ou action",
+  "cx_p_actions": "Actions",
+  "cx_p_generate": "Générer des licences en lot",
+  "cx_p_issue": "Émettre une licence",
+  "cx_p_expiring": "Licences qui expirent sous 30 jours",
+  "cx_p_catalog": "Ouvrir le catalogue",
+  "cx_p_licenses": "Licences",
+  "cx_p_batches": "Lots",
+  "cx_p_catalog_group": "Catalogue",
+  "cx_p_nothing": "Rien ne correspond. Essayez une clé, un courriel ou un nom.",
+  "cx_p_help_nav": "↑ ↓ pour naviguer · Entrée pour ouvrir",
+  "cx_p_help_key": "Collez une clé KYA-… pour aller droit à la licence",
+  "cx_dash_hello": "Bonjour {name}",
+  "cx_dash_scope": "Tous logiciels confondus, sur la période choisie.",
+  "cx_dash_no_stats": "Votre rôle ne donne pas accès aux statistiques.",
+  "cx_dash_period": "Période",
+  "cx_dash_summary": "Résumé de la période",
+  "cx_period_30": "30 derniers jours",
+  "cx_period_90": "90 derniers jours",
+  "cx_period_365": "12 derniers mois",
+  "cx_kpi_sold": "Vendu",
+  "cx_kpi_sold_count": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} licence achetée",
+        "countPlural=*": "{count} licences achetées"
+      }
+    }
+  ],
+  "cx_kpi_offered": "Offert",
+  "cx_kpi_offered_hint": "Attributions de l’équipe, lots et partenariats",
+  "cx_kpi_trials": "Essais",
+  "cx_kpi_started": "démarrés",
+  "cx_kpi_converted": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} converti",
+        "countPlural=*": "{count} convertis"
+      }
+    }
+  ],
+  "cx_kpi_devices": "Ordinateurs actifs",
+  "cx_kpi_devices_new": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} activé sur la période",
+        "countPlural=*": "{count} activés sur la période"
+      }
+    }
+  ],
+  "cx_licenses_unit": "licences",
+  "cx_chart_title": "Licences émises par semaine",
+  "cx_chart_offered": "Offertes ou lot",
+  "cx_todo": "À traiter",
+  "cx_todo_none": "Rien à traiter pour l’instant.",
+  "cx_todo_expiring": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} licence achetée expire sous 30 jours",
+        "countPlural=*": "{count} licences achetées expirent sous 30 jours"
+      }
+    }
+  ],
+  "cx_todo_expiring_hint": "Le moment de proposer le renouvellement.",
+  "cx_todo_idle": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} clé de lot jamais activée",
+        "countPlural=*": "{count} clés de lot jamais activées"
+      }
+    }
+  ],
+  "cx_todo_mails": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} courriel de clé en échec",
+        "countPlural=*": "{count} courriels de clé en échec"
+      }
+    }
+  ],
+  "cx_todo_mails_hint": "Cinq tentatives n’ont pas suffi : vérifiez l’adresse et relancez depuis le lot.",
+  "cx_see_licenses": "Voir les licences",
+  "cx_open_batch": "Ouvrir le lot",
+  "cx_recent": "Activité récente",
+  "cx_recent_none": "Aucune activité pour l’instant.",
+  "cx_all_journal": "Tout le journal",
+  "cx_actor_mcp": "Claude (MCP) pour {name}",
+  "cx_actor_system": "Plateforme",
+  "cx_actor_unknown": "Inconnu",
+  "cx_act_issued": "licence émise",
+  "cx_act_batch": "lot généré",
+  "cx_act_extended": "licence prolongée",
+  "cx_act_revoked": "licence révoquée",
+  "cx_act_claimed": "licence rattachée à un compte",
+  "cx_act_activated": "ordinateur activé",
+  "cx_act_released": "poste libéré",
+  "cx_act_seats": "nombre de postes changé",
+  "cx_act_assigned": "poste attribué",
+  "cx_act_published": "catalogue publié",
+  "cx_act_draft": "brouillon du catalogue modifié",
+  "cx_act_discarded": "brouillon du catalogue abandonné",
+  "cx_act_mcp": "outil MCP appelé",
+  "cx_licenses_intro": "Chaque licence garde l’offre, le prix et le canal du moment de son émission.",
+  "cx_generate": "Générer des licences",
+  "cx_generate_batch": "Générer un lot",
+  "cx_issue": "Émettre une licence",
+  "cx_issue_submit": "Émettre la licence",
+  "cx_issued": "Licence émise.",
+  "cx_views": "Vues enregistrées",
+  "cx_view_all": "Toutes",
+  "cx_view_expiring": "Expirent sous 30 j",
+  "cx_view_purchased": "Achetées",
+  "cx_view_offered": "Offertes",
+  "cx_view_trials": "Essais",
+  "cx_view_waiting": "Jamais activées",
+  "cx_view_revoked": "Révoquées",
+  "cx_licenses_search": "Rechercher une clé, un identifiant, un titulaire, un courriel",
+  "cx_edition": "Édition",
+  "cx_editions": "Éditions",
+  "cx_all_editions": "Toutes les éditions",
+  "cx_channel": "Canal",
+  "cx_all_channels": "Tous les canaux",
+  "cx_batch": "Lot",
+  "cx_remove_filter": "Retirer le filtre",
+  "cx_select_all": "Tout sélectionner",
+  "cx_select_one": "Sélectionner {id}",
+  "cx_col_license": "Licence",
+  "cx_col_holder": "Titulaire",
+  "cx_col_offer": "Offre",
+  "cx_col_amount": "Montant",
+  "cx_col_seats": "Postes",
+  "cx_col_end": "Fin",
+  "cx_col_state": "État",
+  "cx_licenses_none": "Aucune licence ne correspond à ces filtres.",
+  "cx_unassigned": "Sans titulaire",
+  "cx_unassigned_hint": "Sans titulaire : « {name} » dans le logiciel, rattachée au compte qui saisit la clé",
+  "cx_expired": "échue",
+  "cx_in_days": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "dans {count} jour",
+        "countPlural=*": "dans {count} jours"
+      }
+    }
+  ],
+  "cx_on_activation": "à la 1re activation",
+  "cx_page_range": "{from} à {to} sur {total}",
+  "cx_previous": "Précédentes",
+  "cx_next": "Suivantes",
+  "cx_bulk_label": "Actions sur la sélection",
+  "cx_selected": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} sélectionnée",
+        "countPlural=*": "{count} sélectionnées"
+      }
+    }
+  ],
+  "cx_days_label": "Nombre de jours",
+  "cx_extend": "Prolonger",
+  "cx_extend_by": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "Prolonger de {count} jour",
+        "countPlural=*": "Prolonger de {count} jours"
+      }
+    }
+  ],
+  "cx_extend_all": "Prolonger le lot",
+  "cx_copy_csv": "Copier en CSV",
+  "cx_revoke": "Révoquer",
+  "cx_revoke_all": "Révoquer le lot",
+  "cx_confirm_revoke": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "Révoquer {count} licence",
+        "countPlural=*": "Révoquer {count} licences"
+      }
+    }
+  ],
+  "cx_clear_selection": "Vider la sélection",
+  "cx_cancel": "Annuler",
+  "cx_reason": "Motif",
+  "cx_reason_required": "Motif (obligatoire)",
+  "cx_reason_example": "Ex. convention 2026, geste commercial, salon",
+  "cx_reason_stats": "Motif (obligatoire, repris dans les statistiques)",
+  "cx_csv_copied": "Clés copiées au format CSV.",
+  "cx_copy_refused": "Copie refusée par le navigateur : sélectionnez le texte à la main.",
+  "cx_bulk_extended": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} licence prolongée.",
+        "countPlural=*": "{count} licences prolongées."
+      }
+    }
+  ],
+  "cx_bulk_revoked": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} licence révoquée.",
+        "countPlural=*": "{count} licences révoquées."
+      }
+    }
+  ],
+  "cx_license_of": "Licence",
+  "cx_loading": "Chargement…",
+  "cx_license_missing": "Cette licence n’existe pas ou plus.",
+  "cx_key": "Clé",
+  "cx_key_unavailable": "Clé indéchiffrable (secret du serveur changé)",
+  "cx_show": "Afficher",
+  "cx_hide": "Masquer",
+  "cx_copy": "Copier",
+  "cx_key_copied": "Clé copiée.",
+  "cx_holder": "Titulaire",
+  "cx_shown_name": "Nom affiché",
+  "cx_recipient": "Destinataire",
+  "cx_offer_at_issue": "Offre à l’émission",
+  "cx_type": "Type de licence",
+  "cx_types": "Types de licence",
+  "cx_duration": "Durée",
+  "cx_price_per_seat": "Prix par poste",
+  "cx_free": "gratuit",
+  "cx_amount_paid": "Montant payé",
+  "cx_validity": "Validité",
+  "cx_starts_on_activation": "démarre à la première activation",
+  "cx_issued_by": "Émise par",
+  "cx_price_drift": "Le prix actuel de ce type est {price} par poste. Cette licence garde les conditions de son émission.",
+  "cx_devices": "Ordinateurs",
+  "cx_computer": "Ordinateur",
+  "cx_last_check": "Dernière vérification {date}",
+  "cx_release": "Libérer",
+  "cx_release_named": "Libérer {name}",
+  "cx_released": "Poste libéré.",
+  "cx_no_device": "Aucun ordinateur activé.",
+  "cx_mails": "Courriels de clé",
+  "cx_mail_done": "Envoyé",
+  "cx_mail_failed": "En échec",
+  "cx_mail_pending": "En file",
+  "cx_history": "Historique",
+  "cx_resend_key": "Renvoyer la clé",
+  "cx_send_to": "Envoyer à",
+  "cx_send": "Envoyer",
+  "cx_key_queued": "Courriel de clé mis en file pour {email}.",
+  "cx_extended": "Licence prolongée de {days}.",
+  "cx_save": "Enregistrer",
+  "cx_saved": "Enregistré.",
+  "cx_revoke_title": "Révoquer cette licence ?",
+  "cx_revoke_hint": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} ordinateur perd l’accès à son prochain rafraîchissement. Rien n’est effacé.",
+        "countPlural=*": "{count} ordinateurs perdent l’accès à leur prochain rafraîchissement. Rien n’est effacé."
+      }
+    }
+  ],
+  "cx_revoked": "Licence révoquée.",
+  "cx_offer": "Offre",
+  "cx_hidden": "masqué",
+  "cx_seat": "poste",
+  "cx_holder_account": "Compte ou organisation",
+  "cx_holder_email": "Courriel",
+  "cx_holder_none": "Clé à distribuer",
+  "cx_holder_search": "Titulaire",
+  "cx_holder_placeholder": "Nom, courriel ou organisation",
+  "cx_holder_results": "Titulaires trouvés",
+  "cx_holder_none_found": "Aucun compte trouvé : utilisez « Courriel » pour une personne sans compte.",
+  "cx_organization": "Organisation",
+  "cx_person": "Personne",
+  "cx_choose": "Choisir",
+  "cx_change": "Changer",
+  "cx_recipient_email": "Courriel du destinataire",
+  "cx_recipient_hint": "La licence rejoint son espace quand la personne se connecte avec ce courriel vérifié.",
+  "cx_shown_in_software": "Nom affiché dans le logiciel",
+  "cx_free_key_hint": "Aucun titulaire : la clé s’active telle quelle et se rattache au compte qui la saisit.",
+  "cx_seats_range": "de {min} à {max} postes",
+  "cx_seats_min": "{min} poste au moins",
+  "cx_channel_offline_purchase": "Achat hors plateforme",
+  "cx_amount_paid_fcfa": "Montant payé (FCFA)",
+  "cx_catalog_price": "Prix catalogue : {price}",
+  "cx_reference": "Référence (commande, Devis)",
+  "cx_starts_on_activation_choice": "La validité démarre à la première activation",
+  "cx_send_key_to": "Envoyer la clé par courriel à {email}",
+  "cx_channel_purchase": "Achat",
+  "cx_channel_trial": "Essai",
+  "cx_channel_staff": "Attribution équipe",
+  "cx_channel_batch": "Lot",
+  "cx_channel_partner": "Partenariat",
+  "cx_nature": "Nature",
+  "cx_nature_sale": "Vente",
+  "cx_nature_trial": "Essai",
+  "cx_nature_free": "Offerte",
+  "cx_nature_education": "Éducation",
+  "cx_nature_partner": "Partenariat",
+  "cx_nature_hint": "Classe les licences dans les statistiques.",
+  "cx_state_active": "Active",
+  "cx_state_soon": "Expire bientôt",
+  "cx_state_expired": "Échue",
+  "cx_state_revoked": "Révoquée",
+  "cx_state_waiting": "Jamais activée",
+  "cx_days_1": "1 jour",
+  "cx_days_7": "1 semaine",
+  "cx_days_30": "1 mois",
+  "cx_days_91": "1 trimestre",
+  "cx_days_182": "6 mois",
+  "cx_days_365": "1 an",
+  "cx_days_730": "2 ans",
+  "cx_days_n": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} jour",
+        "countPlural=*": "{count} jours"
+      }
+    }
+  ],
+  "cx_err_forbidden": "Votre rôle ne permet pas cette action.",
+  "cx_err_invalid": "Valeurs refusées : vérifiez les champs.",
+  "cx_err_draft_conflict": "Le brouillon a changé entre-temps (autre personne ou autre onglet) : il vient d’être rechargé.",
+  "cx_err_nothing": "Rien à publier.",
+  "cx_err_not_removable": "Déjà publié : archivez-le plutôt.",
+  "cx_err_too_many_seats": "Plus de postes que ce type ou cette édition ne le permet.",
+  "cx_err_too_few_seats": "Moins de postes que le minimum de ce type.",
+  "cx_err_reason": "Indiquez un motif.",
+  "cx_err_seats_below": "Plus d’ordinateurs actifs que ce nombre de postes : libérez-en d’abord.",
+  "cx_err_type_archived": "Ce type de licence est archivé.",
+  "cx_err_no_recipient": "Aucun courriel destinataire.",
+  "cx_err_holder": "Titulaire introuvable.",
+  "cx_err_generic": "L’opération n’a pas abouti.",
+  "cx_batches_intro": "Des licences distinctes générées en une fois : une par personne, pour une organisation, ou des clés à distribuer.",
+  "cx_batches_none": "Aucun lot pour l’instant.",
+  "cx_batches_hint": "Un lot se prolonge ou se révoque en entier ; il reste consultable après expiration pour les statistiques.",
+  "cx_recipients": "Destinataires",
+  "cx_activated": "Activées",
+  "cx_created": "Créé le",
+  "cx_by": "Par",
+  "cx_n_licenses": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} licence",
+        "countPlural=*": "{count} licences"
+      }
+    }
+  ],
+  "cx_failed_mails": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} courriel en échec",
+        "countPlural=*": "{count} courriels en échec"
+      }
+    }
+  ],
+  "cx_mode_emails": "Une licence par personne",
+  "cx_mode_organization": "Pour une organisation",
+  "cx_mode_keys": "Clés à distribuer",
+  "cx_seats_per_license": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} poste par licence",
+        "countPlural=*": "{count} postes par licence"
+      }
+    }
+  ],
+  "cx_created_on": "créé le {date} par {name}",
+  "cx_resend_mails": "Renvoyer les courriels",
+  "cx_never_activated": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} jamais activée",
+        "countPlural=*": "{count} jamais activées"
+      }
+    }
+  ],
+  "cx_shown_name_value": "Affiché : {name}",
+  "cx_mails_queued": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} courriel remis en file.",
+        "countPlural=*": "{count} courriels remis en file."
+      }
+    }
+  ],
+  "cx_revoke_batch_title": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "Révoquer {count} licence active de ce lot ?",
+        "countPlural=*": "Révoquer les {count} licences actives de ce lot ?"
+      }
+    }
+  ],
+  "cx_mail_retried": "Courriel relancé.",
+  "cx_retry": "Relancer",
+  "cx_wizard_intro": "Une seule licence ou tout un lot : le même parcours.",
+  "cx_steps": "Étapes",
+  "cx_step_offer": "Offre",
+  "cx_step_recipients": "Destinataires",
+  "cx_step_check": "Vérifier",
+  "cx_step_keys": "Clés",
+  "cx_which_offer": "Quelle offre ?",
+  "cx_hidden_available": "Les éditions et types masqués sur le site restent disponibles ici.",
+  "cx_for_whom": "Pour qui ?",
+  "cx_emails_label": "Courriels, un par ligne (ou collez une colonne de tableur)",
+  "cx_valid": "valides",
+  "cx_invalid": "invalides",
+  "cx_duplicates": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} doublon ignoré",
+        "countPlural=*": "{count} doublons ignorés"
+      }
+    }
+  ],
+  "cx_too_many": "{max} au plus par lot : faites plusieurs lots.",
+  "cx_emails_hint": "Chaque personne reçoit un courriel avec sa propre clé. Sa licence rejoint son espace dès qu’elle se connecte avec ce courriel.",
+  "cx_organization_holder": "Organisation titulaire",
+  "cx_organization_hint": "Les licences apparaissent dans l’espace de l’organisation, qui les attribue elle-même.",
+  "cx_how_many": "Nombre de licences",
+  "cx_keys_hint": "Aucun titulaire au départ : chaque clé s’active telle quelle et se rattache au compte qui la saisit.",
+  "cx_seats_each": "Postes par licence",
+  "cx_validity_start": "Début de validité",
+  "cx_start_activation": "À la première activation",
+  "cx_start_today": "Dès aujourd’hui",
+  "cx_batch_label": "Libellé du lot",
+  "cx_batch_label_example": "Institut Solaire de Kara — promo 2026",
+  "cx_what_happens": "Ce qui va se passer",
+  "cx_distinct_licenses": "licences distinctes, chacune avec sa clé",
+  "cx_check_offer": "{offer}, {seats} poste(s) par licence, {duration}",
+  "cx_check_from_activation": "à partir de la première activation.",
+  "cx_check_from_today": "à partir d’aujourd’hui.",
+  "cx_check_mails": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} courriel part par la file d’envoi ; un échec est relancé et reste visible dans le lot.",
+        "countPlural=*": "{count} courriels partent par la file d’envoi ; un échec est relancé et reste visible dans le lot."
+      }
+    }
+  ],
+  "cx_check_organization": "Les licences sont rattachées à {name}.",
+  "cx_check_keys": "Les clés s’affichent à l’étape suivante et restent consultables dans le lot.",
+  "cx_check_stats": "Statistiques : comptées dans « Offert · Lot », nature {nature}, montant 0 FCFA, motif « {reason} ».",
+  "cx_check_actions": "Le lot peut ensuite être prolongé ou révoqué en entier.",
+  "cx_check_once": "La génération n’a lieu qu’une fois : un double clic ou une page rechargée ne crée pas de doublon.",
+  "cx_batch_generated": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} licence générée",
+        "countPlural=*": "{count} licences générées"
+      }
+    }
+  ],
+  "cx_batch_replayed": "Ce lot existait déjà : voici ses clés, rien n’a été recréé.",
+  "cx_back": "Retour",
+  "cx_continue": "Continuer",
+  "cx_generate_n": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "Générer {count} licence",
+        "countPlural=*": "Générer {count} licences"
+      }
+    }
+  ],
+  "cx_generate_another": "Générer un autre lot",
+  "cx_summary": "Récapitulatif",
+  "cx_software": "Logiciel",
+  "cx_to_fill": "à renseigner",
+  "cx_catalog_intro": "Un logiciel a des éditions ; chaque édition a ses droits dans le logiciel, ses caractéristiques affichées et ses types de licence.",
+  "cx_f_status": "État",
+  "cx_status_available": "Disponible",
+  "cx_status_soon": "Bientôt",
+  "cx_status_hidden": "Masqué",
+  "cx_draft": "Brouillon",
+  "cx_draft_label": "Modifications non publiées",
+  "cx_draft_count": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} modification en brouillon",
+        "countPlural=*": "{count} modifications en brouillon"
+      }
+    }
+  ],
+  "cx_draft_hint": "Le site, l’API et le logiciel ne changent qu’à la publication.",
+  "cx_draft_details": "Détail",
+  "cx_discard_confirm": "Abandonner toutes les modifications ?",
+  "cx_discard": "Abandonner",
+  "cx_keep": "Garder",
+  "cx_publish": "Publier",
+  "cx_published": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "Publié : {count} changement appliqué.",
+        "countPlural=*": "Publié : {count} changements appliqués."
+      }
+    }
+  ],
+  "cx_discarded": "Brouillon abandonné.",
+  "cx_diff_added": "Ajout",
+  "cx_diff_changed": "Modifié",
+  "cx_n_editions": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} édition",
+        "countPlural=*": "{count} éditions"
+      }
+    }
+  ],
+  "cx_public_page": "Page publique",
+  "cx_product_sheet": "Fiche du logiciel",
+  "cx_f_name": "Nom",
+  "cx_f_kind": "Nature",
+  "cx_f_summary": "Résumé",
+  "cx_save_draft": "Enregistrer dans le brouillon",
+  "cx_saved_draft": "Enregistré dans le brouillon.",
+  "cx_editions_hint": "L’ordre est celui du site. Une édition masquée reste utilisable par l’équipe.",
+  "cx_new_edition": "Nouvelle édition",
+  "cx_new_edition_example": "Partenaire",
+  "cx_f_code": "Code",
+  "cx_code_hint": "Minuscules, stable : il ne change plus une fois publié.",
+  "cx_create_draft": "Créer en brouillon",
+  "cx_edition_created": "Édition créée en brouillon, masquée et hors vente.",
+  "cx_order": "Ordre",
+  "cx_f_visible": "Visible sur le site",
+  "cx_f_for_sale": "En vente",
+  "cx_f_profile": "Profil dans le logiciel",
+  "cx_move_up": "Monter {name}",
+  "cx_move_down": "Descendre {name}",
+  "cx_new": "nouveau",
+  "cx_visible_named": "{name} visible sur le site",
+  "cx_for_sale_named": "{name} en vente",
+  "cx_n_hidden": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} masqué",
+        "countPlural=*": "{count} masqués"
+      }
+    }
+  ],
+  "cx_archived_editions": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} édition archivée",
+        "countPlural=*": "{count} éditions archivées"
+      }
+    }
+  ],
+  "cx_unarchive": "Réactiver",
+  "cx_archive": "Archiver",
+  "cx_features_title": "Fonctions techniques de {product}",
+  "cx_features_hint": "Liste fournie par le logiciel ; chaque édition choisit lesquelles elle inclut.",
+  "cx_n_features": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} fonction",
+        "countPlural=*": "{count} fonctions"
+      }
+    }
+  ],
+  "cx_tab_rights": "Droits dans le logiciel",
+  "cx_tab_highlights": "Caractéristiques affichées",
+  "cx_tab_types": "Types de licence ({count})",
+  "cx_audience_missing": "Public à préciser",
+  "cx_f_archived": "Archivée",
+  "cx_removed": "Retiré du brouillon.",
+  "cx_remove_draft": "Retirer du brouillon",
+  "cx_types_hint": "Un type masqué ou hors vente reste utilisable pour émettre ou générer des licences depuis la console.",
+  "cx_new_type": "Nouveau type",
+  "cx_issued_count": "Émises",
+  "cx_types_none": "Aucun type de licence : ajoutez-en un pour vendre ou émettre cette édition.",
+  "cx_renewable": "renouvelable",
+  "cx_not_renewable": "non renouvelable",
+  "cx_indicative": "prix exemple",
+  "cx_types_note": "Changer un prix ne modifie pas les licences déjà émises : chacune garde les conditions de son émission.",
+  "cx_f_features": "Fonctions incluses",
+  "cx_features_applied": "Appliquées par le logiciel",
+  "cx_edition_settings": "Réglages de l’édition",
+  "cx_f_audience": "Public",
+  "cx_profile_hint": "Code d’édition que le logiciel connaît et reçoit dans le jeton.",
+  "cx_f_grace": "Délai de grâce (jours)",
+  "cx_grace_hint": "Après la fin de la licence, avant la lecture seule.",
+  "cx_f_max_projects": "Projets maximum",
+  "cx_f_max_seats": "Postes maximum par licence",
+  "cx_unlimited": "Sans limite",
+  "cx_f_watermark": "Filigrane",
+  "cx_none": "Aucun",
+  "cx_rights_note": "Publiés, ces réglages s’appliquent au prochain rafraîchissement de chaque licence de l’édition, sans rien réinstaller.",
+  "cx_highlights_hint": "Texte libre pour la page Tarifs et le comparatif ; sans effet dans le logiciel.",
+  "cx_highlights_none": "Aucune caractéristique pour l’instant.",
+  "cx_highlight_fr": "Caractéristique {n} (français)",
+  "cx_highlight_en": "Caractéristique {n} (anglais)",
+  "cx_remove_line": "Retirer la ligne {n}",
+  "cx_add_line": "Ajouter une ligne",
+  "cx_f_highlights": "Caractéristiques",
+  "cx_f_seats_min": "Postes minimum",
+  "cx_f_seats_max": "Postes maximum",
+  "cx_f_renewable": "Renouvelable",
+  "cx_f_indicative": "Prix exemple (non définitif)",
+  "cx_type_missing": "Ce type n’existe pas dans cette édition.",
+  "cx_type_created": "Type créé en brouillon, masqué et hors vente.",
+  "cx_type_example": "Annuelle, Partenaire 1 an…",
+  "cx_duration_days": "Durée en jours",
+  "cx_price_per_seat_fcfa": "Prix par poste (FCFA)",
+  "cx_edition_max": "max. de l’édition : {max}",
+  "cx_visible_on_site": "Visible sur le site",
+  "cx_for_sale_on_site": "En vente sur le site",
+  "cx_type_frozen_note": "Les licences déjà émises gardent les conditions de leur émission.",
+  "cx_journal_intro": "Toutes les actions : équipe, clients IA (MCP), logiciel et plateforme.",
+  "cx_actor": "Acteur",
+  "cx_all_actors": "Tous les acteurs",
+  "cx_object": "Objet",
+  "cx_all_objects": "Tous les objets",
+  "cx_when": "Quand",
+  "cx_action": "Action",
+  "cx_outcome": "Résultat",
+  "cx_success": "Réussi",
+  "cx_failure": "Échec",
+  "cx_actor_type_staff": "Équipe KYA",
+  "cx_actor_type_mcp": "Client IA (MCP)",
+  "cx_actor_type_user": "Client",
+  "cx_res_license": "Licence",
+  "cx_res_batch": "Lot",
+  "cx_res_product": "Logiciel",
+  "cx_res_page": "Page",
+  "cx_res_media": "Média",
+  "cx_res_mcp": "Outil MCP",
+  "cx_res_user": "Compte",
+  "block_pricing_not_for_sale": "Cette offre n’est pas encore en vente en ligne : écrivez-nous pour l’obtenir.",
+  "licences_waiting": "démarre à la première activation",
+  "licences_state_waiting": "À activer",
+  "licences_add_key_title": "Vous avez reçu une clé ?",
+  "licences_add_key_text": "Une clé remise par votre établissement, un partenaire ou l’équipe KYA rejoint votre espace : vous retrouvez ensuite ses postes et sa durée ici.",
+  "licences_add_key_label": "Clé de licence",
+  "licences_add_key_submit": "Ajouter à mon espace",
+  "licences_key_added": "Licence ajoutée à votre espace.",
+  "licences_key_unknown": "Clé inconnue ou révoquée : vérifiez-la caractère par caractère.",
+  "licences_key_taken": "Cette clé est déjà rattachée à un autre compte."
 }

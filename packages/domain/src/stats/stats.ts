@@ -16,14 +16,14 @@ import {
   sql,
   sum,
 } from 'drizzle-orm';
+import { PERIODS, type Period } from '../constants.ts';
 import { DAY, OFFLINE_DAYS } from '../licenses/licenses.ts';
 
 /**
  * Tableau de bord de la console (spec 005b, FR-009). Tout se calcule sur les copies figées des
  * licences (montant, canal) et sur les activations : changer un prix ne réécrit jamais l'historique.
  */
-export const PERIODS = { '30j': 30, '90j': 90, '365j': 365 } as const;
-export type Period = keyof typeof PERIODS;
+export { PERIODS, type Period };
 
 /** Lundi 00:00 UTC de la semaine d'une date. */
 function weekStart(date: Date) {

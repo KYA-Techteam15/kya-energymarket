@@ -14,6 +14,7 @@ import {
   type MediaStorage,
 } from '@kya-em/domain';
 import { createLogMailer, createOutboxMailer, createSmtpMailer, type Mailer } from '@kya-em/mail';
+import { startJobWorker } from './jobs.server';
 
 /**
  * Ressources du serveur, créées une fois par processus : variables validées, journal, pool de base,
@@ -133,6 +134,7 @@ export function runtime(): Runtime {
       media: chooseMediaStorage(env),
       mailerConfigured: mailer !== null,
     };
+    if (database) startJobWorker({ database, mailer, secret, baseUrl: env.APP_BASE_URL, logger });
   }
   return current;
 }

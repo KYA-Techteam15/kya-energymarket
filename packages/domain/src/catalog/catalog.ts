@@ -21,13 +21,7 @@ export type Locale = 'fr' | 'en';
 export type ProductStatus = 'available' | 'soon' | 'hidden';
 export type { LicenseTypeNature };
 
-export const NATURES = [
-  'sale',
-  'trial',
-  'free',
-  'education',
-  'partner',
-] as const satisfies readonly LicenseTypeNature[];
+export { NATURES } from '../constants.ts';
 
 /** Texte dans la langue demandée, sinon le français. */
 export const pick = (text: LocalizedText | null | undefined, locale: Locale) =>

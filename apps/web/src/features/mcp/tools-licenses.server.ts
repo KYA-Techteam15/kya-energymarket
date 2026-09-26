@@ -1,27 +1,36 @@
 import { staffCan } from '@kya-em/auth';
 import type { Database } from '@kya-em/db';
 import {
-  DURATIONS,
+  BatchInput,
+  CHANNELS,
+  dashboardStats,
   extendLicense,
   findLicenses,
+  generateBatch,
+  getBatch,
   getLicense,
   issueLicense,
+  LICENSE_VIEWS,
   LicenseError,
   licenseJournal,
+  listBatches,
   organizationForEmail,
+  PERIODS,
   recordAuditEvent,
   releaseSeat,
+  resendLicenseKey,
   revokeLicense,
   setLicenseSeats,
   type Logger,
+  type Period,
 } from '@kya-em/domain';
 import type { McpServer } from '@modelcontextprotocol/server';
 import { z, ZodError } from 'zod';
 import type { McpCaller } from './tools.server';
 
 /**
- * Outils MCP des licences (spec 005, histoire 4). Portée `admin:licenses` pour écrire, droits
- * d'équipe `licenses:read|write|revoke` comme dans l'administration ; chaque appel est tracé.
+ * Outils MCP des licences (spec 005, 005b). Portée `admin:licenses` pour écrire, droits d'équipe
+ * `licenses:read|write|revoke` et `stats:read` comme dans la console ; chaque appel est tracé.
  */
 const READ_ONLY = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false } as const;
 const WRITE = { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false } as const;
@@ -39,14 +48,15 @@ export function registerLicenseTools(
 
   const guarded = async (
     tool: string,
-    need: { scope: string; action: string },
+    need: { scope: string; action: string; resource?: 'licenses' | 'stats' },
     run: () => Promise<ReturnType<typeof text>>,
   ) => {
     if (!caller.scopes.includes(need.scope)) {
       return refuse(`Portée « ${need.scope} » non accordée à ce client : reconnectez-le pour l'autoriser.`);
     }
-    if (!staffCan(role, 'licenses', need.action))
-      return refuse(`Votre rôle d'équipe ne permet pas « licenses:${need.action} ».`);
+    const resource = need.resource ?? 'licenses';
+    if (!staffCan(role, resource, need.action))
+      return refuse(`Votre rôle d'équipe ne permet pas « ${resource}:${need.action} ».`);
     const trace = (outcome: 'success' | 'failure') =>
       recordAuditEvent(db, {
         actorType: 'mcp_client',
@@ -65,7 +75,9 @@ export function registerLicenseTools(
       await trace('failure');
       if (error instanceof LicenseError) return refuse(error.code);
       if (error instanceof ZodError)
-        return refuse(`Entrée refusée : ${error.issues.map((issue) => issue.message).join(' ; ')}`);
+        return refuse(
+          `Entrée refusée : ${error.issues.map((issue) => `${issue.path.join('.')} ${issue.message}`).join(' ; ')}`,
+        );
       throw error;
     }
   };
@@ -73,19 +85,24 @@ export function registerLicenseTools(
   server.registerTool(
     'find_license',
     {
-      title: 'Trouver une licence',
+      title: 'Trouver des licences',
       description:
-        'Cherche des licences par clé, identifiant, nom du client ou courriel d’un membre de l’organisation. Rend clé, offre, dates, postes actifs. Avec `licenseId`, rend aussi le journal.',
-      inputSchema: z.object({ query: z.string().max(120).optional(), licenseId: licenseId.optional() }),
+        'Cherche des licences par clé, identifiant, nom du titulaire, courriel (destinataire ou membre de l’organisation) ou référence ; `view` filtre (all, expiring, purchased, offered, trials, waiting = jamais activées, revoked). Rend l’offre figée à l’émission (type, jours, prix, montant, canal, motif), les dates, les postes actifs et le compte de chaque vue. Avec `licenseId`, rend aussi le journal.',
+      inputSchema: z.object({
+        query: z.string().max(120).optional(),
+        view: z.enum(LICENSE_VIEWS).optional(),
+        batchId: z.uuid().optional().describe('Licences d’un lot'),
+        licenseId: licenseId.optional(),
+      }),
       annotations: READ_ONLY,
     },
-    async ({ query, licenseId: id }) =>
+    async ({ query, view, batchId, licenseId: id }) =>
       guarded('find_license', { scope: 'admin:read', action: 'read' }, async () => {
         if (id) {
           const license = await getLicense({ db, secret }, id);
           return text(license ? { license, journal: await licenseJournal(db, id) } : { error: 'LICENSE_NOT_FOUND' });
         }
-        return text(await findLicenses({ db, secret }, query ?? ''));
+        return text(await findLicenses({ db, secret }, { query, view, batchId, limit: 50 }));
       }),
   );
 
@@ -94,43 +111,129 @@ export function registerLicenseTools(
     {
       title: 'Émettre une licence',
       description:
-        'Émet une licence KYA-SolDesign au nom de l’organisation du compte donné (son entreprise si elle en a une, sinon la personnelle). Rend l’identifiant et la clé.',
+        'Émet une licence d’un type de licence (identifiant lu par get_product, types masqués compris). Titulaire : `ownerEmail` (organisation de ce compte : son entreprise, sinon la personnelle) ; sinon `recipientEmail` (sans compte : rattachée quand la personne se connecte avec ce courriel) ; sinon clé à distribuer (`customerName` affiché dans le logiciel). `channel` : staff (attribution par l’équipe), purchase (achat hors plateforme, avec `amount` et `reference`), partner. `reason` obligatoire hors achat. La licence garde une copie figée du type (prix, durée). `idempotencyKey` : rejouer ne crée rien de plus. Rend l’identifiant et la clé.',
       inputSchema: z.object({
-        ownerEmail: z.email(),
-        edition: z.string().describe('commercial, academic, student…'),
-        duration: z.enum(DURATIONS),
+        licenseTypeId: z.uuid(),
         seats: z.number().int().min(1).max(10_000),
+        ownerEmail: z.email().optional(),
+        recipientEmail: z.email().optional(),
+        customerName: z.string().min(1).max(120).optional(),
+        channel: z.enum(CHANNELS).default('staff'),
+        amount: z.number().int().min(0).default(0).describe('Montant payé en FCFA entiers'),
+        reason: z.string().max(300).optional(),
+        reference: z.string().max(80).optional(),
+        startsOnActivation: z.boolean().default(false),
+        sendKey: z.boolean().default(false).describe('Envoyer la clé par courriel au destinataire'),
+        idempotencyKey: z.string().min(8).max(80).optional(),
       }),
       annotations: WRITE,
     },
-    async ({ ownerEmail, edition, duration, seats }) =>
+    async ({ ownerEmail, sendKey, ...values }) =>
       guarded('issue_license', { scope: 'admin:licenses', action: 'write' }, async () => {
-        const organizationId = await organizationForEmail(db, ownerEmail);
-        if (!organizationId) return refuse('ACCOUNT_NOT_FOUND : la personne doit d’abord créer son compte.');
-        const { license, key } = await issueLicense({ db, secret }, actor, {
-          productSlug: 'kya-soldesign',
-          editionCode: edition,
-          duration,
-          seats,
+        const organizationId = ownerEmail ? await organizationForEmail(db, ownerEmail) : null;
+        if (ownerEmail && !organizationId)
+          return refuse('ACCOUNT_NOT_FOUND : utilisez recipientEmail pour une personne sans compte.');
+        const { license, key, replayed } = await issueLicense({ db, secret }, actor, {
+          ...values,
           organizationId,
-          source: 'manual',
+          recipientEmail: values.recipientEmail ?? ownerEmail ?? null,
         });
-        return text({ ok: true, licenseId: license.id, key, expiresAt: license.expiresAt.toISOString() });
+        if (sendKey && license.recipientEmail && !replayed) await resendLicenseKey(db, { licenseId: license.id });
+        return text({
+          ok: true,
+          replayed,
+          licenseId: license.id,
+          key,
+          startsAt: license.startsAt?.toISOString() ?? null,
+          expiresAt: license.expiresAt?.toISOString() ?? null,
+        });
       }),
+  );
+
+  server.registerTool(
+    'generate_license_batch',
+    {
+      title: 'Générer un lot de licences',
+      description:
+        'Génère des licences DISTINCTES en une fois : `mode` emails (une par courriel, chacune reçoit sa clé), organization (`count` licences pour `organizationId`), keys (`count` clés sans titulaire). `label` et `reason` obligatoires (statistiques : canal « lot »). `idempotencyKey` obligatoire : rejouer rend le même lot. 500 licences au plus. Action à impact : `confirm` doit valoir true.',
+      inputSchema: z.object({
+        licenseTypeId: z.uuid(),
+        mode: z.enum(['emails', 'organization', 'keys']),
+        emails: z.array(z.email()).max(500).optional(),
+        organizationId: z.string().optional(),
+        count: z.number().int().min(1).max(500).optional(),
+        seats: z.number().int().min(1).max(10_000),
+        label: z.string().min(3).max(120),
+        reason: z.string().min(3).max(300),
+        customerName: z.string().min(1).max(120).optional(),
+        startsOnActivation: z.boolean().default(true),
+        idempotencyKey: z.string().min(8).max(80),
+        confirm: z.literal(true).describe('Confirmation explicite'),
+      }),
+      annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: false },
+    },
+    async ({ confirm: _confirm, ...input }) =>
+      guarded('generate_license_batch', { scope: 'admin:licenses', action: 'write' }, async () => {
+        const { batch, keys, replayed } = await generateBatch({ db, secret }, actor, BatchInput.parse(input));
+        return text({ ok: true, replayed, batchId: batch.id, count: keys.length, keys });
+      }),
+  );
+
+  server.registerTool(
+    'find_batches',
+    {
+      title: 'Lots de licences',
+      description: 'Liste les lots (activation, courriels en échec) ; avec `batchId`, rend le lot et ses licences.',
+      inputSchema: z.object({ batchId: z.uuid().optional() }),
+      annotations: READ_ONLY,
+    },
+    async ({ batchId }) =>
+      guarded('find_batches', { scope: 'admin:read', action: 'read' }, async () =>
+        text(
+          batchId ? ((await getBatch({ db, secret }, batchId)) ?? { error: 'BATCH_NOT_FOUND' }) : await listBatches(db),
+        ),
+      ),
+  );
+
+  server.registerTool(
+    'license_stats',
+    {
+      title: 'Statistiques des licences',
+      description:
+        'Tableau de bord : vendu (FCFA, sur les montants figés), offert, essais et conversions, ordinateurs actifs, série hebdomadaire par canal, à traiter. `period` : 30j, 90j ou 365j.',
+      inputSchema: z.object({ period: z.enum(Object.keys(PERIODS) as [Period, ...Period[]]).default('30j') }),
+      annotations: READ_ONLY,
+    },
+    async ({ period }) =>
+      guarded('license_stats', { scope: 'admin:read', action: 'read', resource: 'stats' }, async () =>
+        text(await dashboardStats(db, { period })),
+      ),
   );
 
   server.registerTool(
     'extend_license',
     {
       title: 'Prolonger une licence',
-      description: 'Fixe une nouvelle date de fin (ISO 8601). Le logiciel la reçoit à son prochain rafraîchissement.',
-      inputSchema: z.object({ licenseId, expiresAt: z.iso.datetime() }),
+      description:
+        'Nouvelle date de fin (`expiresAt`, ISO 8601) ou `days` de plus ; une licence pas encore démarrée gagne des jours. Le logiciel le reçoit à son prochain rafraîchissement.',
+      inputSchema: z.object({
+        licenseId,
+        expiresAt: z.iso.datetime().optional(),
+        days: z.number().int().min(1).max(3650).optional(),
+        reason: z.string().max(300).optional(),
+      }),
       annotations: { ...WRITE, idempotentHint: true },
     },
-    async ({ licenseId: id, expiresAt }) =>
+    async ({ licenseId: id, expiresAt, days, reason }) =>
       guarded('extend_license', { scope: 'admin:licenses', action: 'write' }, async () => {
-        await extendLicense(db, actor, { licenseId: id, expiresAt: new Date(expiresAt) });
-        return text({ ok: true, licenseId: id, expiresAt });
+        if (!expiresAt && !days) return refuse('Indiquez expiresAt ou days.');
+        await extendLicense(db, actor, {
+          licenseId: id,
+          expiresAt: expiresAt ? new Date(expiresAt) : undefined,
+          days,
+          reason,
+        });
+        return text({ ok: true, licenseId: id });
       }),
   );
 
@@ -155,7 +258,7 @@ export function registerLicenseTools(
       title: 'Libérer un poste',
       description:
         'Libère un ordinateur (identifiant d’activation rendu par find_license) : il passe en lecture seule à sa prochaine connexion.',
-      inputSchema: z.object({ licenseId, activationId: z.string().uuid() }),
+      inputSchema: z.object({ licenseId, activationId: z.uuid() }),
       annotations: { ...WRITE, idempotentHint: true },
     },
     async ({ licenseId: id, activationId }) =>
@@ -171,12 +274,16 @@ export function registerLicenseTools(
       title: 'Révoquer une licence',
       description:
         'Révoque définitivement une licence : ses postes reçoivent LICENSE_REVOKED au prochain rafraîchissement et la clé ne s’active plus. Action à impact : `confirm` doit valoir true.',
-      inputSchema: z.object({ licenseId, confirm: z.literal(true).describe('Confirmation explicite') }),
+      inputSchema: z.object({
+        licenseId,
+        reason: z.string().min(3).max(300),
+        confirm: z.literal(true).describe('Confirmation explicite'),
+      }),
       annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: false },
     },
-    async ({ licenseId: id }) =>
+    async ({ licenseId: id, reason }) =>
       guarded('revoke_license', { scope: 'admin:licenses', action: 'revoke' }, async () => {
-        await revokeLicense(db, actor, { licenseId: id });
+        await revokeLicense(db, actor, { licenseId: id, reason });
         return text({ ok: true, licenseId: id, status: 'revoked' });
       }),
   );

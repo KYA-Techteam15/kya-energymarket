@@ -2,21 +2,21 @@ import { staffCan, type Resource } from '@kya-em/auth';
 import type { Database } from '@kya-em/db';
 import {
   BLOCKS,
+  CatalogChange,
   CatalogError,
-  DURATIONS,
+  changeCatalog,
+  discardCatalogDraft,
   findPageId,
-  getCatalogProduct,
+  getCatalogEditing,
   getPageForEditing,
   listMedia,
   listPages,
   listProducts,
   PageError,
+  publishCatalog,
   publishDraft,
   recordAuditEvent,
   saveDraft,
-  setPlan,
-  upsertEdition,
-  upsertProduct,
   type Logger,
 } from '@kya-em/domain';
 import type { McpServer } from '@modelcontextprotocol/server';
@@ -33,7 +33,6 @@ const WRITE = { readOnlyHint: false, destructiveHint: false, idempotentHint: tru
 const text = (value: unknown) => ({ content: [{ type: 'text' as const, text: JSON.stringify(value, null, 2) }] });
 const refuse = (message: string) => ({ content: [{ type: 'text' as const, text: message }], isError: true });
 
-const localized = z.object({ fr: z.string().min(1).max(400), en: z.string().max(400).optional() });
 const slug = z
   .string()
   .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/u)
@@ -91,7 +90,11 @@ export function registerContentTools(server: McpServer, context: { db: Database;
           `${error.code} ${issues.map((issue) => `${issue.path.map(String).join('.')} : ${issue.message}`).join(' ; ')}`,
         );
       }
-      if (error instanceof CatalogError) return refuse(error.code);
+      if (error instanceof CatalogError) {
+        return refuse(
+          `${error.code} ${error.issues.map((issue) => `${issue.path} : ${issue.message}`).join(' ; ')}`.trim(),
+        );
+      }
       throw error;
     }
   };
@@ -115,94 +118,72 @@ export function registerContentTools(server: McpServer, context: { db: Database;
     {
       title: 'Offre d’un logiciel',
       description:
-        'Offre complète d’un logiciel : fonctions (clés), éditions (fonctions incluses, filigrane, délai de grâce, postes et projets maximum) et durées (prix par poste en FCFA, prix exemple ou définitif, actives ou non).',
+        'Offre d’un logiciel : `live` (publiée : ce que voient le site, l’API et KYA-SolDesign) et `document` (brouillon s’il existe, sinon l’offre publiée), avec `revision` du brouillon et la liste `changes` de ce qui changerait à la publication. Éditions : fonctions incluses, limites, profil du logiciel (softwareEdition), caractéristiques affichées, visible, en vente, archivée ; types de licence : nom, nature, jours, prix par poste en FCFA, postes, visible, en vente.',
       inputSchema: z.object({ product: slug }),
       annotations: READ_ONLY,
     },
+    async ({ product }) => guarded('get_product', read, async () => text(await getCatalogEditing(db, product))),
+  );
+
+  server.registerTool(
+    'change_catalog',
+    {
+      title: 'Modifier le brouillon du catalogue',
+      description:
+        'Applique des changements au BROUILLON de l’offre (rien n’est public avant publish_catalog). Opérations : ' +
+        '`product` {fields: name, status available|soon|hidden, kind, summary} ; ' +
+        '`edition` {code, fields} modifie une édition ou la crée (masquée, hors vente) — champs : name, audience, softwareEdition (code connu du logiciel), watermark (null : aucun), graceDays, maxSeats, maxProjects (null : sans limite), highlights (textes affichés), visible, forSale, archived, features (liste complète des clés) ; ' +
+        '`move_edition` {code, to} ; ' +
+        '`license_type` {edition, id?, fields} modifie un type ou le crée sans id (masqué, hors vente) — champs : name, nature sale|trial|free|education|partner, days, pricePerSeat (FCFA entiers), indicative, seatsMin, seatsMax (null : maximum de l’édition), renewable, visible, forSale, archived ; ' +
+        '`move_license_type` {edition, id, to} ; `remove` {edition, id?} retire un élément jamais publié. ' +
+        '`expectedRevision` : révision lue par get_product (refus si le brouillon a changé ; null s’il n’y en avait pas).',
+      inputSchema: z.object({
+        product: slug,
+        changes: z.array(CatalogChange).min(1).max(50),
+        expectedRevision: z.number().int().min(1).nullable().optional(),
+      }),
+      annotations: { ...WRITE, idempotentHint: false },
+    },
+    async ({ product, changes, expectedRevision }) =>
+      guarded('change_catalog', { scope: 'admin:catalog', resource: 'catalog', action: 'write' }, async () => {
+        const result = await changeCatalog(db, actor, product, { changes, expectedRevision });
+        return text({ ok: true, revision: result.revision, pendingChanges: result.changes });
+      }),
+  );
+
+  server.registerTool(
+    'publish_catalog',
+    {
+      title: 'Publier le catalogue',
+      description:
+        'Publie le brouillon de l’offre d’un logiciel : le site, l’API publique et les jetons de KYA-SolDesign (au prochain rafraîchissement) prennent la nouvelle offre. Les licences déjà émises gardent leurs conditions. `revision` : révision relue par get_product. Action à impact : `confirm` doit valoir true.',
+      inputSchema: z.object({
+        product: slug,
+        revision: z.number().int().min(1),
+        confirm: z.literal(true).describe('Confirmation explicite'),
+      }),
+      annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: false },
+    },
+    async ({ product, revision }) =>
+      guarded('publish_catalog', { scope: 'admin:catalog', resource: 'catalog', action: 'write' }, async () => {
+        const result = await publishCatalog(db, actor, product, { expectedRevision: revision });
+        return text({ ok: true, version: result.version, changes: result.changes });
+      }),
+  );
+
+  server.registerTool(
+    'discard_catalog_draft',
+    {
+      title: 'Abandonner le brouillon du catalogue',
+      description:
+        'Supprime le brouillon de l’offre d’un logiciel ; l’offre publiée ne change pas. `confirm` doit valoir true.',
+      inputSchema: z.object({ product: slug, confirm: z.literal(true).describe('Confirmation explicite') }),
+      annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: false },
+    },
     async ({ product }) =>
-      guarded('get_product', read, async () =>
-        text((await getCatalogProduct(db, product)) ?? { error: 'PRODUCT_NOT_FOUND' }),
+      guarded('discard_catalog_draft', { scope: 'admin:catalog', resource: 'catalog', action: 'write' }, async () =>
+        text({ ok: true, discarded: await discardCatalogDraft(db, actor, product) }),
       ),
-  );
-
-  server.registerTool(
-    'update_product',
-    {
-      title: 'Modifier un logiciel',
-      description:
-        'Modifie la fiche d’un logiciel (nom, état available/soon/hidden, nature, résumé, logo, monogramme). Seuls les champs fournis changent. Tracé dans l’audit.',
-      inputSchema: z.object({
-        product: slug,
-        name: z.string().min(2).max(60).optional(),
-        status: z.enum(['available', 'soon', 'hidden']).optional(),
-        kind: localized.optional(),
-        summary: localized.optional(),
-      }),
-      annotations: WRITE,
-    },
-    async ({ product, ...values }) =>
-      guarded('update_product', { scope: 'admin:catalog', resource: 'catalog', action: 'write' }, async () => {
-        const row = await upsertProduct(db, actor, product, values);
-        return text({ ok: true, product: row.slug, status: row.status });
-      }),
-  );
-
-  server.registerTool(
-    'update_edition',
-    {
-      title: 'Modifier une édition',
-      description:
-        'Modifie une édition (ou la crée) : nom, public, filigrane (null : aucun), délai de grâce en jours, postes et projets maximum (null : sans limite), active, et la liste complète des clés de fonctions incluses.',
-      inputSchema: z.object({
-        product: slug,
-        edition: z
-          .string()
-          .regex(/^[a-z][a-z0-9_]{1,30}$/u)
-          .describe('Code de l’édition : commercial, academic, student…'),
-        name: localized.optional(),
-        audience: localized.optional(),
-        watermark: localized.nullable().optional(),
-        graceDays: z.number().int().min(0).max(90).optional(),
-        maxSeats: z.number().int().min(1).nullable().optional(),
-        maxProjects: z.number().int().min(1).nullable().optional(),
-        active: z.boolean().optional(),
-        features: z.array(z.string()).optional().describe('Clés des fonctions incluses (remplace la liste)'),
-      }),
-      annotations: WRITE,
-    },
-    async ({ product, edition, ...values }) =>
-      guarded('update_edition', { scope: 'admin:catalog', resource: 'catalog', action: 'write' }, async () => {
-        await upsertEdition(db, actor, product, edition, values);
-        return text({ ok: true, product, edition });
-      }),
-  );
-
-  server.registerTool(
-    'set_plan_price',
-    {
-      title: 'Prix d’une durée',
-      description:
-        'Fixe le prix par poste (FCFA entiers) d’une durée d’une édition, la crée si besoin. Durées : P1D, P1W, P1M, P3M, P6M, P1Y. `indicative: false` retire la mention « prix exemple ».',
-      inputSchema: z.object({
-        product: slug,
-        edition: z.string(),
-        duration: z.enum(DURATIONS),
-        pricePerSeat: z.number().int().min(0),
-        indicative: z.boolean().optional(),
-        active: z.boolean().optional(),
-      }),
-      annotations: WRITE,
-    },
-    async ({ product, edition, duration, ...values }) =>
-      guarded('set_plan_price', { scope: 'admin:catalog', resource: 'catalog', action: 'write' }, async () => {
-        const plan = await setPlan(db, actor, product, edition, duration, values);
-        return text({
-          ok: true,
-          duration: plan.duration,
-          pricePerSeat: plan.pricePerSeat,
-          indicative: plan.indicative,
-        });
-      }),
   );
 
   server.registerTool(

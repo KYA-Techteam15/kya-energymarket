@@ -160,6 +160,7 @@ export {
   LICENSE_VIEWS,
   LicenseError,
   LicenseFilters,
+  licenseCountsByType,
   licenseJournal,
   listLicensesForOrganizations,
   OFFLINE_DAYS,

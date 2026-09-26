@@ -37,6 +37,7 @@ import {
 } from 'drizzle-orm';
 import { z } from 'zod';
 import { kindOf } from '../accounts/organizations.ts';
+import { CHANNELS, LICENSE_VIEWS, type LicenseViewName } from '../constants.ts';
 import { recordAuditEvent } from '../audit/recordAuditEvent.ts';
 import {
   getCatalogProduct,
@@ -64,7 +65,7 @@ import {
 /** Au-delà, le poste doit se reconnecter pour rafraîchir sa licence (contrat KYA-SolDesign). */
 export const OFFLINE_DAYS = 30;
 export const DAY = 86_400_000;
-export const CHANNELS = ['purchase', 'trial', 'staff', 'batch', 'partner'] as const satisfies readonly LicenseChannel[];
+export { CHANNELS, LICENSE_VIEWS, type LicenseViewName };
 export type { LicenseChannel };
 
 const EDITION_PREFIX: Record<string, string> = { commercial: 'COM', academic: 'ACA', student: 'ETU' };
@@ -710,9 +711,6 @@ export async function getLicensesByIds(deps: LicenseDependencies, ids: readonly 
   return viewsOf(deps, rows);
 }
 
-export const LICENSE_VIEWS = ['all', 'expiring', 'purchased', 'offered', 'trials', 'waiting', 'revoked'] as const;
-export type LicenseViewName = (typeof LICENSE_VIEWS)[number];
-
 export const LicenseFilters = z.strictObject({
   query: z.string().trim().max(120).optional(),
   view: z.enum(LICENSE_VIEWS).default('all'),
@@ -846,3 +844,14 @@ export async function organizationForEmail(db: Database, email: string) {
 export const hasActivation = (db: Database) => exists(everActivated(db));
 
 export type { CatalogEdition };
+
+/** Licences émises par type de licence (console : colonne « Émises »). */
+export async function licenseCountsByType(db: Database, typeIds: readonly string[]) {
+  if (!typeIds.length) return {} as Record<string, number>;
+  const rows = await db
+    .select({ id: licenses.licenseTypeId, n: count() })
+    .from(licenses)
+    .where(inArray(licenses.licenseTypeId, [...typeIds]))
+    .groupBy(licenses.licenseTypeId);
+  return Object.fromEntries(rows.map((row) => [row.id ?? '', row.n])) as Record<string, number>;
+}

@@ -1,7 +1,11 @@
 import {
+  claimLicenseByKey,
+  claimLicensesForEmail,
   getLicense,
+  LicenseError,
   listLicensesForOrganizations,
   listUserOrganizations,
+  organizationForEmail,
   recordSeatInvite,
   releaseSeat,
 } from '@kya-em/domain';
@@ -25,6 +29,10 @@ async function viewer() {
 export async function loadMyLicenses() {
   const current = await viewer();
   if (!current) return null;
+  // Licences adressées à ce courriel vérifié (lot, émission par l'équipe) : rattachées à l'ouverture.
+  if (current.session.user.emailVerified) {
+    await claimLicensesForEmail(current.db, { type: 'user', id: current.session.user.id }, current.session.user.email);
+  }
   const licenses = await listLicensesForOrganizations(
     { db: current.db, secret: current.secret },
     current.organizations.map((organization) => organization.id),
@@ -37,11 +45,13 @@ export async function loadMyLicenses() {
   // Temps restant calculé ici, à l'heure du serveur (le rendu reste déterministe).
   const now = Date.now();
   return licenses.map((license) => {
-    const starts = Date.parse(license.startsAt);
-    const expires = Date.parse(license.expiresAt);
+    // Pas encore démarrée : la durée entière reste à courir.
+    const starts = license.startsAt ? Date.parse(license.startsAt) : now;
+    const expires = license.expiresAt ? Date.parse(license.expiresAt) : now + license.days * 86_400_000;
     return {
       ...license,
-      canManage: owned.has(license.organizationId),
+      canManage: license.organizationId !== null && owned.has(license.organizationId),
+      waiting: license.startsAt === null,
       expired: expires < now,
       remainingDays: Math.max(0, Math.ceil((expires - now) / 86_400_000)),
       remainingShare: Math.min(100, Math.max(0, ((expires - now) / Math.max(1, expires - starts)) * 100)),
@@ -95,4 +105,19 @@ export async function assignSeat(licenseId: string, email: string) {
     ),
   );
   return { ok: true as const };
+}
+
+/** « Ajouter une clé » : une licence sans titulaire rejoint l'organisation de la personne (spec 005b, FR-006). */
+export async function claimMyKey(key: string) {
+  const current = await viewer();
+  if (!current) return { ok: false as const, code: 'FORBIDDEN' };
+  const organizationId = await organizationForEmail(current.db, current.session.user.email);
+  if (!organizationId) return { ok: false as const, code: 'FORBIDDEN' };
+  try {
+    await claimLicenseByKey(current.db, { type: 'user', id: current.session.user.id }, { key, organizationId });
+    return { ok: true as const };
+  } catch (error) {
+    if (error instanceof LicenseError) return { ok: false as const, code: error.code };
+    throw error;
+  }
 }
