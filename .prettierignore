@@ -16,3 +16,4 @@ design
 skills-lock.json
 *.md
 packages/ui/styles/tokens.css
+packages/ui/styles/blocks.css
