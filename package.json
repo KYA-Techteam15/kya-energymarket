@@ -29,7 +29,8 @@
     "auth:schema": "auth generate --config packages/auth/schema.config.ts --output packages/db/src/schema/auth.ts --yes",
     "coolify:deploy": "node scripts/coolify-deploy.mjs",
     "verify": "pnpm format:check && pnpm lint && pnpm test && pnpm build && pnpm typecheck && pnpm e2e && pnpm secrets:scan",
-    "db:seed": "tsx scripts/seed.ts"
+    "db:seed": "tsx scripts/seed.ts",
+    "license:keygen": "tsx scripts/license-keygen.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

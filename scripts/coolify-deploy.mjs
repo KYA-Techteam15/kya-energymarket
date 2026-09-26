@@ -187,6 +187,28 @@ if (!mediaVariables.length) {
   );
 }
 
+// Licences (spec 005) : clé de signature de l'environnement (pnpm license:keygen --env <env>).
+const licenseVariables = secrets[`LICENSE_SIGNING_PRIVATE_KEY_${suffix}`]
+  ? [
+      {
+        key: 'LICENSE_SIGNING_PRIVATE_KEY',
+        value: secrets[`LICENSE_SIGNING_PRIVATE_KEY_${suffix}`],
+        is_preview: false,
+        is_literal: true,
+      },
+      {
+        key: 'LICENSE_SIGNING_KEY_ID',
+        value: secrets[`LICENSE_SIGNING_KEY_ID_${suffix}`] ?? args.env,
+        is_preview: false,
+        is_literal: true,
+      },
+    ]
+  : [];
+if (!licenseVariables.length)
+  console.log(
+    `Aucune clé de licence pour « ${args.env} » (pnpm license:keygen --env ${args.env}) : API des licences indisponible.`,
+  );
+
 await coolify(`/applications/${application.uuid}/envs/bulk`, {
   method: 'PATCH',
   body: JSON.stringify({
@@ -198,11 +220,12 @@ await coolify(`/applications/${application.uuid}/envs/bulk`, {
       { key: 'BETTER_AUTH_SECRET', value: authSecret, is_preview: false },
       ...smtpVariables,
       ...mediaVariables,
+      ...licenseVariables,
     ],
   }),
 });
 console.log(
-  `Coolify : variables APP_ENV, APP_BASE_URL, LOG_LEVEL, DATABASE_URL, BETTER_AUTH_SECRET${smtpVariables.length ? ', SMTP_*' : ''}${mediaVariables.length ? ', stockage objet' : ''} réglées.`,
+  `Coolify : variables APP_ENV, APP_BASE_URL, LOG_LEVEL, DATABASE_URL, BETTER_AUTH_SECRET${smtpVariables.length ? ', SMTP_*' : ''}${mediaVariables.length ? ', stockage objet' : ''}${licenseVariables.length ? ', clé des licences' : ''} réglées.`,
 );
 
 // ---------------------------------------------------------------- déploiement et santé

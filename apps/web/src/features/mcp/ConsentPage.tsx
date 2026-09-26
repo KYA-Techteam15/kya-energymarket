@@ -15,6 +15,7 @@ const scopeLabels: Record<string, () => string> = {
   'admin:read': m.consent_scope_admin_read,
   'admin:catalog': m.consent_scope_admin_catalog,
   'admin:content': m.consent_scope_admin_content,
+  'admin:licenses': m.consent_scope_admin_licenses,
 };
 
 /**

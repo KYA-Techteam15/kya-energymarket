@@ -4,8 +4,11 @@ import { createAuth, type Auth } from '@kya-em/auth';
 import { loadServerEnv, s3ConfigOf, smtpConfigOf, type ServerEnv } from '@kya-em/config';
 import { createDatabase, type DatabaseHandle } from '@kya-em/db';
 import {
+  createLicenseSigner,
   createLocalMediaStorage,
   createLogger,
+  generateSigningKey,
+  type LicenseSigner,
   createS3MediaStorage,
   type Logger,
   type MediaStorage,
@@ -26,6 +29,10 @@ export interface Runtime {
   readonly auth: Auth | undefined;
   /** `null` : aucun courriel (lien de connexion masqué, invitations par lien, adresse non vérifiée). */
   readonly mailer: Mailer | null;
+  /** Signataire des jetons de licence ; `null` : aucune clé (API du logiciel indisponible). */
+  readonly licenseSigner: () => Promise<LicenseSigner | null>;
+  /** Secret du serveur (chiffrement des clés de licence au repos). */
+  readonly secret: string;
   /** Médias : Neon Object Storage en ligne, dossier local sinon. */
   readonly media: MediaStorage;
   /** Un courriel peut-il partir ? (lien de connexion, invitations par courriel, vérification) */
@@ -55,6 +62,27 @@ function chooseMediaStorage(env: ServerEnv): MediaStorage {
   return createLocalMediaStorage(env.MEDIA_DIR ?? resolve(process.cwd(), '.data/media'));
 }
 
+/**
+ * Clé de signature des licences : celle de l'environnement ; en développement et en test seulement,
+ * une clé éphémère (les jetons ne valent que le temps du processus). Jamais journalisée.
+ */
+function licenseSignerFor(env: ServerEnv, logger: Logger): () => Promise<LicenseSigner | null> {
+  let signer: Promise<LicenseSigner | null> | undefined;
+  return () => {
+    signer ??= (async () => {
+      if (env.LICENSE_SIGNING_PRIVATE_KEY) {
+        return createLicenseSigner(JSON.parse(env.LICENSE_SIGNING_PRIVATE_KEY) as JsonWebKey);
+      }
+      if (env.APP_ENV === 'production') {
+        logger.error('LICENSE_SIGNING_PRIVATE_KEY manquante : API des licences indisponible');
+        return null;
+      }
+      return createLicenseSigner((await generateSigningKey()).privateJwk);
+    })();
+    return signer;
+  };
+}
+
 function loadLocalEnvFile() {
   const environment = process.env.APP_ENV ?? 'development';
   if (environment !== 'development') return;
@@ -73,10 +101,11 @@ export function runtime(): Runtime {
     const logger = createLogger({ level: env.LOG_LEVEL });
     const database = env.DATABASE_URL ? createDatabase(env.DATABASE_URL) : undefined;
     const mailer = chooseMailer(env, logger);
+    const secret = env.BETTER_AUTH_SECRET ?? LOCAL_ONLY_SECRET;
     const auth = database
       ? createAuth({
           db: database.db,
-          secret: env.BETTER_AUTH_SECRET ?? LOCAL_ONLY_SECRET,
+          secret,
           baseUrl: env.APP_BASE_URL,
           environment: env.APP_ENV,
           mailer,
@@ -99,6 +128,8 @@ export function runtime(): Runtime {
       database,
       auth,
       mailer,
+      secret,
+      licenseSigner: licenseSignerFor(env, logger),
       media: chooseMediaStorage(env),
       mailerConfigured: mailer !== null,
     };

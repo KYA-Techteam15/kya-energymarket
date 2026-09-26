@@ -9,7 +9,7 @@ const source = readFileSync(new URL('../design/v5/assets/css/site.css', import.m
 // Classes racines des blocs portés.
 const ALLOW = new Set(
   (
-    'giant sw sw-row sw-id sw-nav sw-end menu-btn facts facts-row fact crumbs err err-meter qs q gauge gauge-mini app app-side ' +
+    'meter lic lic-top lic-stats key icon-btn seats seats-head assign giant sw sw-row sw-id sw-nav sw-end menu-btn facts facts-row fact crumbs err err-meter qs q gauge gauge-mini app app-side ' +
     'app-brand app-tabs app-note app-main app-top app-hello app-figs app-label app-bigrow app-big app-side-fig app-mid ' +
     'app-say chart bar ref cmp chart-legend rows fit fit-controls fit-read fit-verdict fit-plot fit-note range acc ' +
     'acc-body steps-grid steps-fig deliver who pic devis devis-doc who-list ed proof proof-fig quote quote-nav close ' +
