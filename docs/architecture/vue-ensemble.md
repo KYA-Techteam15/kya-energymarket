@@ -30,23 +30,25 @@
                                    usage anonyme, avis et réponses
 ```
 
-## Découpage du code (prévu par la spécification 001)
+## Découpage du code : par fonctionnalité
 
 ```text
-apps/web/                 TanStack Start : routes, pages, fonctions serveur, API, MCP
-  src/routes/             pages publiques, /compte, /espace, /admin, /api, /mcp
-  src/server/             adaptateurs HTTP et MCP, sans règle métier
-packages/domain/          services métier, règles, autorisations, événements d'audit
-packages/db/              schéma Drizzle, migrations, accès aux données
-packages/contracts/       schémas Zod partagés : REST, MCP, API des logiciels, webhooks
-packages/ui/              composants et jetons de la charte (issus de design/v5)
-packages/payments/        port PaymentProvider et adaptateur Semoa
-packages/licensing/       émission et vérification des jetons (compatible KYA-SolDesign)
+apps/web/src/
+  routes/                 routes TanStack (points d'entrée minces)
+  features/               une fonctionnalité = un dossier : shell, i18n, marketplace, account, health…
+  shared/                 runtime serveur et utilitaires communs
+packages/domain/src/      services métier par fonctionnalité : audit/, health/, logging/, puis catalog/,
+                          licensing/, orders/, payments/, support/…
+packages/db/              schéma Drizzle, migrations, client, base de test PGlite
+packages/config/          variables d'environnement validées
+packages/ui/              jetons de la charte KYA, styles de base, icônes
+packages/contracts/       (à venir) schémas partagés : REST, MCP, API des logiciels, webhooks
+packages/payments/        (à venir) port PaymentProvider et adaptateur Semoa
+packages/licensing/       (à venir) émission et vérification des jetons
 ```
 
-La structure exacte est fixée par le plan de la spécification 001 ; le principe ne change pas : une
-couche métier, plusieurs portes.
-
+Principe inchangé : une couche métier, plusieurs portes ; rangement par fonctionnalité à l'intérieur
+de chaque paquet.
 ## Flux principaux
 
 1. **Découvrir** : pages composées de blocs (catalogue, logiciel, tarifs), rendues côté serveur,

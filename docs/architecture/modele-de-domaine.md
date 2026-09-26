@@ -34,4 +34,6 @@ UsageBatch (installation anonyme) · AuditEvent (qui, quoi, quand, résultat)
 | Montants | Entiers en FCFA. TVA selon le pays de facturation, calculée côté serveur, figée sur la facture. |
 | Facture d'achat | Numérotation continue par année (`FA-AAAA-NNNNN`), immuable, PDF. Une correction = avoir. |
 | Échéance | Délai de grâce puis lecture seule ; aucun projet effacé. |
+| Organisation | Invisible par défaut : un particulier en a une, créée d'office et jamais montrée. Elle apparaît dès qu'on achète pour une structure ou plusieurs postes. Rôles : propriétaire, membre. |
+| Équipe KYA | Rôles distincts des rôles clients : administrateur, ventes, contenus, support. Seuls ces rôles accèdent à `/admin` et au MCP. |
 | Audit | Toute écriture de l'administration, toute action MCP en écriture, tout changement de licence ou de paiement. |

@@ -5,12 +5,14 @@
 ## Contexte
 
 L'équipe KYA veut agir sur la plateforme depuis Claude et Codex : créer une offre, publier une page,
-répondre au support, suivre les ventes. Les clients aussi pourront consulter leurs licences.
+répondre au support, suivre les ventes.
 
 ## Décision
 
 - Un serveur MCP distant sur `/mcp` (Streamable HTTP), protégé par OAuth 2.1 avec PKCE, dans
   l'application (voir ADR 0003).
+- **Réservé aux administrateurs de KYA** (décision du responsable, 2026-09-25) : un compte client ne
+  peut pas obtenir de jeton MCP. Un accès client éventuel viendra plus tard par de nouvelles portées.
 - Il arrive juste après les comptes (spécification 003) ; ensuite, **chaque spécification ajoute ses
   outils** en même temps que son interface et son API.
 - Un outil = un service de domaine existant, les mêmes contrôles de droits que l'interface, un audit.

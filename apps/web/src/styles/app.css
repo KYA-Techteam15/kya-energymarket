@@ -1,0 +1,29 @@
+/* Polices de la charte, servies par l'application (spec 001, FR-005). */
+@import '@fontsource/poppins/latin-500.css';
+@import '@fontsource/poppins/latin-600.css';
+@import '@fontsource-variable/inter/wght.css';
+@import '@fontsource-variable/jetbrains-mono/wght.css';
+
+@import '@kya-em/ui/styles/tokens.css';
+@import '@kya-em/ui/styles/base.css';
+
+/* Langues dans le menu mobile : visibles seulement quand le menu passe dans le bouton. */
+.nav-lang {
+  display: none;
+}
+@media (max-width: 980px) {
+  .mk-nav .nav-lang {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    color: var(--kya-muted);
+  }
+  .mk-nav .nav-lang .mk-link[aria-current='true'] {
+    color: var(--kya-green-ink);
+    font-weight: 600;
+  }
+}
+.foot-langs a[aria-current='true'] {
+  color: var(--kya-green-ink);
+  font-weight: 600;
+}

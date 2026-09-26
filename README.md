@@ -10,8 +10,8 @@ support, depuis l'interface ou depuis Claude et Codex grâce au serveur MCP.
 
 ## État
 
-Le dépôt contient la documentation, la constitution Spec Kit, la feuille de route et les maquettes.
-Le code arrive avec la spécification 001 (socle). Voir [ROADMAP.md](ROADMAP.md).
+Socle livré (spécification 001) : application multilingue, charte KYA, accueil de la marketplace,
+santé, base Neon et Drizzle, porte de qualité, CI et image Docker. Suite : [ROADMAP.md](ROADMAP.md).
 
 ## Pile
 
@@ -39,9 +39,12 @@ Le code arrive avec la spécification 001 (socle). Voir [ROADMAP.md](ROADMAP.md)
 
 ## Démarrer
 
-1. Lire [AGENTS.md](AGENTS.md) et la [constitution](.specify/memory/constitution.md).
-2. Secrets : voir [docs/operations/secrets-et-environnements.md](docs/operations/secrets-et-environnements.md).
-3. Travailler par spécification : `/speckit-specify`, `/speckit-plan`, `/speckit-tasks`,
-   `/speckit-implement`, sur une branche `feat-NNN-nom` issue de `dev`.
+```bash
+pnpm install
+pnpm env:link      # recopie le fichier de secrets du poste vers .env.local
+pnpm dev           # http://localhost:3000 → /fr/ ou /en/
+pnpm verify        # porte de qualité complète
+```
 
-Les commandes de développement (`pnpm dev`, `pnpm verify`…) arrivent avec la spécification 001.
+Détails : [specs/001-socle/quickstart.md](specs/001-socle/quickstart.md). Règles : [AGENTS.md](AGENTS.md) et la
+[constitution](.specify/memory/constitution.md). Une spécification = une branche `feat-NNN-nom` issue de `dev`.

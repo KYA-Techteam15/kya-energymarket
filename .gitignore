@@ -32,3 +32,8 @@ Thumbs.db
 *.log
 tmp/
 .tmp/
+
+# Fichiers générés par la construction (Paraglide, TanStack Router)
+apps/web/src/paraglide/
+apps/web/src/routeTree.gen.ts
+

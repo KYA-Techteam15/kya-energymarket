@@ -1,0 +1,35 @@
+/* Généré par `pnpm tokens` depuis packages/ui/src/tokens.ts — ne pas modifier à la main. */
+:root {
+  --kya-green: #1ca18c;
+  --kya-orange: #f99d32;
+  --kya-white: #ffffff;
+  --kya-yellow: #e8e748;
+  --kya-coffee: #875028;
+  --kya-ink: #041a16;
+  --kya-ink2: #072722;
+  --kya-muted: #5e6c6a;
+  --kya-faint: #828d8b;
+  --kya-green-hover: #3eaf9d;
+  --kya-on-green: #041a16;
+  --kya-green-deep: #0a3a32;
+  --kya-green-deep2: #0d4a40;
+  --kya-green-ink: #147162;
+  --kya-green-wash: #dff2ef;
+  --kya-green-wash2: #bfe5df;
+  --kya-soft: #f4faf9;
+  --kya-soft2: #e8f6f4;
+  --kya-line: #e1e4e3;
+  --kya-line2: #cdd1d0;
+  --kya-orange-hover: #e08d2d;
+  --kya-on-orange: #362010;
+  --kya-orange-ink: #89561c;
+  --kya-orange-wash: #feefde;
+  --kya-coffee-wash: #f3eeea;
+  --kya-coffee-ink: #734422;
+  --kya-font-display: "Poppins", "Segoe UI", system-ui, sans-serif;
+  --kya-font-text: "Inter Variable", "Inter", "Segoe UI", system-ui, sans-serif;
+  --kya-font-mono: "JetBrains Mono Variable", "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+  --kya-radius: 6px;
+  --kya-radius-lg: 10px;
+  --kya-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}

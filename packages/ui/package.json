@@ -1,0 +1,22 @@
+{
+  "name": "@kya-em/ui",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles/tokens.css": "./styles/tokens.css",
+    "./styles/base.css": "./styles/base.css"
+  },
+  "scripts": {
+    "typecheck": "tsc6 -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "react": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "react": "^19.3.0",
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
+  }
+}
