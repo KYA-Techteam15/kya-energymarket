@@ -6,6 +6,7 @@
 
 @import '@kya-em/ui/styles/tokens.css';
 @import '@kya-em/ui/styles/base.css';
+@import '@kya-em/ui/styles/blocks.css';
 
 /* Langues dans le menu mobile : visibles seulement quand le menu passe dans le bouton. */
 .nav-lang {

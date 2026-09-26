@@ -5,7 +5,7 @@ import { paraglideMiddleware } from './paraglide/server.js';
  * Entrée serveur. Les pages passent par Paraglide (langue détectée, redirection éventuelle vers
  * l'adresse localisée) ; les API, le serveur MCP et la découverte OAuth ne sont jamais localisés.
  */
-const UNLOCALIZED = ['/api', '/mcp', '/.well-known'];
+const UNLOCALIZED = ['/api', '/mcp', '/.well-known', '/media'];
 export default {
   fetch(request: Request): Promise<Response> {
     const { pathname } = new URL(request.url);

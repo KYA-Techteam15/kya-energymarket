@@ -1,8 +1,8 @@
 import { Icon } from '@kya-em/ui';
-import { Link, useLoaderData } from '@tanstack/react-router';
+import { Link, useLoaderData, useMatches } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { LanguageLinks, LanguageMenu } from '@/features/i18n/LanguageMenu';
-import { SOFTWARE } from '@/features/marketplace/software';
+import { useCatalog } from '@/features/marketplace/software';
 import { m } from '@/paraglide/messages.js';
 import { MeMenu } from './MeMenu';
 
@@ -12,6 +12,9 @@ export function MarketHeader() {
   const [stuck, setStuck] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const { viewer } = useLoaderData({ from: '__root__' });
+  const catalog = useCatalog();
+  // Sous l'en-tête d'un logiciel, celui de la marketplace se fait compact (design/v5).
+  const compact = useMatches({ select: (matches) => matches.some((match) => match.routeId === '/logiciels/$slug') });
 
   useEffect(() => {
     const onScroll = () => setStuck(window.scrollY > 60);
@@ -52,7 +55,10 @@ export function MarketHeader() {
   }, []);
 
   return (
-    <header ref={headerRef} className={stuck ? 'mk is-stuck' : 'mk'}>
+    <header
+      ref={headerRef}
+      className={['mk', compact ? 'is-compact' : '', stuck && !compact ? 'is-stuck' : ''].join(' ').trim()}
+    >
       <div className="wrap mk-row">
         <Link to="/" className="mk-brand">
           <img src="/images/kya-mark.png" alt="" width="34" height="29" />
@@ -64,35 +70,46 @@ export function MarketHeader() {
               {m.nav_software()} <Icon name="down" size={12} />
             </summary>
             <div className="dd-panel">
-              {SOFTWARE.map((software) => (
-                <Link
-                  key={software.id}
-                  className="dd-item"
-                  to="/"
-                  hash="logiciels"
-                  activeOptions={{ includeHash: true }}
-                  onClick={() => setOpen(false)}
-                >
-                  {software.logo ? (
-                    <img src={software.logo} alt="" width="34" height="28" />
-                  ) : (
-                    <span className="ph">{software.mono}</span>
-                  )}
-                  <b>{software.name}</b>
-                  <small>{software.kind()}</small>
-                  <span className={software.available ? 'state state-ok' : 'state state-soon'}>
-                    {software.available ? m.state_available() : m.state_soon()}
-                  </span>
-                </Link>
-              ))}
+              {catalog.map((software) => {
+                const available = software.status === 'available';
+                const content = (
+                  <>
+                    {software.logo ? (
+                      <img src={software.logo} alt="" width="34" height="28" />
+                    ) : (
+                      <span className="ph">{software.monogram}</span>
+                    )}
+                    <b>{software.name}</b>
+                    <small>{software.kind}</small>
+                    <span className={available ? 'state state-ok' : 'state state-soon'}>
+                      {available ? m.state_available() : m.state_soon()}
+                    </span>
+                  </>
+                );
+                return available ? (
+                  <Link
+                    key={software.slug}
+                    className="dd-item"
+                    to="/logiciels/$slug"
+                    params={{ slug: software.slug }}
+                    onClick={() => setOpen(false)}
+                  >
+                    {content}
+                  </Link>
+                ) : (
+                  <Link
+                    key={software.slug}
+                    className="dd-item"
+                    to="/logiciels"
+                    hash={software.slug}
+                    onClick={() => setOpen(false)}
+                  >
+                    {content}
+                  </Link>
+                );
+              })}
               <div className="dd-foot">
-                <Link
-                  className="link-arrow"
-                  to="/"
-                  hash="logiciels"
-                  activeOptions={{ includeHash: true }}
-                  onClick={() => setOpen(false)}
-                >
+                <Link className="link-arrow" to="/logiciels" onClick={() => setOpen(false)}>
                   {m.nav_all_software()} <Icon name="right" size={12} />
                 </Link>
               </div>
@@ -100,9 +117,9 @@ export function MarketHeader() {
           </details>
           <Link
             className="mk-link"
-            to="/"
-            hash="questions"
-            activeOptions={{ includeHash: true }}
+            to="/$page"
+            params={{ page: 'aide' }}
+            activeProps={{ 'aria-current': 'page' }}
             onClick={() => setOpen(false)}
           >
             {m.nav_help()}

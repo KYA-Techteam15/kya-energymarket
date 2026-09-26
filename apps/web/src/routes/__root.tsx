@@ -1,15 +1,25 @@
 /// <reference types="vite/client" />
 import { createRootRoute } from '@tanstack/react-router';
 import { getViewer } from '@/features/auth/server';
+import { getCatalogSummary } from '@/features/catalog/server';
 import { getPublicConfig } from '@/features/i18n/seo';
 import { AppShell } from '@/features/shell/AppShell';
 import { NotFoundPage } from '@/features/shell/NotFoundPage';
 import { m } from '@/paraglide/messages.js';
+import { getLocale } from '@/paraglide/runtime.js';
 import appCss from '@/styles/app.css?url';
 
 export const Route = createRootRoute({
-  // Configuration publique (adresse du site) et personne connectée, lues côté serveur puis transmises au navigateur.
-  loader: async () => ({ ...(await getPublicConfig()), viewer: await getViewer() }),
+  // Configuration publique (adresse du site), personne connectée et catalogue (en-tête, pied de page),
+  // lus côté serveur puis transmis au navigateur.
+  loader: async () => {
+    const [config, viewer, catalog] = await Promise.all([
+      getPublicConfig(),
+      getViewer(),
+      getCatalogSummary({ data: { locale: getLocale() } }),
+    ]);
+    return { ...config, viewer, catalog };
+  },
   head: () => ({
     meta: [
       { charSet: 'utf-8' },

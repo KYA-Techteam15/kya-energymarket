@@ -1,9 +1,15 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { createAuth, type Auth } from '@kya-em/auth';
-import { loadServerEnv, smtpConfigOf, type ServerEnv } from '@kya-em/config';
+import { loadServerEnv, s3ConfigOf, smtpConfigOf, type ServerEnv } from '@kya-em/config';
 import { createDatabase, type DatabaseHandle } from '@kya-em/db';
-import { createLogger, type Logger } from '@kya-em/domain';
+import {
+  createLocalMediaStorage,
+  createLogger,
+  createS3MediaStorage,
+  type Logger,
+  type MediaStorage,
+} from '@kya-em/domain';
 import { createLogMailer, createOutboxMailer, createSmtpMailer, type Mailer } from '@kya-em/mail';
 
 /**
@@ -20,6 +26,8 @@ export interface Runtime {
   readonly auth: Auth | undefined;
   /** `null` : aucun courriel (lien de connexion masqué, invitations par lien, adresse non vérifiée). */
   readonly mailer: Mailer | null;
+  /** Médias : Neon Object Storage en ligne, dossier local sinon. */
+  readonly media: MediaStorage;
   /** Un courriel peut-il partir ? (lien de connexion, invitations par courriel, vérification) */
   readonly mailerConfigured: boolean;
 }
@@ -38,6 +46,13 @@ function chooseMailer(env: ServerEnv, logger: Logger): Mailer | null {
   const smtp = smtpConfigOf(env);
   if (smtp) return createSmtpMailer(smtp, logger);
   return env.APP_ENV === 'development' ? createLogMailer(logger) : null;
+}
+
+/** Médias : stockage objet s'il est configuré, sinon dossier local (`.data/media` par défaut). */
+function chooseMediaStorage(env: ServerEnv): MediaStorage {
+  const s3 = s3ConfigOf(env);
+  if (s3) return createS3MediaStorage(s3);
+  return createLocalMediaStorage(env.MEDIA_DIR ?? resolve(process.cwd(), '.data/media'));
 }
 
 function loadLocalEnvFile() {
@@ -74,10 +89,19 @@ export function runtime(): Runtime {
         version: env.APP_VERSION,
         database: database ? 'configured' : 'not_configured',
         mail: env.MAIL_OUTBOX_DIR ? 'outbox' : smtpConfigOf(env) ? 'smtp' : mailer ? 'log' : 'none',
+        media: s3ConfigOf(env) ? 's3' : 'local',
       },
       'démarrage',
     );
-    current = { env, logger, database, auth, mailer, mailerConfigured: mailer !== null };
+    current = {
+      env,
+      logger,
+      database,
+      auth,
+      mailer,
+      media: chooseMediaStorage(env),
+      mailerConfigured: mailer !== null,
+    };
   }
   return current;
 }

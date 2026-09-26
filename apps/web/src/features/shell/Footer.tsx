@@ -1,9 +1,17 @@
 import { Link } from '@tanstack/react-router';
 import { LanguageLinks } from '@/features/i18n/LanguageMenu';
-import { SOFTWARE } from '@/features/marketplace/software';
+import { useCatalog } from '@/features/marketplace/software';
 import { m } from '@/paraglide/messages.js';
 
 export function Footer() {
+  const catalog = useCatalog();
+  const page = (key: string, label: string) => (
+    <li>
+      <Link to="/$page" params={{ page: key }}>
+        {label}
+      </Link>
+    </li>
+  );
   return (
     <footer className="foot">
       <div className="wrap foot-top">
@@ -14,11 +22,17 @@ export function Footer() {
         <div>
           <h2>{m.foot_software()}</h2>
           <ul>
-            {SOFTWARE.map((software) => (
-              <li key={software.id}>
-                <Link to="/" hash="logiciels">
-                  {software.name}
-                </Link>
+            {catalog.map((software) => (
+              <li key={software.slug}>
+                {software.status === 'available' ? (
+                  <Link to="/logiciels/$slug" params={{ slug: software.slug }}>
+                    {software.name}
+                  </Link>
+                ) : (
+                  <Link to="/logiciels" hash={software.slug}>
+                    {software.name}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
@@ -26,16 +40,17 @@ export function Footer() {
         <div>
           <h2>{m.foot_help()}</h2>
           <ul>
-            <li>
-              <Link to="/" hash="questions">
-                {m.foot_faq()}
-              </Link>
-            </li>
-            <li>
-              <Link to="/" hash="comment">
-                {m.foot_how()}
-              </Link>
-            </li>
+            {page('aide', m.foot_faq())}
+            {page('contact', m.foot_contact())}
+            {page('a-propos', m.foot_about())}
+          </ul>
+        </div>
+        <div>
+          <h2>{m.foot_legal()}</h2>
+          <ul>
+            {page('cgv', m.foot_terms())}
+            {page('confidentialite', m.foot_privacy())}
+            {page('mentions-legales', m.foot_notice())}
           </ul>
         </div>
         <div>

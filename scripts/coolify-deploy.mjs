@@ -92,6 +92,14 @@ const migration = spawnSync('pnpm', ['--filter', '@kya-em/db', 'migrate'], {
 });
 if (migration.status !== 0) throw new Error('La migration a échoué.');
 
+// Contenu initial (spec 004) : catalogue et pages, sans jamais remplacer ce qui a été saisi.
+const seed = spawnSync('pnpm', ['db:seed'], {
+  stdio: ['ignore', 'inherit', 'inherit'],
+  shell: true,
+  env: { ...process.env, DATABASE_URL: migrationUrl },
+});
+if (seed.status !== 0) throw new Error('Le chargement du contenu initial a échoué.');
+
 // ---------------------------------------------------------------- Coolify : projet, environnement, serveur
 const projects = await coolify('/projects');
 let project = projects.find((candidate) => candidate.name === PROJECT);
@@ -167,6 +175,18 @@ const smtpVariables = SMTP_KEYS.every((key) => secrets[key])
   : [];
 if (!smtpVariables.length) console.log('SMTP incomplet dans le fichier de secrets : aucun courriel ne partira.');
 
+// Médias (spec 004) : Neon Object Storage de la branche visée ; identifiants par environnement.
+const suffix = args.env.toUpperCase();
+const S3_KEYS = ['MEDIA_BUCKET', 'AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_ENDPOINT_URL_S3', 'AWS_REGION'];
+const mediaVariables = S3_KEYS.every((key) => secrets[`${key}_${suffix}`])
+  ? S3_KEYS.map((key) => ({ key, value: secrets[`${key}_${suffix}`], is_preview: false, is_literal: true }))
+  : [];
+if (!mediaVariables.length) {
+  console.log(
+    `Stockage objet non configuré pour « ${args.env} » (${S3_KEYS.map((key) => `${key}_${suffix}`).join(', ')}) : médias dans le conteneur, perdus au redéploiement.`,
+  );
+}
+
 await coolify(`/applications/${application.uuid}/envs/bulk`, {
   method: 'PATCH',
   body: JSON.stringify({
@@ -177,11 +197,12 @@ await coolify(`/applications/${application.uuid}/envs/bulk`, {
       { key: 'DATABASE_URL', value: databaseUrl, is_preview: false },
       { key: 'BETTER_AUTH_SECRET', value: authSecret, is_preview: false },
       ...smtpVariables,
+      ...mediaVariables,
     ],
   }),
 });
 console.log(
-  `Coolify : variables APP_ENV, APP_BASE_URL, LOG_LEVEL, DATABASE_URL, BETTER_AUTH_SECRET${smtpVariables.length ? ', SMTP_*' : ''} réglées.`,
+  `Coolify : variables APP_ENV, APP_BASE_URL, LOG_LEVEL, DATABASE_URL, BETTER_AUTH_SECRET${smtpVariables.length ? ', SMTP_*' : ''}${mediaVariables.length ? ', stockage objet' : ''} réglées.`,
 );
 
 // ---------------------------------------------------------------- déploiement et santé

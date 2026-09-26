@@ -13,6 +13,8 @@ const scopeLabels: Record<string, () => string> = {
   email: m.consent_scope_email,
   offline_access: m.consent_scope_offline_access,
   'admin:read': m.consent_scope_admin_read,
+  'admin:catalog': m.consent_scope_admin_catalog,
+  'admin:content': m.consent_scope_admin_content,
 };
 
 /**
