@@ -23,12 +23,17 @@ export const serverEnvSchema = z
     LOG_LEVEL: withDefault(z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']), 'info'),
     /** Connexion poolée (hôte `-pooler`) : trafic de l'application. */
     DATABASE_URL: optional(postgresUrl),
+    /** Secret de signature des sessions (32 caractères au moins) ; obligatoire en production. */
+    BETTER_AUTH_SECRET: optional(z.string().min(32)),
     /** Connexion directe : migrations uniquement. */
     DATABASE_MIGRATION_URL: optional(postgresUrl),
   })
   .superRefine((env, context) => {
     if (env.APP_ENV === 'production' && !env.DATABASE_URL) {
       context.addIssue({ code: 'custom', path: ['DATABASE_URL'], message: 'obligatoire en production' });
+    }
+    if (env.APP_ENV === 'production' && !env.BETTER_AUTH_SECRET) {
+      context.addIssue({ code: 'custom', path: ['BETTER_AUTH_SECRET'], message: 'obligatoire en production' });
     }
   });
 

@@ -1,6 +1,6 @@
 import { drizzle, type NodePgDatabase } from 'drizzle-orm/node-postgres';
 import pg from 'pg';
-import * as schema from './schema.ts';
+import * as schema from './schema/index.ts';
 
 export type Database = NodePgDatabase<typeof schema>;
 
@@ -18,7 +18,8 @@ export function createDatabase(url: string, options: { max?: number } = {}): Dat
     connectionString: url,
     max: options.max ?? 10,
     idleTimeoutMillis: 30_000,
-    connectionTimeoutMillis: 5_000,
+    // Neon met en veille une base inactive : le réveil peut prendre plusieurs secondes.
+    connectionTimeoutMillis: 15_000,
   });
   const db = drizzle({ client: pool, schema, casing: 'snake_case' });
   return { db, close: () => pool.end() };
