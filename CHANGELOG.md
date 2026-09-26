@@ -6,6 +6,11 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), versions [Sem
 
 ### Ajouté
 
+- Comptes, organisations et rôles (spécification 002) : inscription et connexion par courriel et mot de
+  passe (Better Auth), limitation des tentatives, organisation personnelle invisible, organisation
+  d'entreprise créée à la demande, membres et invitations par lien, rôles d'équipe KYA (`kya_admin`,
+  `kya_sales`, `kya_content`, `kya_support`), coquilles de l'espace client et de l'administration,
+  menu « Mon espace », `pnpm staff:grant`, audit de chaque action ; parcours testés sur Postgres.
 - Socle applicatif (spécification 001) : espace de travail pnpm, application TanStack Start (rendu
   serveur, serveur Node par Nitro), multilingue français/anglais par Paraglide (adresses `/fr`, `/en`,
   choix mémorisé, langue du navigateur), charte KYA (cinq couleurs du logo, teintes dérivées vérifiées

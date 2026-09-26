@@ -8,7 +8,7 @@ par la recherche de la spécification concernée), **remplacée**.
 |---|---|---|
 | [0001](0001-application-tanstack-start-unique.md) | Une seule application TanStack Start, sans backend séparé | acceptée |
 | [0002](0002-neon-drizzle.md) | Neon Postgres avec Drizzle, une branche par environnement | acceptée |
-| [0003](0003-comptes-et-oauth-better-auth.md) | Comptes, organisations et serveur OAuth 2.1 avec Better Auth | proposée |
+| [0003](0003-comptes-et-oauth-better-auth.md) | Comptes, organisations et serveur OAuth 2.1 avec Better Auth | acceptée |
 | [0004](0004-mcp-oauth.md) | Serveur MCP distant protégé par OAuth, dès le départ | acceptée |
 | [0005](0005-paiement-semoa-port.md) | Paiement derrière un port, Semoa en premier | acceptée |
 | [0006](0006-licences-signees-compatibles.md) | Licences signées ECDSA compatibles avec KYA-SolDesign | acceptée |
