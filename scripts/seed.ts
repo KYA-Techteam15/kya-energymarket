@@ -17,7 +17,7 @@ const handle = createDatabase(url, { max: 1 });
 try {
   const report = await seedInitialContent(handle.db);
   console.log(
-    `Contenu initial : ${report.products} logiciel(s), ${report.editions} édition(s), ${report.plans} durée(s), ` +
+    `Contenu initial : ${report.products} logiciel(s), ${report.editions} édition(s), ${report.types} type(s) de licence, ` +
       `${report.pages} page(s) publiée(s) ajoutés ; ${report.images} image(s) vérifiée(s). Rien d'existant n'a été remplacé.`,
   );
 } finally {

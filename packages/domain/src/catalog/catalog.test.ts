@@ -21,15 +21,8 @@ import {
 import { collectMediaRefs, resolveMedia, uploadImage } from '../media/media.ts';
 import { createLocalMediaStorage } from '../media/storage.ts';
 import { SEED_PAGES, seedInitialContent } from '../seed/pages.ts';
-import {
-  CatalogError,
-  durationLabel,
-  getCatalogProduct,
-  listProducts,
-  pick,
-  setPlan,
-  upsertEdition,
-} from './catalog.ts';
+import { CatalogError, daysLabel, getCatalogProduct, listProducts, pick, planCodeOf } from './catalog.ts';
+import { changeCatalog, discardCatalogDraft, getCatalogEditing, publishCatalog } from './draft.ts';
 
 let handle: Awaited<ReturnType<typeof createTestDatabase>>;
 let db: Database;
@@ -56,12 +49,26 @@ describe('contenu initial (spec 004, FR-010)', () => {
 
   it('charge le catalogue et les pages, puis ne remplace rien au second passage', async () => {
     const first = await seedInitialContent(db);
-    expect(first).toMatchObject({ products: 4, editions: 3, plans: 6, pages: SEED_PAGES.length * 2 });
-    await setPlan(db, staff, 'kya-soldesign', 'commercial', 'P1Y', { pricePerSeat: 250_000, indicative: false });
+    expect(first).toMatchObject({ products: 4, editions: 3, types: 6, pages: SEED_PAGES.length * 2 });
+    const annual = (await getCatalogProduct(db, 'kya-soldesign'))!.editions[0]!.types.find(
+      (type) => type.days === 365,
+    )!;
+    await changeCatalog(db, staff, 'kya-soldesign', {
+      changes: [
+        {
+          op: 'license_type',
+          edition: 'commercial',
+          id: annual.id,
+          fields: { pricePerSeat: 250_000, indicative: false },
+        },
+      ],
+    });
+    const { revision } = await getCatalogEditing(db, 'kya-soldesign');
+    await publishCatalog(db, staff, 'kya-soldesign', { expectedRevision: revision! });
     const second = await seedInitialContent(db);
-    expect(second).toMatchObject({ products: 0, editions: 0, plans: 0, pages: 0 });
+    expect(second).toMatchObject({ products: 0, editions: 0, types: 0, pages: 0 });
     const product = await getCatalogProduct(db, 'kya-soldesign');
-    expect(product?.editions[0]?.plans.find((plan) => plan.duration === 'P1Y')).toMatchObject({
+    expect(product?.editions[0]?.types.find((type) => type.days === 365)).toMatchObject({
       pricePerSeat: 250_000,
       indicative: false,
     });
@@ -80,33 +87,128 @@ describe('catalogue', () => {
     expect(pick(products[0]!.kind, 'en')).toBe('Off-grid solar system sizing');
   });
 
-  it('rend l’offre complète : fonctions par édition, limites, durées', async () => {
+  it('rend l’offre publiée : fonctions par édition, limites, types de licence, profil du logiciel', async () => {
     const product = await getCatalogProduct(db, 'kya-soldesign', { publicOnly: true });
+    expect(product?.softwareEditions).toEqual(['commercial', 'academic', 'student']);
     const student = product?.editions.find((edition) => edition.code === 'student');
-    expect(student).toMatchObject({ maxSeats: 1, maxProjects: 5, graceDays: 0, features: ['system.aio'] });
-    expect(student?.plans.map((plan) => plan.duration)).toEqual(['P1D', 'P1M']);
-    expect(durationLabel('P3M', 'fr')).toBe('1 trimestre');
+    expect(student).toMatchObject({
+      maxSeats: 1,
+      maxProjects: 5,
+      graceDays: 0,
+      features: ['system.aio'],
+      softwareEdition: 'student',
+      visible: true,
+      forSale: true,
+    });
+    expect(student?.types.map((type) => type.days)).toEqual([1, 30]);
+    expect(daysLabel(91, 'fr')).toBe('1 trimestre');
+    expect(daysLabel(45, 'en')).toBe('45 days');
+    expect(planCodeOf(365)).toBe('12m');
+    expect(planCodeOf(14)).toBe('14d');
   });
+});
 
-  it('change les fonctions d’une édition et cache une durée inactive au public', async () => {
-    await upsertEdition(db, staff, 'kya-soldesign', 'student', { features: ['system.aio', 'documents.word'] });
-    await setPlan(db, staff, 'kya-soldesign', 'student', 'P1D', { pricePerSeat: 1_500, active: false });
-    const product = await getCatalogProduct(db, 'kya-soldesign', { publicOnly: true });
-    const student = product?.editions.find((edition) => edition.code === 'student');
-    expect(student?.features).toEqual(['system.aio', 'documents.word']);
-    expect(student?.plans.map((plan) => plan.duration)).toEqual(['P1M']);
-    const trace = await db.select().from(auditEvents).where(eq(auditEvents.action, 'catalog.plan_saved'));
+describe('brouillon du catalogue (spec 005b, FR-003)', () => {
+  const slug = 'kya-soldesign';
+  const publish = async () => {
+    const { revision } = await getCatalogEditing(db, slug);
+    return publishCatalog(db, staff, slug, { expectedRevision: revision! });
+  };
+
+  it('rien n’est public avant la publication ; la publication applique tout et trace les changements', async () => {
+    await changeCatalog(db, staff, slug, {
+      changes: [
+        {
+          op: 'edition',
+          code: 'partner',
+          fields: {
+            name: { fr: 'Partenaire', en: 'Partner' },
+            audience: { fr: 'Distributeurs agréés KYA' },
+            softwareEdition: 'commercial',
+            features: ['system.aio', 'documents.word'],
+            highlights: [{ fr: 'Support prioritaire' }],
+          },
+        },
+        {
+          op: 'license_type',
+          edition: 'partner',
+          fields: { name: { fr: 'Partenaire 1 an' }, nature: 'partner', days: 365, pricePerSeat: 0 },
+        },
+      ],
+    });
+    const editing = await getCatalogEditing(db, slug);
+    expect(editing.revision).toBe(1);
+    expect(editing.changes.map((change) => `${change.kind} ${change.scope}`)).toEqual(['added edition']);
+    expect((await getCatalogProduct(db, slug))?.editions.map((edition) => edition.code)).not.toContain('partner');
+
+    const published = await publish();
+    expect(published.changes.length).toBeGreaterThan(0);
+    const all = await getCatalogProduct(db, slug);
+    const partner = all?.editions.find((edition) => edition.code === 'partner');
+    expect(partner).toMatchObject({ visible: false, forSale: false, softwareEdition: 'commercial' });
+    expect(partner?.types[0]).toMatchObject({ nature: 'partner', days: 365, visible: false });
+    // Masquée : absente du site, présente pour l'équipe.
+    const site = await getCatalogProduct(db, slug, { publicOnly: true });
+    expect(site?.editions.map((edition) => edition.code)).toEqual(['commercial', 'academic', 'student']);
+    const trace = await db.select().from(auditEvents).where(eq(auditEvents.action, 'catalog.published'));
     expect(trace.length).toBeGreaterThan(0);
+    expect((await getCatalogEditing(db, slug)).revision).toBeNull();
   });
 
-  it('refuse une fonction inconnue, une durée inconnue et un prix négatif', async () => {
-    await expect(upsertEdition(db, staff, 'kya-soldesign', 'student', { features: ['voler.lune'] })).rejects.toThrow(
+  it('refuse un profil inconnu du logiciel, une fonction inconnue et des postes incohérents', async () => {
+    const attempt = (changes: unknown[]) => changeCatalog(db, staff, slug, { changes });
+    await expect(attempt([{ op: 'edition', code: 'student', fields: { softwareEdition: 'pirate' } }])).rejects.toThrow(
       CatalogError,
     );
-    await expect(setPlan(db, staff, 'kya-soldesign', 'student', 'P2Y', { pricePerSeat: 1 })).rejects.toThrow(
+    await expect(attempt([{ op: 'edition', code: 'student', fields: { features: ['voler.lune'] } }])).rejects.toThrow(
       CatalogError,
     );
-    await expect(setPlan(db, staff, 'kya-soldesign', 'student', 'P1M', { pricePerSeat: -5 })).rejects.toThrow();
+    const type = (await getCatalogProduct(db, slug))!.editions.find((edition) => edition.code === 'student')!.types[0]!;
+    await expect(
+      attempt([{ op: 'license_type', edition: 'student', id: type.id, fields: { seatsMin: 3 } }]),
+    ).rejects.toMatchObject({ code: 'INVALID_CATALOG' });
+    await expect(
+      attempt([{ op: 'license_type', edition: 'student', id: type.id, fields: { pricePerSeat: -5 } }]),
+    ).rejects.toThrow();
+  });
+
+  it('ordonne, archive et refuse de retirer ce qui a été publié', async () => {
+    await changeCatalog(db, staff, slug, { changes: [{ op: 'move_edition', code: 'student', to: 0 }] });
+    await expect(
+      changeCatalog(db, staff, slug, { changes: [{ op: 'remove', edition: 'partner' }] }),
+    ).rejects.toMatchObject({ code: 'NOT_REMOVABLE' });
+    await changeCatalog(db, staff, slug, { changes: [{ op: 'edition', code: 'partner', fields: { archived: true } }] });
+    await publish();
+    const all = await getCatalogProduct(db, slug);
+    expect(all?.editions[0]?.code).toBe('student');
+    expect(all?.editions.find((edition) => edition.code === 'partner')?.archived).toBe(true);
+    await changeCatalog(db, staff, slug, {
+      changes: [
+        { op: 'move_edition', code: 'commercial', to: 0 },
+        { op: 'edition', code: 'partner', fields: { archived: false } },
+      ],
+    });
+    await publish();
+  });
+
+  it('refuse une publication dont le brouillon a changé depuis sa lecture ; l’abandon efface le brouillon', async () => {
+    const first = await changeCatalog(db, staff, slug, { changes: [{ op: 'product', fields: { monogram: 'SD' } }] });
+    await changeCatalog(db, staff, slug, {
+      changes: [{ op: 'product', fields: { monogram: 'KS' } }],
+      expectedRevision: first.revision,
+    });
+    await expect(publishCatalog(db, staff, slug, { expectedRevision: first.revision })).rejects.toMatchObject({
+      code: 'DRAFT_CONFLICT',
+    });
+    await expect(
+      changeCatalog(db, staff, slug, {
+        changes: [{ op: 'product', fields: { monogram: 'X' } }],
+        expectedRevision: first.revision,
+      }),
+    ).rejects.toMatchObject({ code: 'DRAFT_CONFLICT' });
+    expect(await discardCatalogDraft(db, staff, slug)).toBe(true);
+    expect((await getCatalogEditing(db, slug)).revision).toBeNull();
+    expect((await getCatalogProduct(db, slug))?.monogram).toBeNull();
   });
 });
 

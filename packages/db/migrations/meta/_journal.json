@@ -36,6 +36,20 @@
       "when": 1790421549666,
       "tag": "0004_licences",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1790428602836,
+      "tag": "0005_offre",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1790428671240,
+      "tag": "0006_offre_nettoyage",
+      "breakpoints": true
     }
   ]
 }
