@@ -217,7 +217,9 @@ for (let attempt = 0; attempt < 30; attempt += 1) {
     const response = await fetch(`${domain}/api/health`, { signal: AbortSignal.timeout(8000) });
     if (response.ok) {
       const report = await response.json();
-      console.log(`En ligne : ${domain} — version ${String(report.version).slice(0, 7)}, santé ${report.status}, base ${report.checks?.database}`);
+      console.log(
+        `En ligne : ${domain} — version ${String(report.version).slice(0, 7)}, santé ${report.status}, base ${report.checks?.database}`,
+      );
       process.exit(0);
     }
   } catch {
