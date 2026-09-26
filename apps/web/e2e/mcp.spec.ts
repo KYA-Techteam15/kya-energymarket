@@ -193,9 +193,30 @@ test.describe('serveur MCP (spec 003)', () => {
     const tools = await rpc(request, accessToken, 'tools/list');
     expect(tools.body.result.tools.map((tool: { name: string }) => tool.name).sort()).toEqual([
       'find_customer',
+      'get_page',
+      'get_product',
+      'list_pages',
       'list_staff',
+      'publish_page',
+      'search_catalog',
+      'set_plan_price',
+      'update_edition',
+      'update_page_draft',
+      'update_product',
       'whoami',
     ]);
+    // Outils du catalogue (spec 004) : lecture avec admin:read, écriture refusée sans admin:catalog.
+    const offer = await rpc(request, accessToken, 'tools/call', {
+      name: 'get_product',
+      arguments: { product: 'kya-soldesign' },
+    });
+    expect(offer.body.result.content[0].text).toContain('"code": "commercial"');
+    const denied = await rpc(request, accessToken, 'tools/call', {
+      name: 'set_plan_price',
+      arguments: { product: 'kya-soldesign', edition: 'student', duration: 'P1M', pricePerSeat: 1 },
+    });
+    expect(denied.body.result.isError).toBe(true);
+    expect(denied.body.result.content[0].text).toContain('admin:catalog');
     const whoami = await rpc(request, accessToken, 'tools/call', { name: 'whoami', arguments: {} });
     expect(whoami.body.result.structuredContent).toMatchObject({ email: email('admin'), staffRoles: ['kya_admin'] });
     const found = await rpc(request, accessToken, 'tools/call', {

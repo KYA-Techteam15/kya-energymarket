@@ -24,7 +24,8 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 2 : undefined,
+  // En local, la base des parcours est une branche Neon distante : pas plus de trois parcours à la fois.
+  workers: process.env.CI ? 2 : 3,
   reporter: process.env.CI ? [['github'], ['list']] : 'list',
   timeout: 60_000,
   // Les parcours de comptes appellent la base à chaque étape : navigations plus longues qu'une page statique.

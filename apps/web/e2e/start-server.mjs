@@ -2,6 +2,7 @@
 // version construite. Base : E2E_DATABASE_URL (CI : conteneur Postgres ; local : branche Neon « test »).
 // Sans base, le serveur démarre quand même et les parcours de comptes sont ignorés.
 import { spawn, spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 const databaseUrl = process.env.E2E_DATABASE_URL;
 if (databaseUrl) {
@@ -11,6 +12,14 @@ if (databaseUrl) {
     env: { ...process.env, DATABASE_MIGRATION_URL: process.env.E2E_DATABASE_MIGRATION_URL ?? databaseUrl },
   });
   if (migration.status !== 0) process.exit(migration.status ?? 1);
+  // Contenu initial (spec 004) : catalogue et pages, sans rien remplacer.
+  const seed = spawnSync('pnpm', ['db:seed'], {
+    cwd: new URL('../../../', import.meta.url),
+    stdio: 'inherit',
+    shell: true,
+    env: { ...process.env, DATABASE_URL: databaseUrl },
+  });
+  if (seed.status !== 0) process.exit(seed.status ?? 1);
 }
 
 const server = spawn('node', ['.output/server/index.mjs'], {
@@ -20,6 +29,8 @@ const server = spawn('node', ['.output/server/index.mjs'], {
     APP_ENV: 'test',
     ...(databaseUrl ? { DATABASE_URL: databaseUrl } : {}),
     BETTER_AUTH_SECRET: 'secret-des-tests-de-parcours-uniquement-0123456789',
+    // Médias des tests dans un dossier temporaire, jamais dans le dépôt.
+    MEDIA_DIR: process.env.MEDIA_DIR ?? fileURLToPath(new URL('../test-results/.media/', import.meta.url)),
   },
 });
 for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => server.kill(signal));
