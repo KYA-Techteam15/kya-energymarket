@@ -26,4 +26,4 @@
 ## Transverse
 - [x] T040 Pages publiques, API catalogue et API du logiciel sur les types de licence et les drapeaux visible et en vente
 - [x] T041 Tests PGlite ; parcours Playwright (console, lot, Ctrl K, publication, tarifs) avec axe
-- [ ] T042 Documentation (glossaire, contrat, MCP, feuille de route), journal ; `pnpm verify` ; déploiement `dev`
+- [x] T042 Documentation (glossaire, contrat, MCP, feuille de route), journal ; `pnpm verify` ; déploiement `dev`
