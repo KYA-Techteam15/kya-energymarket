@@ -192,13 +192,19 @@ test.describe('serveur MCP (spec 003)', () => {
 
     const tools = await rpc(request, accessToken, 'tools/list');
     expect(tools.body.result.tools.map((tool: { name: string }) => tool.name).sort()).toEqual([
+      'extend_license',
       'find_customer',
+      'find_license',
       'get_page',
       'get_product',
+      'issue_license',
       'list_pages',
       'list_staff',
       'publish_page',
+      'release_seat',
+      'revoke_license',
       'search_catalog',
+      'set_license_seats',
       'set_plan_price',
       'update_edition',
       'update_page_draft',
