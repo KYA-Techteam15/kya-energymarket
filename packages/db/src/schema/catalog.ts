@@ -10,6 +10,7 @@ import {
   timestamp,
   uniqueIndex,
   uuid,
+  type AnyPgColumn,
 } from 'drizzle-orm/pg-core';
 
 /** Texte en deux langues ; l'anglais peut manquer (le français sert alors de repli). */
@@ -42,6 +43,8 @@ export const products = pgTable(
     softwareEditions: jsonb().$type<string[]>().notNull().default([]),
     /** Incrémenté à chaque publication du catalogue (spec 005b). */
     catalogVersion: integer().notNull().default(1),
+    /** Type de licence de l'essai gratuit (nature `trial`) ; `null` : pas d'essai (spec 006). */
+    trialLicenseTypeId: uuid().references((): AnyPgColumn => licenseTypes.id, { onDelete: 'set null' }),
     createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
   },

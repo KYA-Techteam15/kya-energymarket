@@ -1,5 +1,5 @@
 import type { DatabaseHandle } from '@kya-em/db';
-import { daysLabel, getLicense, pick, runDueJobs, type JobHandlers, type Logger } from '@kya-em/domain';
+import { daysLabel, getLicense, pick, runDueJobs, trialFollowUp, type JobHandlers, type Logger } from '@kya-em/domain';
 import { renderMail, type Mailer } from '@kya-em/mail';
 
 /**
@@ -46,6 +46,50 @@ export function jobHandlers(context: WorkerContext): JobHandlers {
           },
           locale,
           email,
+        ),
+      );
+    },
+    /** Essai : rappel avant la fin, sauf achat ou révocation entre-temps (spec 006). */
+    'mail.trial_ending': async (payload) => {
+      if (!context.mailer) throw new Error('aucun envoi de courriel configuré');
+      const locale = payload.locale === 'en' ? 'en' : 'fr';
+      const license = await trialFollowUp(
+        { db: context.database.db, secret: context.secret },
+        String(payload.licenseId),
+      );
+      if (!license?.expiresAt || Date.parse(license.expiresAt) < Date.now()) return;
+      const endDate = new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(Date.parse(license.expiresAt));
+      await context.mailer.send(
+        renderMail(
+          {
+            kind: 'trial-ending',
+            productName: license.productName,
+            endDate,
+            url: `${context.baseUrl}/${locale}/logiciels/${license.productSlug}/tarifs`,
+          },
+          locale,
+          String(payload.email),
+        ),
+      );
+    },
+    /** Essai : fin de l'essai, sauf achat ou révocation entre-temps. */
+    'mail.trial_ended': async (payload) => {
+      if (!context.mailer) throw new Error('aucun envoi de courriel configuré');
+      const locale = payload.locale === 'en' ? 'en' : 'fr';
+      const license = await trialFollowUp(
+        { db: context.database.db, secret: context.secret },
+        String(payload.licenseId),
+      );
+      if (!license) return;
+      await context.mailer.send(
+        renderMail(
+          {
+            kind: 'trial-ended',
+            productName: license.productName,
+            url: `${context.baseUrl}/${locale}/logiciels/${license.productSlug}/tarifs`,
+          },
+          locale,
+          String(payload.email),
         ),
       );
     },

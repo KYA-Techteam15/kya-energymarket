@@ -198,6 +198,7 @@ export {
   type BatchSummary,
 } from './licenses/batches.ts';
 export { findLicenseHolders, type LicenseHolder } from './licenses/holders.ts';
+export { startTrial, TRIAL_REMINDER_DAYS, trialFollowUp, trialStatus, type TrialStatus } from './licenses/trials.ts';
 export {
   claimDueJobs,
   completeJob,

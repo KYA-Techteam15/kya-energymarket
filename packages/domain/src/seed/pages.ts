@@ -13,7 +13,7 @@ import { upsertFeature, upsertProduct, type Actor, type Locale } from '../catalo
 import { ensurePage, publishDraft, saveDraft } from '../content/pages.ts';
 import { registerStaticImage } from '../media/media.ts';
 import { SEED_IMAGES, SEED_PRODUCTS } from './catalog.ts';
-import { about, contact, help, legalNotice, privacy, purchase, terms, trial } from './pages-market.ts';
+import { about, contact, help, legalNotice, privacy, purchase, terms } from './pages-market.ts';
 import { guide, presentation, pricing, resources, support } from './pages-soldesign.ts';
 
 export interface SeedPage {
@@ -39,7 +39,6 @@ export const SEED_PAGES: readonly SeedPage[] = [
   page(null, 'aide', help),
   page(null, 'a-propos', about),
   page(null, 'contact', contact),
-  page(null, 'essai', trial),
   page(null, 'achat', purchase),
   page(null, 'cgv', terms),
   page(null, 'confidentialite', privacy),
@@ -76,6 +75,7 @@ export async function seedInitialContent(db: Database) {
     for (const [index, feature] of (product.features ?? []).entries()) {
       await upsertFeature(db, SYSTEM, product.slug, feature.key, { label: feature.label, sort: index });
     }
+    const productId = created.id;
     const features = await db.select().from(productFeatures).where(eq(productFeatures.productId, created.id));
     for (const [index, edition] of (product.editions ?? []).entries()) {
       const [row] = await db
@@ -100,17 +100,24 @@ export async function seedInitialContent(db: Database) {
         await db.insert(editionFeatures).values(ids.map((featureId) => ({ editionId: row!.id, featureId })));
       report.editions += 1;
       for (const [sort, type] of edition.types.entries()) {
-        await db.insert(licenseTypes).values({
-          editionId: row!.id,
-          name: type.name,
-          nature: 'sale',
-          days: type.days,
-          pricePerSeat: type.pricePerSeat,
-          indicative: true,
-          visible: true,
-          forSale: true,
-          sort,
-        });
+        const [created] = await db
+          .insert(licenseTypes)
+          .values({
+            editionId: row!.id,
+            name: type.name,
+            nature: type.trial ? 'trial' : 'sale',
+            days: type.days,
+            pricePerSeat: type.pricePerSeat,
+            indicative: !type.trial,
+            visible: !type.trial,
+            forSale: !type.trial,
+            ...(type.trial ? { seatsMax: 1, renewable: false } : {}),
+            sort,
+          })
+          .returning({ id: licenseTypes.id });
+        if (type.trial) {
+          await db.update(products).set({ trialLicenseTypeId: created!.id }).where(eq(products.id, productId));
+        }
         report.types += 1;
       }
     }

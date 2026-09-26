@@ -25,7 +25,13 @@ export interface SeedProduct {
     maxSeats: number | null;
     maxProjects: number | null;
     features: readonly string[];
-    types: readonly { name: LocalizedText; days: number; pricePerSeat: number }[];
+    types: readonly {
+      name: LocalizedText;
+      days: number;
+      pricePerSeat: number;
+      /** Essai gratuit du logiciel (spec 006) : masqué, hors vente, un poste. */
+      trial?: boolean;
+    }[];
   }[];
 }
 
@@ -85,6 +91,7 @@ export const SEED_PRODUCTS: readonly SeedProduct[] = [
           { name: { fr: '1 mois', en: '1 month' }, days: 30, pricePerSeat: 25_000 },
           { name: { fr: '1 trimestre', en: '3 months' }, days: 91, pricePerSeat: 65_000 },
           { name: { fr: '1 an', en: '1 year' }, days: 365, pricePerSeat: 220_000 },
+          { name: { fr: 'Essai 14 jours', en: '14-day trial' }, days: 14, pricePerSeat: 0, trial: true },
         ],
       },
       {

@@ -92,6 +92,8 @@ export interface CatalogProduct {
   readonly monogram: string | null;
   readonly softwareEditions: readonly string[];
   readonly catalogVersion: number;
+  /** Type de licence de l'essai gratuit ; `null` : pas d'essai (spec 006). */
+  readonly trialLicenseTypeId: string | null;
   readonly features: readonly { key: string; label: LocalizedText }[];
   readonly editions: readonly CatalogEdition[];
 }
@@ -162,6 +164,7 @@ export async function getCatalogProduct(
     monogram: product.monogram,
     softwareEditions: product.softwareEditions,
     catalogVersion: product.catalogVersion,
+    trialLicenseTypeId: product.trialLicenseTypeId,
     features: featureRows.map((row) => ({ key: row.key, label: row.label })),
     editions: editionRows.filter(shown).map((row) => ({
       id: row.id,

@@ -76,6 +76,8 @@ const DocProduct = z.strictObject({
     .regex(/^(\/images\/[\w./-]+|media:[0-9a-f-]{36})$/u)
     .nullable(),
   monogram: z.string().trim().max(3).nullable(),
+  /** Type de licence de l'essai gratuit (nature `trial`) ; `null` : pas d'essai (spec 006). */
+  trialLicenseTypeId: z.uuid().nullable().default(null),
 });
 
 export const CatalogDocument = z.strictObject({
@@ -125,6 +127,7 @@ export function documentOf(product: CatalogProduct): CatalogDocument {
       summary: product.summary,
       logo: product.logo,
       monogram: product.monogram,
+      trialLicenseTypeId: product.trialLicenseTypeId,
     },
     features: product.features.map((feature) => ({ key: feature.key, label: feature.label })),
     editions: product.editions.map((edition) => ({
@@ -291,6 +294,17 @@ export function validateDocument(input: unknown, softwareEditions: readonly stri
       }
     });
   });
+  if (doc.product.trialLicenseTypeId) {
+    const trial = doc.editions
+      .flatMap((edition) => edition.types)
+      .find((type) => type.id === doc.product.trialLicenseTypeId);
+    if (!trial || trial.nature !== 'trial' || trial.archived) {
+      issues.push({
+        path: 'product.trialLicenseTypeId',
+        message: 'type d’essai introuvable, archivé ou d’une autre nature',
+      });
+    }
+  }
   if (issues.length) throw new CatalogError('INVALID_CATALOG', issues);
   return doc;
 }
@@ -481,9 +495,11 @@ export async function publishCatalog(db: Database, actor: Actor, slug: string, i
     const changes = diffCatalog(documentOf(live), doc);
     const now = new Date();
 
+    // Le type d'essai peut être nouveau : il est rattaché au logiciel après l'écriture des types.
+    const { trialLicenseTypeId, ...productFields } = doc.product;
     await tx
       .update(products)
-      .set({ ...doc.product, catalogVersion: sql`${products.catalogVersion} + 1`, updatedAt: now })
+      .set({ ...productFields, catalogVersion: sql`${products.catalogVersion} + 1`, updatedAt: now })
       .where(eq(products.id, product.id));
     for (const [index, feature] of doc.features.entries()) {
       await tx
@@ -553,6 +569,7 @@ export async function publishCatalog(db: Database, actor: Actor, slug: string, i
         }
       }
     }
+    await tx.update(products).set({ trialLicenseTypeId }).where(eq(products.id, product.id));
     await tx.delete(catalogDrafts).where(eq(catalogDrafts.productId, product.id));
     await audit(t, actor, 'catalog.published', 'product', product.id, {
       slug,

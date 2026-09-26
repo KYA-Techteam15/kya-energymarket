@@ -300,7 +300,6 @@ const pending = (locale: Locale, kind: 'essai' | 'achat'): Content => {
     ],
   };
 };
-export const trial = (locale: Locale) => pending(locale, 'essai');
 export const purchase = (locale: Locale) => pending(locale, 'achat');
 
 const legal = (locale: Locale, title: [string, string], body: [string, string]): Content => {

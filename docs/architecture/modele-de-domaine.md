@@ -32,7 +32,7 @@ UsageBatch (installation anonyme) · AuditEvent (qui, quoi, quand, résultat)
 | Licences émises | Copie figée de l'offre à l'émission (type, jours, prix par poste, montant payé, canal, motif, référence) : un prix changé ensuite ne modifie ni la licence ni les statistiques. |
 | Fonctions | Identifiants fixés par le logiciel : `system.aio`, `sizing.optimize`, `documents.word`, `documents.pricing`, `lifecycle.issue`, `catalog.userEquipment`. |
 | Postes | Prix = prix par poste × postes (dégressif plus tard). Étudiant : un poste. Attribution par courriel ; libération immédiate côté plateforme, effective sur le poste à sa prochaine connexion. |
-| Essai | Une fois par compte et par logiciel ; durée, édition de référence et fonctions réglées dans l'administration. |
+| Essai | Une fois par compte et par logiciel (`trial_grants`) ; c'est un type de licence de nature « essai » choisi sur le logiciel (durée, édition et droits réglés dans la console). Rappel à J−3 et courriel de fin, sauf achat entre-temps. |
 | Commande | Pas de panier : une commande = une licence (nouvelle, renouvellement ou postes ajoutés). Idempotente. |
 | Montants | Entiers en FCFA. TVA selon le pays de facturation, calculée côté serveur, figée sur la facture. |
 | Facture d'achat | Numérotation continue par année (`FA-AAAA-NNNNN`), immuable, PDF. Une correction = avoir. |

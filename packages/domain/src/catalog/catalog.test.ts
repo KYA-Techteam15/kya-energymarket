@@ -49,7 +49,7 @@ describe('contenu initial (spec 004, FR-010)', () => {
 
   it('charge le catalogue et les pages, puis ne remplace rien au second passage', async () => {
     const first = await seedInitialContent(db);
-    expect(first).toMatchObject({ products: 4, editions: 3, types: 6, pages: SEED_PAGES.length * 2 });
+    expect(first).toMatchObject({ products: 4, editions: 3, types: 7, pages: SEED_PAGES.length * 2 });
     const annual = (await getCatalogProduct(db, 'kya-soldesign'))!.editions[0]!.types.find(
       (type) => type.days === 365,
     )!;

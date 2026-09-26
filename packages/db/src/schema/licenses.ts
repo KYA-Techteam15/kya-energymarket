@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm';
 import { boolean, index, integer, jsonb, pgTable, text, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
-import { organization } from './auth.ts';
+import { organization, user } from './auth.ts';
 import { editions, licenseTypes, products, type LicenseTypeNature, type LocalizedText } from './catalog.ts';
 
 export type LicenseChannel = 'purchase' | 'trial' | 'staff' | 'batch' | 'partner';
@@ -116,6 +116,27 @@ export const licenseActivations = pgTable(
 );
 
 /** Poste attribué à un collègue : la clé et la marche à suivre lui ont été envoyées. */
+/** Essai accordé : un par compte et par logiciel (spec 006). */
+export const trialGrants = pgTable(
+  'trial_grants',
+  {
+    id: uuid()
+      .primaryKey()
+      .default(sql`gen_random_uuid()`),
+    userId: text()
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    productId: uuid()
+      .notNull()
+      .references(() => products.id),
+    licenseId: text()
+      .notNull()
+      .references(() => licenses.id, { onDelete: 'cascade' }),
+    createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [uniqueIndex('trial_grants_user_product_idx').on(table.userId, table.productId)],
+);
+
 export const licenseInvites = pgTable(
   'license_invites',
   {
