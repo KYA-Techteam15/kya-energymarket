@@ -26,6 +26,7 @@ import {
   type LicenseSigner,
 } from './crypto.ts';
 import { findLicenseHolders } from './holders.ts';
+import { startTrial, trialFollowUp, trialStatus } from './trials.ts';
 import {
   activateLicense,
   claimLicenseByKey,
@@ -543,5 +544,63 @@ describe('recherche et statistiques', () => {
 
   it('refuse une édition au-delà de ses postes', async () => {
     await expect(issue({ type: 'student:30', seats: 2 })).rejects.toThrow(LicenseError);
+  });
+});
+
+describe('essai gratuit (spec 006)', () => {
+  const trialUser = async (id: string, email: string) => {
+    const now = new Date();
+    await db.insert(user).values({ id, name: `Essai ${id}`, email, emailVerified: true, createdAt: now, updatedAt: now });
+    await ensurePersonalOrganization(db, { id, name: `Essai ${id}` });
+    return { userId: id, email, productSlug: 'kya-soldesign' };
+  };
+
+  it('émet une licence d’essai que le logiciel vérifie, et programme la clé et les relances (SC-002)', async () => {
+    const who = await trialUser('user-essai-1', 'essai1@exemple.tg');
+    const before = await trialStatus({ db, secret: SECRET }, { userId: who.userId, productSlug: 'kya-soldesign' });
+    expect(before.offer).toMatchObject({ days: 14, typeName: { fr: 'Essai 14 jours' } });
+    expect(before.used).toBeNull();
+
+    const { license, key } = await startTrial({ db, secret: SECRET }, { type: 'user', id: who.userId }, who);
+    expect(license).toMatchObject({ channel: 'trial', amount: 0, nature: 'trial', days: 14, seats: 1 });
+    expect(key).toMatch(/^KYA-COM-14D-/u);
+    const result = await activateLicense(deps(), { key, deviceId: 'poste-essai-0001' });
+    const payload = await softwareVerify((result as { token: string }).token, publicJwk);
+    expect(payload).toMatchObject({ edition: 'commercial', plan: '14d', customer: 'Essai user-essai-1' });
+
+    const scheduled = (await db.select().from(jobs).where(eq(jobs.reference, license.id))).map((job) => job.kind).sort();
+    expect(scheduled).toEqual(['mail.license_key', 'mail.trial_ended', 'mail.trial_ending']);
+    const after = await trialStatus({ db, secret: SECRET }, { userId: who.userId, productSlug: 'kya-soldesign' });
+    expect(after.used).toMatchObject({ licenseId: license.id, key });
+    expect((await trialFollowUp({ db, secret: SECRET }, license.id))?.id).toBe(license.id);
+  });
+
+  it('un seul essai par compte, même en rafale (SC-003)', async () => {
+    const who = await trialUser('user-essai-2', 'essai2@exemple.tg');
+    const results = await Promise.allSettled(
+      Array.from({ length: 4 }, () => startTrial({ db, secret: SECRET }, { type: 'user', id: who.userId }, who)),
+    );
+    expect(results.filter((item) => item.status === 'fulfilled')).toHaveLength(1);
+    for (const item of results.filter((item) => item.status === 'rejected')) {
+      expect((item as PromiseRejectedResult).reason).toMatchObject({ code: 'TRIAL_USED' });
+    }
+    const mine = await db.select().from(licenses).where(eq(licenses.recipientEmail, 'essai2@exemple.tg'));
+    expect(mine).toHaveLength(1);
+  });
+
+  it('plus de relance après un achat ; essai indisponible sans type réglé', async () => {
+    const who = await trialUser('user-essai-3', 'essai3@exemple.tg');
+    const { license } = await startTrial({ db, secret: SECRET }, { type: 'user', id: who.userId }, who);
+    await issue({ organizationId: license.organizationId, channel: 'purchase', amount: 220_000, reason: null, seats: 1 });
+    expect(await trialFollowUp({ db, secret: SECRET }, license.id)).toBeNull();
+
+    await changeCatalog(db, staff, 'kya-soldesign', { changes: [{ op: 'product', fields: { trialLicenseTypeId: null } }] });
+    const { revision } = await getCatalogEditing(db, 'kya-soldesign');
+    await publishCatalog(db, staff, 'kya-soldesign', { expectedRevision: revision! });
+    const other = await trialUser('user-essai-4', 'essai4@exemple.tg');
+    await expect(startTrial({ db, secret: SECRET }, { type: 'user', id: other.userId }, other)).rejects.toMatchObject({
+      code: 'TRIAL_UNAVAILABLE',
+    });
+    expect((await trialStatus({ db, secret: SECRET }, { userId: null, productSlug: 'kya-soldesign' })).offer).toBeNull();
   });
 });

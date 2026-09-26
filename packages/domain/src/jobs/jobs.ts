@@ -7,7 +7,7 @@ import type { Logger } from '../logging/createLogger.ts';
  * l'écriture qui le demande (une licence émise, un lot) : il ne se perd pas et ne bloque rien. Un
  * intervalle du serveur les exécute ; un échec est reprogrammé (1, 5, 15, 60 min) jusqu'à 5 tentatives.
  */
-export type JobKind = 'mail.license_key';
+export type JobKind = 'mail.license_key' | 'mail.trial_ending' | 'mail.trial_ended';
 
 export interface JobHandlers {
   readonly [kind: string]: (payload: Record<string, unknown>, job: JobRow) => Promise<void>;

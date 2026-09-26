@@ -15,7 +15,9 @@ const ALLOW = new Set(
     'acc-body steps-grid steps-fig deliver who pic devis devis-doc who-list ed proof proof-fig quote quote-nav close ' +
     'close-foot grid-2 grid-3 faq-groups faq-index faq-group buy step-title cfg choice opt badge-top price seats-row ' +
     'stepper summary total alt inc pay-logos cmp-table tbl-wrap note-band res-grid res play dur versions v panel ' +
-    'guide-steps sysreq contact-ways way ic search suggest doc-layout doc-toc prose callout link-arrow'
+    'guide-steps sysreq contact-ways way ic search suggest doc-layout doc-toc prose callout link-arrow ' +
+    // Parcours d'essai, d'achat et confirmation (spécifications 006 et 007).
+    'flow flow-steps flow-card dl inapp mock-win checkout co-block co-me pay-opt secure done-head ok-mark done-grid recap'
   ).split(' '),
 );
 
@@ -132,7 +134,7 @@ for (const rule of rules(source)) {
 }
 
 const header = `/*
- * Blocs des pages composées (spec 004), portés depuis design/v5/assets/css/site.css par
+ * Blocs des pages composées (spec 004) et parcours d'essai et d'achat (006, 007), portés depuis design/v5/assets/css/site.css par
  * scripts/port-v5-blocks.mjs : variables traduites vers les jetons de la charte, icônes .kya-icon.
  * Fichier produit : le relire, ne pas le modifier à la main (relancer le script).
  */

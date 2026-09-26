@@ -87,7 +87,9 @@ export type LicenseErrorCode =
   | 'KEY_UNKNOWN'
   | 'ALREADY_CLAIMED'
   | 'BATCH_NOT_FOUND'
-  | 'NO_RECIPIENT';
+  | 'NO_RECIPIENT'
+  | 'TRIAL_USED'
+  | 'TRIAL_UNAVAILABLE';
 
 export class LicenseError extends Error {
   constructor(readonly code: LicenseErrorCode) {
