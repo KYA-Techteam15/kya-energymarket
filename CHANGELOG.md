@@ -6,6 +6,12 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), versions [Sem
 
 ### Ajouté
 
+- Serveur MCP et OAuth pour l'équipe KYA (spécification 003) : `/mcp` (Streamable HTTP, révisions
+  2026-07-28 et 2025), OAuth 2.1 + PKCE par Better Auth (`@better-auth/mcp`), découverte RFC 9728 et
+  RFC 8414, enregistrement dynamique et CIMD, jetons JWT de 15 minutes liés à `/mcp` ; rôle d'équipe
+  vérifié à l'autorisation, à l'émission et à chaque appel ; outils `whoami`, `list_staff`,
+  `find_customer` tracés dans l'audit ; page d'autorisation ; Administration → MCP (guide, clients
+  autorisés, révocation immédiate). Guide : `docs/operations/mcp.md`.
 - Courriel transactionnel (spécification 002, avenant A) : paquet `@kya-em/mail` (SMTP, modèles
   français/anglais aux couleurs de la charte), confirmation d'adresse avant la première connexion,
   mot de passe oublié, lien de connexion par courriel, invitations envoyées par courriel, entrée dans

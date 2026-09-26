@@ -10,3 +10,5 @@ export {
   type StaffRole,
 } from './permissions.ts';
 export { inviteStaffMember, nameFromEmail, type StaffInvitation } from './staffInvitation.ts';
+export { MCP_READ_SCOPE, MCP_SCOPES, mcpIssuerOf, mcpResourceOf, STAFF_ROLES_CLAIM, type McpScope } from './mcp.ts';
+export { requireMcpAuth } from '@better-auth/mcp';

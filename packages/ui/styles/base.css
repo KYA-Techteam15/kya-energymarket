@@ -1117,6 +1117,40 @@ summary::-webkit-details-marker {
 .auth-side li .kya-icon {
   color: var(--kya-yellow);
 }
+/* Autorisation OAuth (spec 003) : compte et droits demandés. */
+.consent-facts {
+  display: grid;
+  gap: 18px;
+  margin-top: 28px;
+  padding: 20px;
+  border: 1px solid var(--kya-line);
+  border-radius: var(--kya-radius-lg);
+  background: var(--kya-soft);
+}
+.consent-facts dt {
+  font: 600 12px var(--kya-font-text);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--kya-muted);
+}
+.consent-facts dd {
+  margin: 6px 0 0;
+  overflow-wrap: anywhere;
+}
+.consent-facts ul {
+  display: grid;
+  gap: 8px;
+}
+.consent-facts li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.consent-facts li .kya-icon {
+  flex: none;
+  margin-top: 3px;
+  color: var(--kya-green-deep);
+}
 .auth-main {
   display: grid;
   place-items: center;

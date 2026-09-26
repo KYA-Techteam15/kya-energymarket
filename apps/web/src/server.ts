@@ -3,12 +3,15 @@ import { paraglideMiddleware } from './paraglide/server.js';
 
 /**
  * Entrée serveur. Les pages passent par Paraglide (langue détectée, redirection éventuelle vers
- * l'adresse localisée) ; les API ne sont jamais localisées ni redirigées.
+ * l'adresse localisée) ; les API, le serveur MCP et la découverte OAuth ne sont jamais localisés.
  */
+const UNLOCALIZED = ['/api', '/mcp', '/.well-known'];
 export default {
   fetch(request: Request): Promise<Response> {
     const { pathname } = new URL(request.url);
-    if (pathname === '/api' || pathname.startsWith('/api/')) return Promise.resolve(handler.fetch(request));
+    if (UNLOCALIZED.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`))) {
+      return Promise.resolve(handler.fetch(request));
+    }
     return paraglideMiddleware(request, () => handler.fetch(request));
   },
 };

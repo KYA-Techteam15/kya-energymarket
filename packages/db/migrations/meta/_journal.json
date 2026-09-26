@@ -15,6 +15,13 @@
       "when": 1790385976722,
       "tag": "0001_comptes",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790398323214,
+      "tag": "0002_mcp",
+      "breakpoints": true
     }
   ]
 }

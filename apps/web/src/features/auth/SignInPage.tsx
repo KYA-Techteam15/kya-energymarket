@@ -58,13 +58,16 @@ export function SignInPage({ initialTab, redirectTo, magicLink, available, initi
     await router.navigate({ to: redirectTo as '/espace' });
   };
 
-  const run = async (action: () => Promise<{ error?: { status?: number; code?: string } | null }>) => {
+  const run = async (action: () => Promise<{ data?: unknown; error?: { status?: number; code?: string } | null }>) => {
     setBusy(true);
     setError(null);
     setNotice(null);
     try {
       const result = await action();
-      if (result.error) setError(messageFor(result.error));
+      // Connexion ouverte par un client MCP : Better Auth rend l'adresse où poursuivre l'autorisation.
+      const oauthUrl = (result.data as { redirect?: boolean; url?: string } | null | undefined)?.url;
+      if (!result.error && oauthUrl) window.location.href = oauthUrl;
+      else if (result.error) setError(messageFor(result.error));
       else await done();
     } catch {
       setError(m.auth_error_generic());
