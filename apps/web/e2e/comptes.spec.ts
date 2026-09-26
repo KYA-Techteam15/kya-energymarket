@@ -103,7 +103,7 @@ test.describe('comptes (spec 002)', () => {
     });
 
     await page.goto('/fr/admin');
-    await expect(page.getByRole('heading', { name: 'Administration.' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /^Bonjour Admin/u })).toBeVisible();
     await page.getByRole('link', { name: 'Équipe' }).click();
     await expect(page.locator('.tbl')).toContainText(email('admin'));
     const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();

@@ -1,7 +1,7 @@
 # Spécification : Offre modulable et console d'administration
 
 **Branche** : `feat-005-offre-et-console` · **Dossier** : `specs/005b-offre-et-console`
-**Créée** : 2026-09-26 · **Statut** : en cours
+**Créée** : 2026-09-26 · **Statut** : implémentée
 
 **Demande** (responsable, 2026-09-26) : la modélisation et surtout l'interface d'administration doivent
 suivre la réalité commerciale.
