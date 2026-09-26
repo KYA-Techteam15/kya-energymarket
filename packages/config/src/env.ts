@@ -14,6 +14,13 @@ const withDefault = <T extends z.ZodType>(schema: T, fallback: z.input<T>) =>
   z.preprocess(blankToUndefined, schema.default(fallback as never));
 
 const SMTP_KEYS = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASSWORD', 'SMTP_FROM'] as const;
+const S3_KEYS = [
+  'MEDIA_BUCKET',
+  'AWS_ACCESS_KEY_ID',
+  'AWS_SECRET_ACCESS_KEY',
+  'AWS_ENDPOINT_URL_S3',
+  'AWS_REGION',
+] as const;
 
 const postgresUrl = z.string().regex(/^postgres(ql)?:\/\//u);
 
@@ -35,6 +42,14 @@ export const serverEnvSchema = z
     SMTP_USER: optional(z.string().min(1)),
     SMTP_PASSWORD: optional(z.string().min(1)),
     SMTP_FROM: optional(z.email()),
+    /** Médias : Neon Object Storage (compatible S3), tout ou rien ; noms standard AWS injectés par Neon. */
+    MEDIA_BUCKET: optional(z.string().min(3).max(63)),
+    AWS_ACCESS_KEY_ID: optional(z.string().min(1)),
+    AWS_SECRET_ACCESS_KEY: optional(z.string().min(1)),
+    AWS_ENDPOINT_URL_S3: optional(z.url()),
+    AWS_REGION: optional(z.string().min(1)),
+    /** Sans stockage objet : dossier local des médias (développement, tests). */
+    MEDIA_DIR: optional(z.string().min(1)),
     /** Tests de parcours uniquement : dossier où les courriels sont écrits au lieu d'être envoyés. */
     MAIL_OUTBOX_DIR: optional(z.string().min(1)),
   })
@@ -51,10 +66,40 @@ export const serverEnvSchema = z
         context.addIssue({ code: 'custom', path: [key], message: 'manquante (les variables SMTP vont ensemble)' });
       }
     }
+    const s3 = S3_KEYS.filter((key) => env[key] !== undefined);
+    if (s3.length > 0 && s3.length < S3_KEYS.length) {
+      for (const key of S3_KEYS.filter((candidate) => env[candidate] === undefined)) {
+        context.addIssue({
+          code: 'custom',
+          path: [key],
+          message: 'manquante (les variables du stockage objet vont ensemble)',
+        });
+      }
+    }
     if (env.APP_ENV === 'production' && env.MAIL_OUTBOX_DIR) {
       context.addIssue({ code: 'custom', path: ['MAIL_OUTBOX_DIR'], message: 'interdite en production' });
     }
   });
+
+/** Stockage objet des médias complet, ou `undefined` (dossier local). */
+export function s3ConfigOf(env: ServerEnv) {
+  if (
+    !env.MEDIA_BUCKET ||
+    !env.AWS_ACCESS_KEY_ID ||
+    !env.AWS_SECRET_ACCESS_KEY ||
+    !env.AWS_ENDPOINT_URL_S3 ||
+    !env.AWS_REGION
+  ) {
+    return undefined;
+  }
+  return {
+    bucket: env.MEDIA_BUCKET,
+    accessKeyId: env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+    endpoint: env.AWS_ENDPOINT_URL_S3,
+    region: env.AWS_REGION,
+  };
+}
 
 /** Réglages SMTP complets, ou `undefined` si le courriel n'est pas configuré. */
 export function smtpConfigOf(env: ServerEnv) {
