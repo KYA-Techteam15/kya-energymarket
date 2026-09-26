@@ -3,7 +3,7 @@ import { PGlite } from '@electric-sql/pglite';
 import { drizzle } from 'drizzle-orm/pglite';
 import { migrate } from 'drizzle-orm/pglite/migrator';
 import type { Database } from './client.ts';
-import * as schema from './schema.ts';
+import * as schema from './schema/index.ts';
 
 /**
  * Base de test : Postgres embarqué (PGlite), en mémoire, avec les mêmes migrations que Neon.

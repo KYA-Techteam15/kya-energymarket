@@ -5,6 +5,7 @@
 // application Coolify → variables → déploiement → attente de /api/health.
 // N'affiche JAMAIS de valeur secrète (constitution, III).
 import { spawnSync } from 'node:child_process';
+import { randomBytes } from 'node:crypto';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { parseArgs } from 'node:util';
 
@@ -148,6 +149,15 @@ if (!application) {
   });
 }
 
+// Secret des sessions propre à l'environnement : généré au premier déploiement, gardé dans le fichier de secrets.
+const secretName = `BETTER_AUTH_SECRET_${args.env.toUpperCase()}`;
+let authSecret = readSecrets()[secretName];
+if (!authSecret) {
+  authSecret = randomBytes(48).toString('base64url');
+  writeSecret(secretName, authSecret);
+  console.log(`Secret ${secretName} généré et rangé dans le fichier de secrets.`);
+}
+
 await coolify(`/applications/${application.uuid}/envs/bulk`, {
   method: 'PATCH',
   body: JSON.stringify({
@@ -156,10 +166,11 @@ await coolify(`/applications/${application.uuid}/envs/bulk`, {
       { key: 'APP_BASE_URL', value: domain, is_preview: false },
       { key: 'LOG_LEVEL', value: 'info', is_preview: false },
       { key: 'DATABASE_URL', value: databaseUrl, is_preview: false },
+      { key: 'BETTER_AUTH_SECRET', value: authSecret, is_preview: false },
     ],
   }),
 });
-console.log('Coolify : variables APP_ENV, APP_BASE_URL, LOG_LEVEL, DATABASE_URL réglées.');
+console.log('Coolify : variables APP_ENV, APP_BASE_URL, LOG_LEVEL, DATABASE_URL, BETTER_AUTH_SECRET réglées.');
 
 // ---------------------------------------------------------------- déploiement et santé
 await coolify(`/deploy?uuid=${application.uuid}&force=true`, { method: 'POST' });

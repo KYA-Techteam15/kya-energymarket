@@ -112,7 +112,8 @@ test.describe('exploitation (spec 001, histoire 4)', () => {
     expect(response.status()).toBe(200);
     expect(response.headers()['cache-control']).toBe('no-store');
     const body = await response.json();
-    expect(body).toMatchObject({ status: 'ok', environment: 'test', checks: { database: 'not_configured' } });
+    expect(body).toMatchObject({ status: 'ok', environment: 'test' });
+    expect(['ok', 'not_configured']).toContain(body.checks.database);
     expect(JSON.stringify(body)).not.toMatch(/postgres|password|secret/iu);
   });
 });

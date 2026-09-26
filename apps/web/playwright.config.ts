@@ -1,6 +1,21 @@
+import { existsSync, readFileSync } from 'node:fs';
 import { defineConfig, devices } from '@playwright/test';
 
 const PORT = 4173;
+
+// En local, la base des parcours est la branche Neon « test » (DATABASE_TEST_* de .env.local).
+// En CI, E2E_DATABASE_URL pointe vers le conteneur Postgres du workflow.
+const envFile = new URL('../../.env.local', import.meta.url);
+if (!process.env.E2E_DATABASE_URL && existsSync(envFile)) {
+  const local = Object.fromEntries(
+    readFileSync(envFile, 'utf8')
+      .split(/\r?\n/u)
+      .filter((line) => /^DATABASE_TEST_(MIGRATION_)?URL=/u.test(line))
+      .map((line) => [line.slice(0, line.indexOf('=')), line.slice(line.indexOf('=') + 1).trim()]),
+  );
+  if (local.DATABASE_TEST_URL) process.env.E2E_DATABASE_URL = local.DATABASE_TEST_URL;
+  if (local.DATABASE_TEST_MIGRATION_URL) process.env.E2E_DATABASE_MIGRATION_URL = local.DATABASE_TEST_MIGRATION_URL;
+}
 
 // Les parcours tournent sur la version construite (pnpm build), comme en production.
 export default defineConfig({
@@ -10,6 +25,9 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 2 : undefined,
   reporter: process.env.CI ? [['github'], ['list']] : 'list',
+  timeout: 60_000,
+  // Les parcours de comptes appellent la base à chaque étape : navigations plus longues qu'une page statique.
+  expect: { timeout: 15_000 },
   // Public francophone d'abord ; les tests de langue règlent leur propre navigateur.
   use: { baseURL: `http://localhost:${PORT}`, locale: 'fr-FR', trace: 'retain-on-failure' },
   projects: [
@@ -17,10 +35,10 @@ export default defineConfig({
     { name: 'mobile', use: { ...devices['Pixel 7'] } },
   ],
   webServer: {
-    command: 'node .output/server/index.mjs',
+    command: 'node e2e/start-server.mjs',
     port: PORT,
     reuseExistingServer: !process.env.CI,
-    env: { PORT: String(PORT), APP_ENV: 'test', APP_BASE_URL: `http://localhost:${PORT}`, LOG_LEVEL: 'warn' },
-    timeout: 60_000,
+    env: { PORT: String(PORT), APP_BASE_URL: `http://localhost:${PORT}`, LOG_LEVEL: 'warn' },
+    timeout: 120_000,
   },
 });

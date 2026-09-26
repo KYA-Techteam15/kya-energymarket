@@ -1,6 +1,6 @@
 # ADR 0003 — Comptes, organisations et serveur OAuth 2.1 avec Better Auth
 
-- **Statut** : proposée (à confirmer par la recherche de la spécification 002) · **Date** : 2026-09-25
+- **Statut** : acceptée (spécification 002, 2026-09-26) · **Date** : 2026-09-25
 
 ## Contexte
 
@@ -28,3 +28,10 @@ rotatif, révocation) ; sinon on revient à l'option 2.
 - Les sessions web et les jetons MCP sont distincts ; les portées MCP sont les nôtres
   (voir [API et MCP](../architecture/api-et-mcp.md)).
 - `BETTER_AUTH_SECRET` et l'URL publique font partie des secrets par environnement.
+
+## Confirmation (spécification 002)
+
+Better Auth 1.7.6 auto-hébergé, données dans Neon (adaptateur Drizzle), plugins `organization`, `admin`
+(rôles d'équipe KYA par contrôle d'accès), `magicLink` et cookies TanStack Start. Le skill Neon `neon-auth`
+confirme que Neon Auth géré n'offre pas de fournisseur OAuth pour MCP ; `@better-auth/oauth-provider` 1.7.6
+servira à la spécification 003.

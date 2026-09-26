@@ -1,6 +1,6 @@
 import { checkHealth } from '@kya-em/domain';
 import { sql } from 'drizzle-orm';
-import { runtime } from '@/shared/server/runtime';
+import { runtime } from '@/shared/server/runtime.server';
 
 export async function healthResponse(): Promise<Response> {
   const { env, database } = runtime();

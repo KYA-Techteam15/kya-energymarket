@@ -1,0 +1,23 @@
+{
+  "name": "@kya-em/auth",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc6 -p tsconfig.json"
+  },
+  "dependencies": {
+    "@better-auth/drizzle-adapter": "1.7.6",
+    "@kya-em/db": "workspace:*",
+    "@kya-em/domain": "workspace:*",
+    "better-auth": "1.7.6",
+    "drizzle-orm": "^0.45.3"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
+  }
+}

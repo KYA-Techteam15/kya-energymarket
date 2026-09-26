@@ -10,8 +10,8 @@ support, depuis l'interface ou depuis Claude et Codex grâce au serveur MCP.
 
 ## État
 
-Socle livré (spécification 001) : application multilingue, charte KYA, accueil de la marketplace,
-santé, base Neon et Drizzle, porte de qualité, CI et image Docker. Suite : [ROADMAP.md](ROADMAP.md).
+Livré : socle (spécification 001) — application multilingue, charte KYA, accueil, santé, Neon et Drizzle,
+porte de qualité, CI, image et déploiement Coolify ; comptes, organisations et rôles (spécification 002). Suite : [ROADMAP.md](ROADMAP.md).
 
 ## Pile
 
@@ -44,6 +44,7 @@ pnpm install
 pnpm env:link      # recopie le fichier de secrets du poste vers .env.local
 pnpm dev           # http://localhost:3000 → /fr/ ou /en/
 pnpm verify        # porte de qualité complète
+pnpm staff:grant --email <courriel> --role kya_admin   # nommer un administrateur KYA (compte existant)
 ```
 
 Détails : [specs/001-socle/quickstart.md](specs/001-socle/quickstart.md). Règles : [AGENTS.md](AGENTS.md) et la

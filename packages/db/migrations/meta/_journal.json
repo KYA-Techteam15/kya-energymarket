@@ -8,6 +8,13 @@
       "when": 1790366535098,
       "tag": "0000_socle",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790385976722,
+      "tag": "0001_comptes",
+      "breakpoints": true
     }
   ]
 }

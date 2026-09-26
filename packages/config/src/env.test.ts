@@ -16,6 +16,12 @@ describe('variables d’environnement (spec 001, FR-010)', () => {
     expect(loadServerEnv({ DATABASE_URL: '', APP_ENV: ' ' }).APP_ENV).toBe('development');
   });
 
+  it('exige le secret des sessions en production', () => {
+    expect(() => loadServerEnv({ APP_ENV: 'production', DATABASE_URL: SECRET_URL })).toThrow(
+      /BETTER_AUTH_SECRET \(obligatoire en production\)/u,
+    );
+  });
+
   it('exige la base en production et nomme la variable', () => {
     expect(() => loadServerEnv({ APP_ENV: 'production' })).toThrow(/DATABASE_URL \(obligatoire en production\)/u);
   });
