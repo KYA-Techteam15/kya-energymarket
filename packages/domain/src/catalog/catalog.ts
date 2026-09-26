@@ -211,7 +211,7 @@ export class CatalogError extends Error {
 }
 
 export interface Actor {
-  readonly type: 'kya_staff' | 'mcp_client' | 'system';
+  readonly type: 'kya_staff' | 'mcp_client' | 'system' | 'software' | 'user';
   readonly id: string | null;
 }
 

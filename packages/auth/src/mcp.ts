@@ -12,6 +12,7 @@ export const MCP_SCOPES = [
   'admin:read',
   'admin:catalog',
   'admin:content',
+  'admin:licenses',
 ] as const;
 export type McpScope = (typeof MCP_SCOPES)[number];
 

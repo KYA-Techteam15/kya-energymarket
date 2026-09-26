@@ -50,6 +50,9 @@ export const serverEnvSchema = z
     AWS_REGION: optional(z.string().min(1)),
     /** Sans stockage objet : dossier local des médias (développement, tests). */
     MEDIA_DIR: optional(z.string().min(1)),
+    /** Licences : clé privée de signature (JWK EC P-256, JSON sur une ligne) et son identifiant. */
+    LICENSE_SIGNING_PRIVATE_KEY: optional(z.string().min(20)),
+    LICENSE_SIGNING_KEY_ID: optional(z.string().min(1).max(40)),
     /** Tests de parcours uniquement : dossier où les courriels sont écrits au lieu d'être envoyés. */
     MAIL_OUTBOX_DIR: optional(z.string().min(1)),
   })

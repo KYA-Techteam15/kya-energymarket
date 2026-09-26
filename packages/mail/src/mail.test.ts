@@ -42,6 +42,13 @@ describe('modèles de courriel', () => {
       { kind: 'reset-password', name: 'A', url: 'u' },
       { kind: 'invitation', organizationName: 'O', inviterName: 'I', url: 'u' },
       { kind: 'staff-welcome', name: 'A', roleLabel: 'administrateur', url: 'u' },
+      {
+        kind: 'license-seat',
+        productName: 'KYA-SolDesign',
+        inviterName: 'Koffi',
+        key: 'KYA-COM-12M-AAAA-BBBB-CCCC',
+        url: 'u',
+      },
     ] as const;
     for (const template of templates) {
       for (const locale of ['fr', 'en'] as const) {

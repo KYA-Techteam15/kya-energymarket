@@ -17,7 +17,14 @@ export type MailTemplate =
       readonly inviterName: string;
       readonly url: string;
     }
-  | { readonly kind: 'staff-welcome'; readonly name: string; readonly roleLabel: string; readonly url: string };
+  | { readonly kind: 'staff-welcome'; readonly name: string; readonly roleLabel: string; readonly url: string }
+  | {
+      readonly kind: 'license-seat';
+      readonly productName: string;
+      readonly inviterName: string;
+      readonly key: string;
+      readonly url: string;
+    };
 
 interface Content {
   readonly subject: string;
@@ -65,6 +72,18 @@ const copy: Record<MailLocale, (template: MailTemplate) => Content> = {
           ],
           action: 'Voir l’invitation',
           note: 'L’invitation est valable 7 jours. Connectez-vous (ou créez votre compte) avec cette adresse pour l’accepter.',
+        };
+      case 'license-seat':
+        return {
+          subject: `Un poste de ${template.productName} pour vous — KYA-EnergyMarket`,
+          heading: `Un poste de ${template.productName} pour vous`,
+          paragraphs: [
+            `${template.inviterName} vous attribue un poste de ${template.productName}.`,
+            `Votre clé de licence : ${template.key}`,
+            'Installez le logiciel, puis collez cette clé au premier lancement. Un poste correspond à un ordinateur.',
+          ],
+          action: 'Démarrer',
+          note: 'Gardez cette clé pour vous : elle ouvre les postes de votre organisation.',
         };
       case 'staff-welcome':
         return {
@@ -114,6 +133,18 @@ const copy: Record<MailLocale, (template: MailTemplate) => Content> = {
           ],
           action: 'View the invitation',
           note: 'The invitation is valid for 7 days. Sign in (or create your account) with this email address to accept it.',
+        };
+      case 'license-seat':
+        return {
+          subject: `A ${template.productName} seat for you — KYA-EnergyMarket`,
+          heading: `A ${template.productName} seat for you`,
+          paragraphs: [
+            `${template.inviterName} assigns you a ${template.productName} seat.`,
+            `Your licence key: ${template.key}`,
+            'Install the software, then paste this key at first launch. One seat is one computer.',
+          ],
+          action: 'Get started',
+          note: 'Keep this key to yourself: it opens your organisation’s seats.',
         };
       case 'staff-welcome':
         return {

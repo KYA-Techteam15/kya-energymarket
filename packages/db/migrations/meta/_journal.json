@@ -29,6 +29,13 @@
       "when": 1790403095078,
       "tag": "0003_catalogue",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1790421549666,
+      "tag": "0004_licences",
+      "breakpoints": true
     }
   ]
 }

@@ -117,3 +117,39 @@ export {
 } from './media/media.ts';
 export { SEED_PAGES, seedInitialContent, type SeedPage } from './seed/pages.ts';
 export { prepareBlocks, type PreparedBlock, type RenderedMarkdown } from './content/prepare.ts';
+export {
+  createLicenseSigner,
+  decryptLicenseKey,
+  encryptLicenseKey,
+  generateLicenseKey,
+  generateSigningKey,
+  licenseKeyHash,
+  normalizeLicenseKey,
+  type LicensePayload,
+  type LicenseSigner,
+} from './licenses/crypto.ts';
+export {
+  activateLicense,
+  editionDescriptors,
+  extendLicense,
+  findLicenses,
+  getLicense,
+  IssueInput,
+  issueLicense,
+  LicenseError,
+  licenseJournal,
+  listLicensesForOrganizations,
+  OFFLINE_DAYS,
+  organizationForEmail,
+  PLAN_CODES,
+  recordSeatInvite,
+  refreshLicense,
+  releaseDevice,
+  releaseSeat,
+  revokeLicense,
+  setLicenseSeats,
+  type ActivateError,
+  type LicenseDependencies,
+  type LicenseView,
+  type RefreshError,
+} from './licenses/licenses.ts';
