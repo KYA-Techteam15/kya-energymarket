@@ -1,11 +1,11 @@
 import { ExampleTag, Icon } from '@kya-em/ui';
 import { Link } from '@tanstack/react-router';
 import { m } from '@/paraglide/messages.js';
-import { SOFTWARE } from './software';
+import { useCatalog } from './software';
 
-/** Accueil de la marketplace, fidèle à design/v5/index.html. Contenu statique jusqu'à la spécification 004. */
+/** Accueil de la marketplace, fidèle à design/v5/index.html ; les logiciels viennent du catalogue (spec 004). */
 export function HomePage() {
-  const upcoming = SOFTWARE.filter((software) => !software.available);
+  const upcoming = useCatalog().filter((software) => software.status === 'soon');
   return (
     <>
       <section className="hero" aria-labelledby="t-hero">
@@ -15,10 +15,10 @@ export function HomePage() {
           <div className="hero-foot">
             <p>{m.hero_text()}</p>
             <div className="hero-cta">
-              <Link className="btn btn-light btn-lg" to="/" hash="logiciels">
+              <Link className="btn btn-light btn-lg" to="/logiciels">
                 {m.hero_cta_primary()} <Icon name="go" />
               </Link>
-              <Link className="btn btn-ghost-light btn-lg" to="/" hash="logiciels">
+              <Link className="btn btn-ghost-light btn-lg" to="/logiciels/$slug" params={{ slug: 'kya-soldesign' }}>
                 {m.hero_cta_secondary()}
               </Link>
             </div>
@@ -54,13 +54,13 @@ export function HomePage() {
           <h3 className="h3 soon-title">{m.soon_title()}</h3>
           <div className="soft-list">
             {upcoming.map((software) => (
-              <article key={software.id} className="soft-item" id={software.id}>
+              <article key={software.slug} className="soft-item" id={software.slug}>
                 <span className="logo" aria-hidden="true">
-                  {software.mono ?? ''}
+                  {software.monogram ?? ''}
                 </span>
                 <div>
                   <h3>{software.name}</h3>
-                  <p className="kind">{software.kind()}</p>
+                  <p className="kind">{software.kind}</p>
                 </div>
                 <p>{m.soon_text()}</p>
                 <div className="act">

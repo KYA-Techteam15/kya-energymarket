@@ -10,13 +10,18 @@
     "typecheck": "tsc6 -p tsconfig.json"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1140.0",
     "@kya-em/db": "workspace:*",
     "drizzle-orm": "^0.45.3",
+    "markdown-it": "^15.0.2",
+    "markdown-it-anchor": "^10.0.0",
     "pino": "^10.3.1",
+    "sharp": "^0.35.4",
     "zod": "^4.6.5"
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.8",
+    "@types/markdown-it": "^14.2.0",
     "typescript": "npm:@typescript/typescript6@^6.0.2"
   }
 }

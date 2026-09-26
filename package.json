@@ -28,7 +28,8 @@
     "staff:grant": "tsx scripts/staff-grant.ts",
     "auth:schema": "auth generate --config packages/auth/schema.config.ts --output packages/db/src/schema/auth.ts --yes",
     "coolify:deploy": "node scripts/coolify-deploy.mjs",
-    "verify": "pnpm format:check && pnpm lint && pnpm test && pnpm build && pnpm typecheck && pnpm e2e && pnpm secrets:scan"
+    "verify": "pnpm format:check && pnpm lint && pnpm test && pnpm build && pnpm typecheck && pnpm e2e && pnpm secrets:scan",
+    "db:seed": "tsx scripts/seed.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

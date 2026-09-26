@@ -79,6 +79,19 @@ export function McpAdminPage({ admin }: { admin: McpAdmin }) {
             <li>
               <code>find_customer</code> — {m.admin_mcp_tool_find_customer()}
             </li>
+            <li>
+              <code>search_catalog</code>, <code>get_product</code> — {m.admin_mcp_tool_catalog()}
+            </li>
+            <li>
+              <code>update_product</code>, <code>update_edition</code>, <code>set_plan_price</code> —{' '}
+              {m.admin_mcp_tool_catalog_write()}
+            </li>
+            <li>
+              <code>list_pages</code>, <code>get_page</code> — {m.admin_mcp_tool_pages()}
+            </li>
+            <li>
+              <code>update_page_draft</code>, <code>publish_page</code> — {m.admin_mcp_tool_pages_write()}
+            </li>
           </ul>
         </div>
       </section>

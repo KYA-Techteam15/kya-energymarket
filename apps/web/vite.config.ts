@@ -6,6 +6,8 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   resolve: { tsconfigPaths: true },
+  // Module natif : jamais empaqueté, chargé depuis node_modules (copié dans la sortie par Nitro).
+  ssr: { external: ['sharp'] },
   plugins: [
     paraglideVitePlugin({
       project: './project.inlang',
@@ -27,7 +29,8 @@ export default defineConfig({
     }),
     tanstackStart(),
     // Serveur Node autonome (.output/server/index.mjs) pour l'image Docker et Coolify.
-    nitro(),
+    // sharp (conversion des images, spec 004) est natif : ses binaires sont copiés dans la sortie.
+    nitro({ traceDeps: ['sharp'] }),
     viteReact(),
   ],
 });

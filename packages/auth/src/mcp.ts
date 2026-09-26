@@ -4,10 +4,18 @@
  */
 
 /** Portées d'identité (serveur d'autorisation) et portées d'administration (ressource `/mcp`). */
-export const MCP_SCOPES = ['openid', 'profile', 'email', 'offline_access', 'admin:read'] as const;
+export const MCP_SCOPES = [
+  'openid',
+  'profile',
+  'email',
+  'offline_access',
+  'admin:read',
+  'admin:catalog',
+  'admin:content',
+] as const;
 export type McpScope = (typeof MCP_SCOPES)[number];
 
-/** Portée exigée par les outils de lecture. Les portées d'écriture viendront avec leurs outils. */
+/** Portée exigée pour toute requête /mcp ; les outils d'écriture exigent en plus admin:catalog ou admin:content. */
 export const MCP_READ_SCOPE = 'admin:read';
 
 /** Revendication du jeton d'accès portant les rôles d'équipe KYA au moment de l'émission. */

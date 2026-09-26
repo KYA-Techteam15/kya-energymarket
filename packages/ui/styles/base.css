@@ -101,6 +101,7 @@ summary::-webkit-details-marker {
 .muted {
   color: var(--kya-muted);
 }
+.sr,
 .sr-only {
   position: absolute;
   width: 1px;
@@ -1451,4 +1452,345 @@ summary::-webkit-details-marker {
   width: 100%;
   text-align: left;
   font-size: inherit;
+}
+
+/* ================================================================ Pages composées (spec 004) */
+/* Aperçu réservé à l'équipe KYA et repli sur la version française. */
+.preview-bar {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  padding: 10px 16px;
+  background: var(--kya-yellow);
+  color: var(--kya-ink);
+  font: 500 14px var(--kya-font-text);
+  text-align: center;
+}
+.fallback-note {
+  margin-top: 16px;
+  padding: 10px 14px;
+  border-radius: var(--kya-radius);
+  background: var(--kya-coffee-wash);
+  color: var(--kya-coffee-ink);
+  font-size: 14px;
+}
+/* Choix des tarifs : groupes de boutons radio sans le cadre natif. */
+fieldset.cfg {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+fieldset.cfg legend {
+  padding: 0;
+}
+/* Carte de ressource sans image. */
+.res .pic-fill {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  background: var(--kya-green-deep);
+  color: var(--kya-white);
+  font: 600 1.6rem var(--kya-font-display);
+  letter-spacing: -0.03em;
+}
+/* Héros de logiciel : photo retournée et élargie, sujet à droite (design/v5, kya-soldesign). */
+.hero.is-flipped .hero-img {
+  width: 116%;
+  max-width: none;
+  object-position: 40% 50%;
+  transform: scaleX(-1);
+}
+@media (max-width: 680px) {
+  .hero.is-flipped .hero-img {
+    width: 100%;
+    object-position: 28% 50%;
+  }
+}
+/* Moyens de contact : titre et texte au centre, bouton à droite sur deux lignes. */
+.way b,
+.way small {
+  grid-column: 2;
+}
+.way .btn {
+  grid-column: 3;
+  grid-row: 1 / span 2;
+}
+.panel .btn {
+  margin-top: 22px;
+}
+/* Markdown : listes numérotées, premier titre collé en haut, tableaux défilants. */
+.prose ol {
+  display: grid;
+  gap: 6px;
+  padding-left: 22px;
+  list-style: decimal;
+}
+.prose p + ol,
+.prose ol + p {
+  margin-top: 14px;
+}
+.prose > h2:first-child {
+  margin-top: 0;
+}
+.md-table {
+  margin: 18px 0;
+  overflow-x: auto;
+}
+.md-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+.md-table th,
+.md-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--kya-line);
+  text-align: left;
+}
+/* En-tête de logiciel sur petit écran : « Acheter » et le menu seulement (design/v5). */
+@media (max-width: 680px) {
+  .sw-end .btn-primary {
+    display: none;
+  }
+}
+
+/* ================================================================ Administration des contenus (spec 004) */
+.fields {
+  display: grid;
+  gap: 16px;
+}
+.field-label {
+  font: 500 14px var(--kya-font-text);
+  color: var(--kya-ink2);
+}
+.field-label small,
+.field-help {
+  color: var(--kya-muted);
+  font-size: 12.5px;
+}
+.field-inline {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+.field-pair,
+.field-trio {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.field-trio {
+  grid-template-columns: repeat(3, 1fr);
+}
+.input.textarea {
+  min-height: 72px;
+  padding-block: 10px;
+  resize: vertical;
+  line-height: 1.5;
+}
+.input.mono,
+.mono {
+  font-family: var(--kya-font-mono);
+  font-size: 13.5px;
+}
+.btn-xs {
+  min-height: 30px;
+  padding: 0 10px;
+  font-size: 13px;
+}
+.acct-head .editor-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-self: start;
+}
+.block-list {
+  display: grid;
+  gap: 10px;
+  margin: 24px 0 16px;
+}
+.block-card {
+  border: 1px solid var(--kya-line);
+  border-radius: var(--kya-radius-lg);
+  background: var(--kya-white);
+}
+.block-card.has-error {
+  border-color: var(--kya-coffee);
+}
+.block-card > details > summary,
+.list-item > summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  list-style: none;
+  cursor: pointer;
+}
+.block-card > details > summary::-webkit-details-marker,
+.list-item > summary::-webkit-details-marker {
+  display: none;
+}
+.block-card summary small {
+  color: var(--kya-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.block-card .n,
+.list-item .n {
+  font: 500 12px var(--kya-font-mono);
+  color: var(--kya-muted);
+}
+.list-actions {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display: flex;
+  gap: 6px;
+}
+.block-card,
+.list-item-wrap {
+  position: relative;
+}
+.block-card > details > summary,
+.list-item > summary {
+  padding-right: 260px;
+}
+.block-card > details > .fields,
+.block-card > details > .form-error {
+  padding: 0 16px 18px;
+}
+.block-card > details > .form-error {
+  display: grid;
+  gap: 4px;
+  margin: 0 16px 14px;
+  padding: 10px 14px;
+}
+.list-editor {
+  display: grid;
+  gap: 8px;
+}
+.list-item {
+  border: 1px solid var(--kya-line);
+  border-radius: var(--kya-radius);
+  background: var(--kya-soft);
+}
+.list-item > .fields {
+  padding: 0 14px 14px;
+}
+.media-pick {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.media-pick img {
+  flex: none;
+  width: 96px;
+  height: 60px;
+  border-radius: var(--kya-radius);
+  object-fit: cover;
+  border: 1px solid var(--kya-line);
+}
+.editor-add {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  padding: 16px;
+  border: 1px dashed var(--kya-line2);
+  border-radius: var(--kya-radius-lg);
+}
+.editor-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--kya-line);
+  background: var(--kya-white);
+}
+.editor-bar > span {
+  margin-right: auto;
+  color: var(--kya-coffee-ink);
+  font-size: 14px;
+}
+.row-form {
+  display: grid;
+  grid-template-columns: minmax(120px, auto) 1fr auto;
+  align-items: end;
+  gap: 12px;
+  padding-block: 10px;
+  border-bottom: 1px solid var(--kya-line);
+}
+.row-form code {
+  align-self: center;
+}
+.plan-row {
+  grid-template-columns: 90px 180px auto auto auto;
+  justify-content: start;
+}
+.check-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 8px 16px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.check-grid legend {
+  margin-bottom: 8px;
+  padding: 0;
+}
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+.media-card {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--kya-line);
+  border-radius: var(--kya-radius-lg);
+  background: var(--kya-white);
+}
+.media-card img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: var(--kya-radius);
+  background: var(--kya-soft);
+}
+.media-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 760px) {
+  .field-pair,
+  .field-trio,
+  .row-form,
+  .plan-row {
+    grid-template-columns: 1fr;
+  }
+  .block-card summary small {
+    display: none;
+  }
+  .list-actions {
+    position: static;
+    padding: 0 16px 12px;
+  }
+  .block-card > details > summary,
+  .list-item > summary {
+    padding-right: 16px;
+  }
 }

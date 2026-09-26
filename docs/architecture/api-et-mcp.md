@@ -41,8 +41,8 @@ ajouté plus tard, sans rupture, par de nouvelles portées.
 |---|---|
 | `admin:read` | lecture de tout ce que l'équipe KYA administre (catalogue, clients, commandes, licences, support) |
 | `admin:customers` | comptes et organisations clientes : consulter, corriger, attribuer ou libérer un poste pour un client |
-| `admin:catalog` | créer et modifier logiciels, éditions, durées, prix, essais |
-| `admin:content` | pages, blocs, Markdown, médias, témoignages |
+| `admin:catalog` | créer et modifier logiciels, éditions, durées, prix, essais (outils de la spécification 004) |
+| `admin:content` | pages, blocs, Markdown, médias, témoignages (outils de la spécification 004) |
 | `admin:sales` | commandes, devis, factures d'achat, remboursements (confirmation) |
 | `admin:licenses` | émettre, prolonger, révoquer des licences (confirmation) |
 | `admin:support` | lire et répondre aux demandes et avis |
@@ -65,6 +65,10 @@ ajouté plus tard, sans rupture, par de nouvelles portées.
 - Aucune clé n'est jamais embarquée dans un client : l'identité vient de la connexion OAuth.
 
 ## API REST
+
+Premier point ouvert (spécification 004) : `GET /api/v1/catalog`, public, logiciels visibles et, pour
+ceux qui sont disponibles, éditions et durées actives (prix en FCFA entiers, `currency: XOF`,
+`indicative` pour un prix exemple).
 
 `/api/v1`, JSON, pagination par curseur, erreurs au format `application/problem+json`, clés
 d'idempotence sur les écritures, OpenAPI générée depuis les schémas Zod. Versionnée : une rupture

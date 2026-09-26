@@ -37,3 +37,4 @@ tmp/
 apps/web/src/paraglide/
 apps/web/src/routeTree.gen.ts
 
+.data/

@@ -43,6 +43,13 @@ codex mcp login kya-energy-market
 | `whoami` | `admin:read` | votre identité, vos rôles d'équipe et les portées accordées au client |
 | `list_staff` | `admin:read` | l'équipe KYA et ses rôles |
 | `find_customer` | `admin:read` | recherche d'un compte client par courriel ou nom (20 résultats au plus) |
+| `search_catalog`, `get_product` | `admin:read` | catalogue et offre d'un logiciel |
+| `list_pages`, `get_page` | `admin:read` | pages, blocs et description des types de blocs |
+| `update_product`, `update_edition`, `set_plan_price` | `admin:catalog` | modifier le catalogue (rôles administrateur, contenus) |
+| `update_page_draft`, `publish_page` | `admin:content` | écrire un brouillon, publier (rôles administrateur, contenus) |
+
+Un client connecté avant la spécification 004 n'a que `admin:read` : retirez-le puis ajoutez-le de
+nouveau pour accorder les portées d'écriture.
 
 Chaque spécification ajoute ses outils (catalogue, licences, ventes, support…) avec les portées
 correspondantes ; voir [API et MCP](../architecture/api-et-mcp.md).

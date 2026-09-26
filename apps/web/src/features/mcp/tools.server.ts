@@ -2,6 +2,7 @@ import type { Database } from '@kya-em/db';
 import { findCustomers, listStaff, recordAuditEvent, type Logger } from '@kya-em/domain';
 import { McpServer } from '@modelcontextprotocol/server';
 import { z } from 'zod';
+import { registerContentTools } from './tools-content.server';
 
 /** Personne derrière l'appel : membre de l'équipe KYA, rôle relu en base à chaque requête. */
 export interface McpCaller {
@@ -135,5 +136,6 @@ export function createKyaMcpServer(context: { db: Database; logger: Logger; vers
       }),
   );
 
+  registerContentTools(server, { db, logger, caller });
   return server;
 }
