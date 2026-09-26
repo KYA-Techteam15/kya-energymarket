@@ -54,6 +54,8 @@ test.describe('courriel (spec 002, avenant A)', () => {
     await expect(page).toHaveURL(/\/fr\/espace\/?$/u);
     await page.getByLabel('Mon espace').click();
     await page.getByRole('button', { name: 'Se déconnecter' }).first().click();
+    // Attendre la fin de la déconnexion : sinon /fr/connexion renvoie encore vers l'espace.
+    await expect(page.getByRole('link', { name: 'Se connecter' })).toBeVisible();
 
     await page.goto('/fr/connexion');
     await page.getByRole('link', { name: 'Mot de passe oublié ?' }).click();
