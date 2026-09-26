@@ -1,7 +1,7 @@
 # Spécification : Essai gratuit
 
 **Branche** : `feat-006-essai` · **Dossier** : `specs/006-essai`
-**Créée** : 2026-09-26 · **Statut** : en cours
+**Créée** : 2026-09-26 · **Statut** : implémentée
 
 **Demande** : phase 6 de la feuille de route. Un visiteur essaie KYA-SolDesign une fois par compte,
 depuis la page Essai, en quatre étapes (maquette `design/v5/essai.html`). Depuis la spécification

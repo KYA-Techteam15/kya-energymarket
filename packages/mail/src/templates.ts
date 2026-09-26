@@ -35,6 +35,20 @@ export type MailTemplate =
       readonly validity: string;
       readonly key: string;
       readonly url: string;
+    }
+  | {
+      /** Essai gratuit : rappel avant la fin (spec 006). */
+      readonly kind: 'trial-ending';
+      readonly productName: string;
+      /** Date de fin, déjà formatée dans la langue du courriel. */
+      readonly endDate: string;
+      readonly url: string;
+    }
+  | {
+      /** Essai gratuit : fin de l'essai (spec 006). */
+      readonly kind: 'trial-ended';
+      readonly productName: string;
+      readonly url: string;
     };
 
 interface Content {
@@ -108,6 +122,28 @@ const copy: Record<MailLocale, (template: MailTemplate) => Content> = {
           action: 'Retrouver ma licence',
           note: 'Gardez cette clé pour vous : elle est personnelle.',
         };
+      case 'trial-ending':
+        return {
+          subject: `Votre essai de ${template.productName} se termine bientôt — KYA-EnergyMarket`,
+          heading: `Votre essai se termine le ${template.endDate}`,
+          paragraphs: [
+            `Votre essai de ${template.productName} se termine le ${template.endDate}.`,
+            'Pour continuer sans interruption, choisissez votre licence : vos projets restent à vous et s’ouvrent aussitôt dans l’édition achetée.',
+          ],
+          action: 'Voir les tarifs',
+          note: 'Après la fin de l’essai, le logiciel passe en lecture seule : rien n’est effacé.',
+        };
+      case 'trial-ended':
+        return {
+          subject: `Votre essai de ${template.productName} est terminé — KYA-EnergyMarket`,
+          heading: 'Votre essai est terminé',
+          paragraphs: [
+            `Merci d’avoir essayé ${template.productName}. Le logiciel est maintenant en lecture seule : vos projets restent consultables et exportables.`,
+            'Choisissez votre licence pour reprendre là où vous en étiez.',
+          ],
+          action: 'Choisir ma licence',
+          note: 'Une question avant d’acheter ? Répondez simplement à ce courriel.',
+        };
       case 'staff-welcome':
         return {
           subject: 'Bienvenue dans l’équipe KYA-EnergyMarket',
@@ -180,6 +216,28 @@ const copy: Record<MailLocale, (template: MailTemplate) => Content> = {
           ],
           action: 'Find my licence',
           note: 'Keep this key to yourself: it is personal.',
+        };
+      case 'trial-ending':
+        return {
+          subject: `Your ${template.productName} trial ends soon — KYA-EnergyMarket`,
+          heading: `Your trial ends on ${template.endDate}`,
+          paragraphs: [
+            `Your ${template.productName} trial ends on ${template.endDate}.`,
+            'To carry on without interruption, choose your licence: your projects stay yours and open straight away in the edition you buy.',
+          ],
+          action: 'See pricing',
+          note: 'After the trial, the software switches to read-only: nothing is deleted.',
+        };
+      case 'trial-ended':
+        return {
+          subject: `Your ${template.productName} trial has ended — KYA-EnergyMarket`,
+          heading: 'Your trial has ended',
+          paragraphs: [
+            `Thanks for trying ${template.productName}. The software is now read-only: your projects can still be viewed and exported.`,
+            'Choose your licence to pick up where you left off.',
+          ],
+          action: 'Choose my licence',
+          note: 'A question before buying? Just reply to this email.',
         };
       case 'staff-welcome':
         return {

@@ -16,6 +16,12 @@ export function ProductPage({ slug, editing }: { slug: string; editing: Editing 
   const archived = doc.editions.filter((edition) => edition.archived);
   const [creating, setCreating] = useState(false);
   const disabled = !editor.canWrite || editor.busy;
+  // Types de licence de nature « essai », non archivés : candidats pour l'essai gratuit (spec 006).
+  const trialTypes = doc.editions.flatMap((edition) =>
+    edition.types
+      .filter((type) => type.nature === 'trial' && !type.archived && !edition.archived)
+      .map((type) => ({ id: type.id, label: `${loc(edition.name)} · ${loc(type.name)} (${type.days} j)` })),
+  );
 
   const create = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -167,6 +173,42 @@ export function ProductPage({ slug, editing }: { slug: string; editing: Editing 
             ) : null}
           </form>
         </details>
+      </section>
+
+      <section className="cx-card">
+        <div className="cx-card-h">
+          <div>
+            <h2>{m.cx_trial_title()}</h2>
+            <p>{m.cx_trial_hint()}</p>
+          </div>
+          <label className="cx-toggle">
+            <span className="cx-sr">{m.cx_trial_title()}</span>
+            <select
+              className="cx-input"
+              style={{ width: 'auto', minWidth: 260 }}
+              value={doc.product.trialLicenseTypeId ?? ''}
+              disabled={disabled}
+              onChange={(event) =>
+                void editor.change(
+                  [{ op: 'product', fields: { trialLicenseTypeId: event.target.value || null } }],
+                  m.cx_saved_draft(),
+                )
+              }
+            >
+              <option value="">{m.cx_trial_none()}</option>
+              {trialTypes.map((type) => (
+                <option key={type.id} value={type.id}>
+                  {type.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        {trialTypes.length === 0 ? (
+          <p className="cx-card-b cx-muted" style={{ margin: 0 }}>
+            {m.cx_trial_no_type()}
+          </p>
+        ) : null}
       </section>
 
       <section className="cx-card">

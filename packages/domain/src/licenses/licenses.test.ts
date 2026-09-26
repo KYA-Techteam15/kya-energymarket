@@ -550,7 +550,9 @@ describe('recherche et statistiques', () => {
 describe('essai gratuit (spec 006)', () => {
   const trialUser = async (id: string, email: string) => {
     const now = new Date();
-    await db.insert(user).values({ id, name: `Essai ${id}`, email, emailVerified: true, createdAt: now, updatedAt: now });
+    await db
+      .insert(user)
+      .values({ id, name: `Essai ${id}`, email, emailVerified: true, createdAt: now, updatedAt: now });
     await ensurePersonalOrganization(db, { id, name: `Essai ${id}` });
     return { userId: id, email, productSlug: 'kya-soldesign' };
   };
@@ -568,7 +570,9 @@ describe('essai gratuit (spec 006)', () => {
     const payload = await softwareVerify((result as { token: string }).token, publicJwk);
     expect(payload).toMatchObject({ edition: 'commercial', plan: '14d', customer: 'Essai user-essai-1' });
 
-    const scheduled = (await db.select().from(jobs).where(eq(jobs.reference, license.id))).map((job) => job.kind).sort();
+    const scheduled = (await db.select().from(jobs).where(eq(jobs.reference, license.id)))
+      .map((job) => job.kind)
+      .sort();
     expect(scheduled).toEqual(['mail.license_key', 'mail.trial_ended', 'mail.trial_ending']);
     const after = await trialStatus({ db, secret: SECRET }, { userId: who.userId, productSlug: 'kya-soldesign' });
     expect(after.used).toMatchObject({ licenseId: license.id, key });
@@ -591,16 +595,26 @@ describe('essai gratuit (spec 006)', () => {
   it('plus de relance après un achat ; essai indisponible sans type réglé', async () => {
     const who = await trialUser('user-essai-3', 'essai3@exemple.tg');
     const { license } = await startTrial({ db, secret: SECRET }, { type: 'user', id: who.userId }, who);
-    await issue({ organizationId: license.organizationId, channel: 'purchase', amount: 220_000, reason: null, seats: 1 });
+    await issue({
+      organizationId: license.organizationId,
+      channel: 'purchase',
+      amount: 220_000,
+      reason: null,
+      seats: 1,
+    });
     expect(await trialFollowUp({ db, secret: SECRET }, license.id)).toBeNull();
 
-    await changeCatalog(db, staff, 'kya-soldesign', { changes: [{ op: 'product', fields: { trialLicenseTypeId: null } }] });
+    await changeCatalog(db, staff, 'kya-soldesign', {
+      changes: [{ op: 'product', fields: { trialLicenseTypeId: null } }],
+    });
     const { revision } = await getCatalogEditing(db, 'kya-soldesign');
     await publishCatalog(db, staff, 'kya-soldesign', { expectedRevision: revision! });
     const other = await trialUser('user-essai-4', 'essai4@exemple.tg');
     await expect(startTrial({ db, secret: SECRET }, { type: 'user', id: other.userId }, other)).rejects.toMatchObject({
       code: 'TRIAL_UNAVAILABLE',
     });
-    expect((await trialStatus({ db, secret: SECRET }, { userId: null, productSlug: 'kya-soldesign' })).offer).toBeNull();
+    expect(
+      (await trialStatus({ db, secret: SECRET }, { userId: null, productSlug: 'kya-soldesign' })).offer,
+    ).toBeNull();
   });
 });

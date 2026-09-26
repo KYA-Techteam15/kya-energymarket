@@ -107,8 +107,12 @@ test.describe('console (spec 005b)', () => {
     await expect(page).toHaveURL(/\/fr\/espace/u);
 
     await page.goto('/fr/admin');
-    await page.keyboard.press('Control+k');
     const palette = page.getByRole('dialog', { name: 'Recherche et actions' });
+    // Le raccourci n'agit qu'une fois la page prête : on le répète jusqu'à l'ouverture.
+    await expect(async () => {
+      if (!(await palette.isVisible())) await page.keyboard.press('Control+k');
+      await expect(palette).toBeVisible({ timeout: 1_000 });
+    }).toPass({ timeout: 20_000 });
     await palette.getByRole('combobox').fill(keyOf.get(students[1]!)!);
     await expect(palette.getByRole('option').first()).toContainText(students[1]!);
     await page.keyboard.press('Enter');

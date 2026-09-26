@@ -18,7 +18,7 @@ Les mots de l'interface, de la documentation et du code. Un terme par idée, le 
 | **Licence** | Droit d'utiliser un logiciel dans une édition, selon un type de licence, pour un nombre de postes. Garde une copie figée de son offre (type, jours, prix, montant payé, canal, motif). Identifiée par une clé ; peut attendre son titulaire (clé à distribuer, destinataire sans compte). | `License` |
 | **Clé de licence** | Code lisible (`KYA-COM-12M-…`) saisi dans le logiciel, ou retrouvé par connexion au compte. | `License.key` |
 | **Jeton de licence** | Charge utile signée (ECDSA P-256) remise au logiciel pour un poste ; vérifiable hors ligne. | `LicenseToken` |
-| **Essai** | Licence gratuite, une fois par compte et par logiciel, réglée dans l'administration. | `Trial` |
+| **Essai** | Licence d'un type de nature « essai », une fois par compte et par logiciel, choisi sur la fiche du logiciel dans la console ; démarre à l'activation depuis la page Essai. | `TrialGrant` |
 | **Délai de grâce** | Jours après l'échéance pendant lesquels le logiciel fonctionne encore. Ensuite : **lecture seule**. | `graceDays` |
 | **Commande** | Achat d'une licence (ou d'un renouvellement, de postes) par un compte. Pas de panier. | `Order` |
 | **Paiement** | Tentative de règlement d'une commande auprès du fournisseur (Semoa). | `Payment` |

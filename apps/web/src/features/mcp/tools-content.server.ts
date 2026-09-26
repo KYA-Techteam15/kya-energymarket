@@ -131,7 +131,7 @@ export function registerContentTools(server: McpServer, context: { db: Database;
       title: 'Modifier le brouillon du catalogue',
       description:
         'Applique des changements au BROUILLON de l’offre (rien n’est public avant publish_catalog). Opérations : ' +
-        '`product` {fields: name, status available|soon|hidden, kind, summary} ; ' +
+        '`product` {fields: name, status available|soon|hidden, kind, summary, trialLicenseTypeId (type de nature trial remis par « Activer mon essai », null : pas d’essai)} ; ' +
         '`edition` {code, fields} modifie une édition ou la crée (masquée, hors vente) — champs : name, audience, softwareEdition (code connu du logiciel), watermark (null : aucun), graceDays, maxSeats, maxProjects (null : sans limite), highlights (textes affichés), visible, forSale, archived, features (liste complète des clés) ; ' +
         '`move_edition` {code, to} ; ' +
         '`license_type` {edition, id?, fields} modifie un type ou le crée sans id (masqué, hors vente) — champs : name, nature sale|trial|free|education|partner, days, pricePerSeat (FCFA entiers), indicative, seatsMin, seatsMax (null : maximum de l’édition), renewable, visible, forSale, archived ; ' +

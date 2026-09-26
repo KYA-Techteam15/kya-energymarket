@@ -57,6 +57,8 @@ describe('modèles de courriel', () => {
         key: 'KYA-ETU-12M-AAAA-BBBB-CCCC',
         url: 'u',
       },
+      { kind: 'trial-ending', productName: 'KYA-SolDesign', endDate: '9 octobre 2026', url: 'u' },
+      { kind: 'trial-ended', productName: 'KYA-SolDesign', url: 'u' },
     ] as const;
     for (const template of templates) {
       for (const locale of ['fr', 'en'] as const) {

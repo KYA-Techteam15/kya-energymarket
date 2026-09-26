@@ -6,6 +6,11 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), versions [Sem
 
 ### Ajouté
 
+- Essai gratuit (spécification 006) : page `/essai` en quatre étapes (compte, activation, téléchargement,
+  activation dans le logiciel) ; un essai par compte et par logiciel, sûr en rafale ; l'essai est une
+  licence d'un type de nature « essai » réglé sur la fiche du logiciel dans la console (brouillon),
+  « Essai 14 jours » de l'édition Commerciale par défaut ; clé par courriel, rappel trois jours avant
+  la fin et courriel de fin (annulés en cas d'achat ou de révocation) ; migration 0007.
 - Offre modulable et console d'administration (spécification 005b) : éditions et types de licence
   ajoutés, masqués, retirés de la vente ou archivés sans développeur, profil de l'édition dans le
   logiciel, caractéristiques affichées ; catalogue en brouillon, publié d'un bloc (conflits
